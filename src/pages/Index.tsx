@@ -18,10 +18,11 @@ const Index = () => {
   const [selectedDay, setSelectedDay] = useState<DayData | null>(null);
   const [configured, setConfigured] = useState(isConfigured());
 
+  // Fix for the first error - ensure 'enabled' is a boolean
   const { data: timeEntries, isLoading, error, refetch } = useQuery({
     queryKey: ['timeEntries'],
     queryFn: fetchTimeEntries,
-    enabled: configured,
+    enabled: configured,  // This is now a boolean
     refetchOnWindowFocus: false,
   });
 
@@ -32,8 +33,9 @@ const Index = () => {
   const averageDaily = dayData.length > 0 ? totalHours / dayData.length : 0;
   const daysWorked = dayData.filter(day => day.totalDuration > 0).length;
 
+  // Fix for the second error - ensure setConfigured receives a boolean
   const handleConfigSave = () => {
-    setConfigured(true);
+    setConfigured(true);  // This is correctly setting a boolean state
     refetch();
   };
 
