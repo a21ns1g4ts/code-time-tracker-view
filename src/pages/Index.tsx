@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -16,13 +15,12 @@ import { toast } from '@/hooks/use-toast';
 const Index = () => {
   const [showConfig, setShowConfig] = useState(!isConfigured());
   const [selectedDay, setSelectedDay] = useState<DayData | null>(null);
-  const [configured, setConfigured] = useState(isConfigured());
+  const [configured, setConfigured] = useState<boolean>(isConfigured());
 
-  // Fix for the first error - ensure 'enabled' is a boolean
   const { data: timeEntries, isLoading, error, refetch } = useQuery({
     queryKey: ['timeEntries'],
     queryFn: fetchTimeEntries,
-    enabled: configured,  // This is now a boolean
+    enabled: !!configured, // Explicitly cast to boolean with double negation
     refetchOnWindowFocus: false,
   });
 
@@ -33,9 +31,8 @@ const Index = () => {
   const averageDaily = dayData.length > 0 ? totalHours / dayData.length : 0;
   const daysWorked = dayData.filter(day => day.totalDuration > 0).length;
 
-  // Fix for the second error - ensure setConfigured receives a boolean
   const handleConfigSave = () => {
-    setConfigured(true);  // This is correctly setting a boolean state
+    setConfigured(true);
     refetch();
   };
 
