@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -21,16 +20,16 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [projectAccess, setProjectAccess] = useState<Record<string, boolean>>({});
+  const [configured, setConfigured] = useState(false);
 
   const { data: projectsResponse, isLoading, error, refetch } = useQuery({
     queryKey: ['projects'],
     queryFn: fetchProjects,
-    enabled: false, // Will be enabled in useEffect
+    enabled: configured,
   });
 
-  const [configured, setConfigured] = React.useState(false);
-
-  React.useEffect(() => {
+  // Check if app is configured on mount
+  useEffect(() => {
     const checkConfig = async () => {
       const isConfigSet = await isConfigured();
       setConfigured(isConfigSet);
@@ -38,11 +37,11 @@ const Projects = () => {
         refetch();
       }
     };
-
+    
     checkConfig();
   }, [refetch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (projectsResponse?.data) {
       // Check access status for all projects
       const checkAllProjectsAccess = async () => {

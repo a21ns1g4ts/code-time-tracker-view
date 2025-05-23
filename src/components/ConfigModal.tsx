@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,10 +14,20 @@ interface ConfigModalProps {
 }
 
 const ConfigModal: React.FC<ConfigModalProps> = ({ open, onClose, onSave }) => {
-  const [bearerToken, setBearerToken] = useState(getConfig().bearerToken);
-  const [organizationId, setOrganizationId] = useState(getConfig().organizationId);
+  const [bearerToken, setBearerToken] = useState('');
+  const [organizationId, setOrganizationId] = useState('');
 
-  const handleSave = () => {
+  // Load config values when component mounts
+  useEffect(() => {
+    const loadConfig = async () => {
+      const config = await getConfig();
+      setBearerToken(config.bearerToken);
+      setOrganizationId(config.organizationId);
+    };
+    loadConfig();
+  }, [open]);
+
+  const handleSave = async () => {
     if (!bearerToken || !organizationId) {
       toast({
         title: "Erro",
@@ -27,7 +37,7 @@ const ConfigModal: React.FC<ConfigModalProps> = ({ open, onClose, onSave }) => {
       return;
     }
 
-    saveConfig(bearerToken, organizationId);
+    await saveConfig(bearerToken, organizationId);
     toast({
       title: "Configuração salva",
       description: "Bearer token e Organization ID foram salvos com sucesso"

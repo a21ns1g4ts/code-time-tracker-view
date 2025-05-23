@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -14,9 +13,19 @@ import { DayData } from '@/types/api';
 import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
-  const [showConfig, setShowConfig] = useState(!isConfigured());
+  const [showConfig, setShowConfig] = useState(false);
   const [selectedDay, setSelectedDay] = useState<DayData | null>(null);
-  const [configured, setConfigured] = useState<boolean>(isConfigured());
+  const [configured, setConfigured] = useState(false);
+
+  // Check if app is configured on mount
+  useEffect(() => {
+    const checkConfig = async () => {
+      const isConfigSet = await isConfigured();
+      setConfigured(isConfigSet);
+      setShowConfig(!isConfigSet);
+    };
+    checkConfig();
+  }, []);
 
   const { data: timeEntries, isLoading, error, refetch } = useQuery({
     queryKey: ['timeEntries'],
@@ -118,7 +127,7 @@ const Index = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
             <p className="mt-4 text-gray-600">Carregando dados...</p>
           </div>
-        ) : (
+        ) : configured && !error ? (
           <div className="space-y-8">
             {/* Statistics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -160,6 +169,33 @@ const Index = () => {
             {selectedDay && selectedDay.totalDuration > 0 && (
               <Timeline dayData={selectedDay} />
             )}
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
+            <h2 className="text-xl font-bold mb-2">Erro na API</h2>
+            <p className="text-gray-600 mb-4">
+              Erro ao buscar dados da API. Verifique suas configurações.
+            </p>
+            <div className="space-x-2">
+              <Button onClick={() => setShowConfig(true)} variant="outline">
+                Configurações
+              </Button>
+              <Button onClick={() => refetch()}>
+                Tentar Novamente
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Settings className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+            <h2 className="text-xl font-bold mb-2">Configuração Necessária</h2>
+            <p className="text-gray-600 mb-4">
+              Configure seu Bearer Token e Organization ID para começar a acompanhar sua rotina de trabalho.
+            </p>
+            <Button onClick={() => setShowConfig(true)}>
+              Configurar API
+            </Button>
           </div>
         )}
 
