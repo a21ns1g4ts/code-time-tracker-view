@@ -30,3 +30,56 @@ export interface DayData {
 export interface WeekData {
   days: (DayData | null)[];
 }
+
+export interface Project {
+  id: string;
+  name: string;
+  color: string;
+  client_id: string | null;
+  is_archived: boolean;
+  billable_rate: number | null;
+  is_billable: boolean;
+  estimated_time: number | null;
+  spent_time: number;
+  is_public: boolean;
+}
+
+export interface ProjectsResponse {
+  data: Project[];
+  links: {
+    first: string | null;
+    last: string | null;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number | null;
+    last_page: number;
+    links: Array<{
+      url: string | null;
+      label: string;
+      active: boolean;
+    }>;
+    path: string | null;
+    per_page: number;
+    to: number | null;
+    total: number;
+  };
+}
+
+export interface AppConfig {
+  id: string;
+  key: string;
+  value: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProjectAccess {
+  id: string;
+  project_id: string;
+  password: string;
+  created_at: string;
+  updated_at: string;
+}
