@@ -16,7 +16,7 @@ export const saveConfig = (bearerToken: string, organizationId: string) => {
   localStorage.setItem(CONFIG_KEYS.ORGANIZATION_ID, organizationId);
 };
 
-export const isConfigured = () => {
+export const isConfigured = (): boolean => {
   const config = getConfig();
-  return config.bearerToken && config.organizationId;
+  return !!(config.bearerToken && config.organizationId);
 };

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
@@ -20,7 +21,7 @@ const Index = () => {
   const { data: timeEntries, isLoading, error, refetch } = useQuery({
     queryKey: ['timeEntries'],
     queryFn: fetchTimeEntries,
-    enabled: !!configured, // Explicitly cast to boolean with double negation
+    enabled: configured,
     refetchOnWindowFocus: false,
   });
 
