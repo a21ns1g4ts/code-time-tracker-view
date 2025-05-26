@@ -40,7 +40,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
     setIsVerifying(true);
 
     try {
-      console.log('Verifying password for project:', { projectId, projectName });
+      console.log('Verifying password for project:', { projectId, projectName, password: password.trim() });
       const isValid = await verifyProjectPassword(projectId, password.trim());
       
       if (isValid) {

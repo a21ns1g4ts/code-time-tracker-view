@@ -9,7 +9,6 @@ import PageHeader from '@/components/PageHeader';
 import LoadingProjects from '@/components/LoadingProjects';
 import ApiErrorDisplay from '@/components/ApiErrorDisplay';
 import ProjectsList from '@/components/ProjectsList';
-import ProjectSetupSection from '@/components/ProjectSetupSection';
 import useProjectAccess from '@/hooks/useProjectAccess';
 
 const Projects = () => {
@@ -93,9 +92,6 @@ const Projects = () => {
           <LoadingProjects />
         ) : (
           <div>
-            {/* Admin area for setting passwords */}
-            <ProjectSetupSection projects={projectsResponse?.data || []} />
-
             {/* Projects list */}
             <h2 className="text-xl font-semibold mb-4">Projetos</h2>
             <ProjectsList 

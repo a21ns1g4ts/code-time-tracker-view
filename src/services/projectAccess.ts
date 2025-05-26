@@ -2,6 +2,8 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export const saveProjectPassword = async (projectId: string, password: string) => {
+  console.log('Saving password for project:', { projectId, password });
+  
   const { data, error } = await supabase
     .from('project_access')
     .upsert({ 
@@ -23,6 +25,8 @@ export const saveProjectPassword = async (projectId: string, password: string) =
 
 export const verifyProjectPassword = async (projectId: string, password: string): Promise<boolean> => {
   try {
+    console.log('Verifying password for project:', { projectId, password });
+    
     const { data, error } = await supabase
       .from('project_access')
       .select('password')
