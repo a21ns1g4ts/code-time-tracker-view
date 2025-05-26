@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ProjectPasswordSetter } from '@/components/ProjectPasswordSetter';
+import ProjectPasswordSetter from '@/components/ProjectPasswordSetter';
 import { Project } from '@/types/api';
 
 interface ProjectSetupSectionProps {

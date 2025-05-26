@@ -9,7 +9,7 @@ interface ApiErrorDisplayProps {
   onRetry: () => void;
 }
 
-const ApiErrorDisplay: React.FC<ApiErrorDisplayProps> = ({ onOpenConfig, onRetry }) => {
+const ApiErrorDisplay: React.FC<ApiErrorDisplayProps> = ({ onRetry }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <Card className="max-w-md mx-auto">
@@ -19,16 +19,11 @@ const ApiErrorDisplay: React.FC<ApiErrorDisplayProps> = ({ onOpenConfig, onRetry
         </CardHeader>
         <CardContent className="text-center">
           <p className="text-gray-600 mb-4">
-            Erro ao buscar dados da API. Verifique suas configurações.
+            Erro ao buscar dados da API. Verifique as configurações no Supabase.
           </p>
-          <div className="space-x-2">
-            <Button onClick={onOpenConfig} variant="outline">
-              Configurações
-            </Button>
-            <Button onClick={onRetry}>
-              Tentar Novamente
-            </Button>
-          </div>
+          <Button onClick={onRetry}>
+            Tentar Novamente
+          </Button>
         </CardContent>
       </Card>
     </div>

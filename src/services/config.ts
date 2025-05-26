@@ -7,33 +7,24 @@ const CONFIG_KEYS = {
 } as const;
 
 export const getConfig = async () => {
-  // Try to get from Supabase first
+  // Get bearer token from Supabase
   const { data: bearerTokenRow } = await supabase
     .from('app_config')
-    .select('*')
+    .select('value')
     .eq('key', CONFIG_KEYS.BEARER_TOKEN)
     .single();
   
-  // Fallback to localStorage for backward compatibility
-  const bearerToken = bearerTokenRow?.value || localStorage.getItem('solidtime_bearer_token') || '';
-  const organizationId = localStorage.getItem(CONFIG_KEYS.ORGANIZATION_ID) || '';
+  // Get organization ID from Supabase
+  const { data: organizationIdRow } = await supabase
+    .from('app_config')
+    .select('value')
+    .eq('key', CONFIG_KEYS.ORGANIZATION_ID)
+    .single();
   
   return {
-    bearerToken,
-    organizationId
+    bearerToken: bearerTokenRow?.value || '',
+    organizationId: organizationIdRow?.value || ''
   };
-};
-
-export const saveConfig = async (bearerToken: string, organizationId: string) => {
-  // Update in Supabase
-  await supabase
-    .from('app_config')
-    .update({ value: bearerToken })
-    .eq('key', CONFIG_KEYS.BEARER_TOKEN);
-  
-  // Also save in localStorage for backward compatibility
-  localStorage.setItem('solidtime_bearer_token', bearerToken);
-  localStorage.setItem(CONFIG_KEYS.ORGANIZATION_ID, organizationId);
 };
 
 export const isConfigured = async (): Promise<boolean> => {
