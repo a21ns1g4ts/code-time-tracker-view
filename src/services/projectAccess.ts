@@ -31,7 +31,7 @@ export const verifyProjectPassword = async (projectId: string, password: string)
       .from('project_access')
       .select('password')
       .eq('project_id', projectId)
-      .single();
+      .maybeSingle();
     
     if (error) {
       console.error('Error verifying project password:', error);

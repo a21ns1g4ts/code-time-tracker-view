@@ -40,7 +40,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
     setIsVerifying(true);
 
     try {
-      console.log('Verifying password for project:', { projectId, projectName, password: password.trim() });
+      console.log('Attempting to verify password for project:', { projectId, projectName, password: password.trim() });
       const isValid = await verifyProjectPassword(projectId, password.trim());
       
       if (isValid) {
@@ -62,7 +62,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
       console.error('Error verifying password:', error);
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao verificar a senha. Verifique o console para mais detalhes.",
+        description: "Ocorreu um erro ao verificar a senha. Tente novamente.",
         variant: "destructive"
       });
     } finally {
@@ -94,6 +94,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Digite a senha do projeto"
               disabled={isVerifying}
+              autoFocus
             />
           </div>
           <div className="flex justify-end space-x-2">
