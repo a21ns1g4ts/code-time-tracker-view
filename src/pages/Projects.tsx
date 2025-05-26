@@ -68,7 +68,7 @@ const Projects = () => {
         <div className="max-w-md mx-auto text-center">
           <h2 className="text-xl font-semibold mb-4">Configuração Necessária</h2>
           <p className="text-gray-600">
-            Bearer Token e Organization ID devem ser configurados no Supabase.
+            Bearer Token e Organization ID devem ser configurados no Supabase na tabela app_config.
           </p>
         </div>
       </div>
@@ -78,7 +78,6 @@ const Projects = () => {
   if (error) {
     return (
       <ApiErrorDisplay 
-        onOpenConfig={() => {}} 
         onRetry={() => refetch()}
       />
     );
@@ -88,7 +87,7 @@ const Projects = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
-        <PageHeader onOpenConfig={() => {}} />
+        <PageHeader />
 
         {isLoading ? (
           <LoadingProjects />

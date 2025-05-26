@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, Settings, BarChart3, Calendar } from 'lucide-react';
-import ConfigModal from '@/components/ConfigModal';
+import { AlertCircle, BarChart3, Calendar } from 'lucide-react';
 import ActivityGrid from '@/components/ActivityGrid';
 import Timeline from '@/components/Timeline';
 import { fetchTimeEntries } from '@/services/api';
@@ -13,7 +13,6 @@ import { DayData } from '@/types/api';
 import { toast } from '@/hooks/use-toast';
 
 const Index = () => {
-  const [showConfig, setShowConfig] = useState(false);
   const [selectedDay, setSelectedDay] = useState<DayData | null>(null);
   const [configured, setConfigured] = useState(false);
 
@@ -22,7 +21,6 @@ const Index = () => {
     const checkConfig = async () => {
       const isConfigSet = await isConfigured();
       setConfigured(isConfigSet);
-      setShowConfig(!isConfigSet);
     };
     checkConfig();
   }, []);
@@ -41,11 +39,6 @@ const Index = () => {
   const averageDaily = dayData.length > 0 ? totalHours / dayData.length : 0;
   const daysWorked = dayData.filter(day => day.totalDuration > 0).length;
 
-  const handleConfigSave = () => {
-    setConfigured(true);
-    refetch();
-  };
-
   const handleDayClick = (day: DayData) => {
     setSelectedDay(day);
   };
@@ -55,23 +48,15 @@ const Index = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="max-w-md mx-auto">
           <CardHeader className="text-center">
-            <Settings className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+            <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
             <CardTitle>Configuração Necessária</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-gray-600 mb-4">
-              Configure seu Bearer Token e Organization ID para começar a acompanhar sua rotina de trabalho.
+              Bearer Token e Organization ID devem ser configurados no Supabase na tabela app_config.
             </p>
-            <Button onClick={() => setShowConfig(true)}>
-              Configurar API
-            </Button>
           </CardContent>
         </Card>
-        <ConfigModal 
-          open={showConfig} 
-          onClose={() => setShowConfig(false)}
-          onSave={handleConfigSave}
-        />
       </div>
     );
   }
@@ -86,23 +71,13 @@ const Index = () => {
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-gray-600 mb-4">
-              Erro ao buscar dados da API. Verifique suas configurações.
+              Erro ao buscar dados da API. Verifique as configurações no Supabase.
             </p>
-            <div className="space-x-2">
-              <Button onClick={() => setShowConfig(true)} variant="outline">
-                Configurações
-              </Button>
-              <Button onClick={() => refetch()}>
-                Tentar Novamente
-              </Button>
-            </div>
+            <Button onClick={() => refetch()}>
+              Tentar Novamente
+            </Button>
           </CardContent>
         </Card>
-        <ConfigModal 
-          open={showConfig} 
-          onClose={() => setShowConfig(false)}
-          onSave={handleConfigSave}
-        />
       </div>
     );
   }
@@ -116,10 +91,6 @@ const Index = () => {
             <h1 className="text-3xl font-bold text-gray-900">Developer Work Tracker</h1>
             <p className="text-gray-600">Acompanhe sua rotina de desenvolvimento</p>
           </div>
-          <Button onClick={() => setShowConfig(true)} variant="outline">
-            <Settings className="w-4 h-4 mr-2" />
-            Configurações
-          </Button>
         </div>
 
         {isLoading ? (
@@ -175,35 +146,21 @@ const Index = () => {
             <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
             <h2 className="text-xl font-bold mb-2">Erro na API</h2>
             <p className="text-gray-600 mb-4">
-              Erro ao buscar dados da API. Verifique suas configurações.
+              Erro ao buscar dados da API. Verifique as configurações no Supabase.
             </p>
-            <div className="space-x-2">
-              <Button onClick={() => setShowConfig(true)} variant="outline">
-                Configurações
-              </Button>
-              <Button onClick={() => refetch()}>
-                Tentar Novamente
-              </Button>
-            </div>
+            <Button onClick={() => refetch()}>
+              Tentar Novamente
+            </Button>
           </div>
         ) : (
           <div className="text-center py-12">
-            <Settings className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+            <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
             <h2 className="text-xl font-bold mb-2">Configuração Necessária</h2>
             <p className="text-gray-600 mb-4">
-              Configure seu Bearer Token e Organization ID para começar a acompanhar sua rotina de trabalho.
+              Bearer Token e Organization ID devem ser configurados no Supabase na tabela app_config.
             </p>
-            <Button onClick={() => setShowConfig(true)}>
-              Configurar API
-            </Button>
           </div>
         )}
-
-        <ConfigModal 
-          open={showConfig} 
-          onClose={() => setShowConfig(false)}
-          onSave={handleConfigSave}
-        />
       </div>
     </div>
   );
