@@ -28,7 +28,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!password) {
+    if (!password.trim()) {
       toast({
         title: "Erro",
         description: "Por favor, digite a senha",
@@ -40,7 +40,8 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
     setIsVerifying(true);
 
     try {
-      const isValid = await verifyProjectPassword(projectId, password);
+      console.log('Verifying password for project:', { projectId, projectName });
+      const isValid = await verifyProjectPassword(projectId, password.trim());
       
       if (isValid) {
         setProjectAccess(projectId);
@@ -48,6 +49,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
           title: "Acesso concedido",
           description: `Você agora tem acesso ao projeto ${projectName}`
         });
+        setPassword('');
         onSuccess();
       } else {
         toast({
@@ -57,9 +59,10 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
         });
       }
     } catch (error) {
+      console.error('Error verifying password:', error);
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao verificar a senha",
+        description: "Ocorreu um erro ao verificar a senha. Verifique o console para mais detalhes.",
         variant: "destructive"
       });
     } finally {
@@ -67,8 +70,13 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
     }
   };
 
+  const handleClose = () => {
+    setPassword('');
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Acesso ao Projeto</DialogTitle>
@@ -85,13 +93,14 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Digite a senha do projeto"
+              disabled={isVerifying}
             />
           </div>
           <div className="flex justify-end space-x-2">
-            <Button variant="outline" onClick={onClose} type="button">
+            <Button variant="outline" onClick={handleClose} type="button" disabled={isVerifying}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={isVerifying}>
+            <Button type="submit" disabled={isVerifying || !password.trim()}>
               {isVerifying ? "Verificando..." : "Acessar"}
             </Button>
           </div>

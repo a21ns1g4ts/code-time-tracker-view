@@ -18,7 +18,7 @@ const ProjectPasswordSetter: React.FC<ProjectPasswordSetterProps> = ({ projectId
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
-    if (!password) {
+    if (!password.trim()) {
       toast({
         title: "Erro",
         description: "Por favor, insira uma senha",
@@ -30,16 +30,19 @@ const ProjectPasswordSetter: React.FC<ProjectPasswordSetterProps> = ({ projectId
     setIsSaving(true);
 
     try {
-      await saveProjectPassword(projectId, password);
+      console.log('Saving password for project:', { projectId, projectName });
+      await saveProjectPassword(projectId, password.trim());
+      
       toast({
         title: "Senha salva",
         description: `Senha configurada com sucesso para o projeto ${projectName}`
       });
       setPassword('');
     } catch (error) {
+      console.error('Error saving password:', error);
       toast({
         title: "Erro",
-        description: "Erro ao salvar a senha",
+        description: "Erro ao salvar a senha. Verifique o console para mais detalhes.",
         variant: "destructive"
       });
     } finally {
@@ -55,16 +58,17 @@ const ProjectPasswordSetter: React.FC<ProjectPasswordSetterProps> = ({ projectId
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="projectPassword">Senha para {projectName}</Label>
+          <Label htmlFor={`projectPassword-${projectId}`}>Senha para {projectName}</Label>
           <Input
-            id="projectPassword"
+            id={`projectPassword-${projectId}`}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Definir senha de acesso"
+            disabled={isSaving}
           />
         </div>
-        <Button onClick={handleSave} disabled={isSaving} className="w-full">
+        <Button onClick={handleSave} disabled={isSaving || !password.trim()} className="w-full">
           {isSaving ? "Salvando..." : "Salvar Senha"}
         </Button>
       </CardContent>
