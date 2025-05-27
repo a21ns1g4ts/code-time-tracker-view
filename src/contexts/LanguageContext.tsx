@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Language = 'pt' | 'en';
+type Language = 'pt' | 'en' | 'es' | 'fr' | 'de';
 
 interface LanguageContextType {
   language: Language;
@@ -28,7 +28,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage && (savedLanguage === 'pt' || savedLanguage === 'en')) {
+    if (savedLanguage && ['pt', 'en', 'es', 'fr', 'de'].includes(savedLanguage)) {
       setLanguage(savedLanguage);
     }
   }, []);
@@ -39,7 +39,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const t = (key: string): string => {
-    return translations[language][key] || key;
+    return translations[language][key] || translations['en'][key] || key;
   };
 
   return (
@@ -175,5 +175,194 @@ const translations = {
     'api.error': 'API Error',
     'api.error.projects': 'Error fetching project data.',
     'api.error.entries': 'Error fetching time entries data.',
+  },
+  es: {
+    // General
+    'loading': 'Cargando...',
+    'error': 'Error',
+    'back': 'Volver',
+    'retry': 'Reintentar',
+    
+    // Projects page
+    'app.title': 'A2Insights Tracker',
+    'app.subtitle': 'Rastrea tus proyectos',
+    'projects': 'Proyectos',
+    'project.details': 'Ver detalles',
+    'project.access': 'Acceder al proyecto',
+    'project.billable': 'Facturable',
+    'project.non_billable': 'No facturable',
+    'project.archived': 'Archivado',
+    'access.denied': 'Acceso denegado',
+    'access.denied.message': 'No tienes acceso a este proyecto',
+    'access.checking': 'Verificando acceso...',
+    'config.required': 'Configuración Requerida',
+    'config.required.message': 'Bearer Token y Organization ID deben configurarse en Supabase en la tabla app_config.',
+    
+    // Project detail
+    'project.detail.title': 'Detalles del Proyecto',
+    'project.detail.subtitle': 'Ver todas las actividades de este proyecto',
+    'project.detail.back': 'Volver a Proyectos',
+    'project.detail.view_entries': 'Ver Entradas de Tiempo Completas',
+    'project.detail.loading': 'Cargando datos del proyecto...',
+    'summary': 'Resumen',
+    'total.hours': 'Horas Totales',
+    'days.with.records': 'Días con Registros',
+    'time.records': 'Registros de Tiempo',
+    'date': 'Fecha',
+    'start': 'Inicio',
+    'end': 'Fin',
+    'duration': 'Duración',
+    'description': 'Descripción',
+    'no.records': 'No se encontraron registros de tiempo para este proyecto.',
+    
+    // Project time entries
+    'time.entries.title': 'Entradas de Tiempo',
+    'time.entries.subtitle': 'Ver todas las actividades de tiempo de este proyecto',
+    'time.entries.back': 'Volver a Detalles',
+    'project.summary': 'Resumen del Proyecto',
+    'total.records': 'Total de Registros',
+    'activity.time': 'Actividad de Tiempo',
+    'activity.timeline': 'Cronología de Actividades',
+    'activity.development': 'Actividad de Desarrollo',
+    'activity.less': 'Menos',
+    'activity.more': 'Más',
+    'no.activity': 'No se encontró actividad para este proyecto.',
+    'worked.periods': 'Períodos trabajados:',
+    'hours.worked': 'trabajadas',
+    'no.activity.short': 'Sin actividad',
+    'future.date': 'Fecha futura',
+    'timeline.day': 'Cronología',
+    'total': 'total',
+    
+    // API errors
+    'api.error': 'Error de API',
+    'api.error.projects': 'Error al obtener datos del proyecto.',
+    'api.error.entries': 'Error al obtener datos de entradas de tiempo.',
+  },
+  fr: {
+    // General
+    'loading': 'Chargement...',
+    'error': 'Erreur',
+    'back': 'Retour',
+    'retry': 'Réessayer',
+    
+    // Projects page
+    'app.title': 'A2Insights Tracker',
+    'app.subtitle': 'Suivez vos projets',
+    'projects': 'Projets',
+    'project.details': 'Voir les détails',
+    'project.access': 'Accéder au projet',
+    'project.billable': 'Facturable',
+    'project.non_billable': 'Non facturable',
+    'project.archived': 'Archivé',
+    'access.denied': 'Accès refusé',
+    'access.denied.message': 'Vous n\'avez pas accès à ce projet',
+    'access.checking': 'Vérification de l\'accès...',
+    'config.required': 'Configuration Requise',
+    'config.required.message': 'Bearer Token et Organization ID doivent être configurés dans Supabase dans la table app_config.',
+    
+    // Project detail
+    'project.detail.title': 'Détails du Projet',
+    'project.detail.subtitle': 'Voir toutes les activités de ce projet',
+    'project.detail.back': 'Retour aux Projets',
+    'project.detail.view_entries': 'Voir les Entrées de Temps Complètes',
+    'project.detail.loading': 'Chargement des données du projet...',
+    'summary': 'Résumé',
+    'total.hours': 'Heures Totales',
+    'days.with.records': 'Jours avec Enregistrements',
+    'time.records': 'Enregistrements de Temps',
+    'date': 'Date',
+    'start': 'Début',
+    'end': 'Fin',
+    'duration': 'Durée',
+    'description': 'Description',
+    'no.records': 'Aucun enregistrement de temps trouvé pour ce projet.',
+    
+    // Project time entries
+    'time.entries.title': 'Entrées de Temps',
+    'time.entries.subtitle': 'Voir toutes les activités de temps de ce projet',
+    'time.entries.back': 'Retour aux Détails',
+    'project.summary': 'Résumé du Projet',
+    'total.records': 'Total des Enregistrements',
+    'activity.time': 'Activité de Temps',
+    'activity.timeline': 'Chronologie des Activités',
+    'activity.development': 'Activité de Développement',
+    'activity.less': 'Moins',
+    'activity.more': 'Plus',
+    'no.activity': 'Aucune activité trouvée pour ce projet.',
+    'worked.periods': 'Périodes travaillées:',
+    'hours.worked': 'travaillées',
+    'no.activity.short': 'Aucune activité',
+    'future.date': 'Date future',
+    'timeline.day': 'Chronologie',
+    'total': 'total',
+    
+    // API errors
+    'api.error': 'Erreur API',
+    'api.error.projects': 'Erreur lors de la récupération des données du projet.',
+    'api.error.entries': 'Erreur lors de la récupération des données d\'entrées de temps.',
+  },
+  de: {
+    // General
+    'loading': 'Laden...',
+    'error': 'Fehler',
+    'back': 'Zurück',
+    'retry': 'Wiederholen',
+    
+    // Projects page
+    'app.title': 'A2Insights Tracker',
+    'app.subtitle': 'Verfolgen Sie Ihre Projekte',
+    'projects': 'Projekte',
+    'project.details': 'Details anzeigen',
+    'project.access': 'Projekt zugreifen',
+    'project.billable': 'Abrechenbar',
+    'project.non_billable': 'Nicht abrechenbar',
+    'project.archived': 'Archiviert',
+    'access.denied': 'Zugang verweigert',
+    'access.denied.message': 'Sie haben keinen Zugang zu diesem Projekt',
+    'access.checking': 'Zugang prüfen...',
+    'config.required': 'Konfiguration Erforderlich',
+    'config.required.message': 'Bearer Token und Organization ID müssen in Supabase in der app_config Tabelle konfiguriert werden.',
+    
+    // Project detail
+    'project.detail.title': 'Projektdetails',
+    'project.detail.subtitle': 'Alle Aktivitäten dieses Projekts anzeigen',
+    'project.detail.back': 'Zurück zu Projekten',
+    'project.detail.view_entries': 'Vollständige Zeiteinträge anzeigen',
+    'project.detail.loading': 'Projektdaten laden...',
+    'summary': 'Zusammenfassung',
+    'total.hours': 'Gesamtstunden',
+    'days.with.records': 'Tage mit Einträgen',
+    'time.records': 'Zeiteinträge',
+    'date': 'Datum',
+    'start': 'Start',
+    'end': 'Ende',
+    'duration': 'Dauer',
+    'description': 'Beschreibung',
+    'no.records': 'Keine Zeiteinträge für dieses Projekt gefunden.',
+    
+    // Project time entries
+    'time.entries.title': 'Zeiteinträge',
+    'time.entries.subtitle': 'Alle Zeitaktivitäten dieses Projekts anzeigen',
+    'time.entries.back': 'Zurück zu Details',
+    'project.summary': 'Projektzusammenfassung',
+    'total.records': 'Gesamteinträge',
+    'activity.time': 'Zeitaktivität',
+    'activity.timeline': 'Aktivitätszeitlinie',
+    'activity.development': 'Entwicklungsaktivität',
+    'activity.less': 'Weniger',
+    'activity.more': 'Mehr',
+    'no.activity': 'Keine Aktivität für dieses Projekt gefunden.',
+    'worked.periods': 'Arbeitszeiten:',
+    'hours.worked': 'gearbeitet',
+    'no.activity.short': 'Keine Aktivität',
+    'future.date': 'Zukünftiges Datum',
+    'timeline.day': 'Zeitlinie',
+    'total': 'gesamt',
+    
+    // API errors
+    'api.error': 'API-Fehler',
+    'api.error.projects': 'Fehler beim Abrufen der Projektdaten.',
+    'api.error.entries': 'Fehler beim Abrufen der Zeiteintragsdaten.',
   }
 };

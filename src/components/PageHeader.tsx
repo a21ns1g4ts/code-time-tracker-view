@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import LanguageToggle from './LanguageToggle';
+import LanguageSelector from './LanguageSelector';
+import ThemeSelector from './ThemeSelector';
 
 const PageHeader: React.FC = () => {
   const { t } = useLanguage();
@@ -12,7 +13,10 @@ const PageHeader: React.FC = () => {
         <h1 className="text-3xl font-bold text-gray-900">{t('app.title')}</h1>
         <p className="text-gray-600">{t('app.subtitle')}</p>
       </div>
-      <LanguageToggle />
+      <div className="flex items-center gap-4">
+        <ThemeSelector />
+        <LanguageSelector />
+      </div>
     </div>
   );
 };

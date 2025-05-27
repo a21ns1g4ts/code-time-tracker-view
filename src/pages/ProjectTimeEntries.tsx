@@ -180,7 +180,7 @@ const ProjectTimeEntries = () => {
               <h2 className="text-xl font-semibold mb-4">{t('activity.time')}</h2>
               <Card>
                 <CardContent className="p-6">
-                  <ActivityGrid weeksData={weeksData} onDayClick={handleDayClick} />
+                  <ActivityGrid weeksData={weeksData} onDayClick={handleDayClick} projectId={projectId} />
                 </CardContent>
               </Card>
             </div>

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { format, parseISO } from 'date-fns';
 import { ptBR, enUS } from 'date-fns/locale';
@@ -5,15 +6,19 @@ import { WeekData, DayData } from '@/types/api';
 import { formatDuration } from '@/utils/dataProcessor';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface ActivityGridProps {
   weeksData: WeekData[];
   onDayClick: (day: DayData) => void;
+  projectId?: string;
 }
 
-const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) => {
+const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick, projectId }) => {
   const { t, language } = useLanguage();
   const locale = language === 'pt' ? ptBR : enUS;
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const getIntensityColor = (intensity: number): string => {
     const colors = [
@@ -29,6 +34,23 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) =>
   const getDayLabel = (dayIndex: number): string => {
     const days = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     return days[dayIndex];
+  };
+
+  const handleDayClick = (day: DayData) => {
+    if (day && day.totalDuration > 0) {
+      onDayClick(day);
+      
+      // Navigate to time entries page with anchor
+      if (projectId && !location.pathname.includes('/entries')) {
+        navigate(`/project/${projectId}/entries#day-${day.date}`);
+      } else {
+        // If already on entries page, just scroll to anchor
+        const element = document.getElementById(`day-${day.date}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
   };
 
   const monthLabels = weeksData.map((week, weekIndex) => {
@@ -90,7 +112,7 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) =>
                           className={`w-3 h-3 rounded-sm border cursor-pointer transition-all hover:ring-2 hover:ring-gray-400 ${
                             day ? getIntensityColor(day.intensity) : 'bg-gray-50 border-gray-100'
                           }`}
-                          onClick={() => day && day.totalDuration > 0 && onDayClick(day)}
+                          onClick={() => day && handleDayClick(day)}
                         />
                       </TooltipTrigger>
                       <TooltipContent>
