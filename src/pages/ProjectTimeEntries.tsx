@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -35,6 +34,15 @@ const ProjectTimeEntries = () => {
     queryFn: fetchTimeEntries,
     enabled: hasAccess && !!projectId,
   });
+
+  // Filter entries by project ID and process data
+  const projectEntries = timeEntriesResponse?.data.filter(
+    entry => entry.project_id === projectId
+  ) || [];
+
+  const dayData = groupEntriesByDay(projectEntries);
+  const weeksData = generateWeeksData(dayData);
+  const totalHours = dayData.reduce((sum, day) => sum + day.totalDuration, 0);
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -117,15 +125,6 @@ const ProjectTimeEntries = () => {
       </div>
     );
   }
-
-  // Filter entries by project ID
-  const projectEntries = timeEntriesResponse?.data.filter(
-    entry => entry.project_id === projectId
-  ) || [];
-
-  const dayData = groupEntriesByDay(projectEntries);
-  const weeksData = generateWeeksData(dayData);
-  const totalHours = dayData.reduce((sum, day) => sum + day.totalDuration, 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
