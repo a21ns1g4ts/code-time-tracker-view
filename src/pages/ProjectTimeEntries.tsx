@@ -4,20 +4,28 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, ArrowLeft, Clock } from 'lucide-react';
-import { fetchTimeEntries } from '@/services/api';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
+import { fetchTimeEntries, fetchProjects } from '@/services/api';
 import { toast } from '@/hooks/use-toast';
-import { groupEntriesByDay, formatDuration } from '@/utils/dataProcessor';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { format, parseISO } from 'date-fns';
+import { groupEntriesByDay, generateWeeksData, formatDuration } from '@/utils/dataProcessor';
 import { getProjectAccess } from '@/services/projectAccess';
+import ActivityGrid from '@/components/ActivityGrid';
+import Timeline from '@/components/Timeline';
 
-const ProjectDetail = () => {
+const ProjectTimeEntries = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const [hasAccess, setHasAccess] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
+  const [projectName, setProjectName] = useState<string>('');
 
+  // Fetch projects to get project name
+  const { data: projectsResponse } = useQuery({
+    queryKey: ['projects'],
+    queryFn: fetchProjects,
+  });
+
+  // Fetch time entries
   const { data: timeEntriesResponse, isLoading, error } = useQuery({
     queryKey: ['timeEntries', projectId],
     queryFn: fetchTimeEntries,
@@ -48,6 +56,14 @@ const ProjectDetail = () => {
     checkAccess();
   }, [projectId, navigate]);
 
+  // Get project name from projects response
+  useEffect(() => {
+    if (projectsResponse?.data && projectId) {
+      const project = projectsResponse.data.find(p => p.id === projectId);
+      setProjectName(project?.name || 'Projeto Desconhecido');
+    }
+  }, [projectsResponse, projectId]);
+
   if (isChecking) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -60,7 +76,7 @@ const ProjectDetail = () => {
   }
 
   if (!hasAccess) {
-    return null; // Will be redirected by the useEffect
+    return null;
   }
 
   if (error) {
@@ -73,10 +89,10 @@ const ProjectDetail = () => {
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-gray-600 mb-4">
-              Erro ao buscar dados do projeto.
+              Erro ao buscar dados de time entries.
             </p>
-            <Button onClick={() => navigate('/projects')}>
-              Voltar para Projetos
+            <Button onClick={() => navigate(`/project/${projectId}`)}>
+              Voltar para Detalhes do Projeto
             </Button>
           </CardContent>
         </Card>
@@ -90,50 +106,42 @@ const ProjectDetail = () => {
   ) || [];
 
   const dayData = groupEntriesByDay(projectEntries);
+  const weeksData = generateWeeksData(dayData);
   const totalHours = dayData.reduce((sum, day) => sum + day.totalDuration, 0);
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header with back button */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/projects')}
-              className="mr-4"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar para Projetos
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Detalhes do Projeto</h1>
-              <p className="text-gray-600">Visualize todas as atividades deste projeto</p>
-            </div>
-          </div>
+        <div className="flex items-center mb-8">
           <Button 
-            onClick={() => navigate(`/project/${projectId}/time-entries`)}
-            className="flex items-center"
+            variant="ghost" 
+            onClick={() => navigate(`/project/${projectId}`)}
+            className="mr-4"
           >
-            <Clock className="h-4 w-4 mr-2" />
-            Ver Time Entries Completo
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Voltar para Detalhes
           </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Time Entries - {projectName}</h1>
+            <p className="text-gray-600">Visualize todas as atividades de tempo deste projeto</p>
+          </div>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Carregando dados do projeto...</p>
+            <p className="mt-4 text-gray-600">Carregando dados...</p>
           </div>
         ) : (
           <div className="space-y-8">
             {/* Summary Card */}
             <Card>
               <CardHeader>
-                <CardTitle>Resumo</CardTitle>
+                <CardTitle>Resumo do Projeto</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div>
                     <p className="text-sm text-gray-500">Total de Horas</p>
                     <p className="text-xl font-semibold">{formatDuration(totalHours)}</p>
@@ -142,54 +150,28 @@ const ProjectDetail = () => {
                     <p className="text-sm text-gray-500">Dias com Registros</p>
                     <p className="text-xl font-semibold">{dayData.length}</p>
                   </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Total de Registros</p>
+                    <p className="text-xl font-semibold">{projectEntries.length}</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Time Entries Table */}
+            {/* Activity Grid */}
             <div>
-              <h2 className="text-xl font-semibold mb-4">Registros de Tempo</h2>
-              
-              {projectEntries.length > 0 ? (
-                <Card>
-                  <CardContent className="p-0">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Data</TableHead>
-                          <TableHead>Início</TableHead>
-                          <TableHead>Fim</TableHead>
-                          <TableHead>Duração</TableHead>
-                          <TableHead>Descrição</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {projectEntries.map((entry) => (
-                          <TableRow key={entry.id}>
-                            <TableCell>
-                              {format(parseISO(entry.start), 'dd/MM/yyyy')}
-                            </TableCell>
-                            <TableCell>
-                              {format(parseISO(entry.start), 'HH:mm')}
-                            </TableCell>
-                            <TableCell>
-                              {format(parseISO(entry.end), 'HH:mm')}
-                            </TableCell>
-                            <TableCell>{formatDuration(entry.duration)}</TableCell>
-                            <TableCell>{entry.description}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              ) : (
-                <Card>
-                  <CardContent className="py-8 text-center">
-                    <p className="text-gray-500">Nenhum registro de tempo encontrado para este projeto.</p>
-                  </CardContent>
-                </Card>
-              )}
+              <h2 className="text-xl font-semibold mb-4">Atividade de Tempo</h2>
+              <Card>
+                <CardContent className="p-6">
+                  <ActivityGrid weeksData={weeksData} />
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Timeline */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Timeline de Atividades</h2>
+              <Timeline dayData={dayData} />
             </div>
           </div>
         )}
@@ -198,4 +180,4 @@ const ProjectDetail = () => {
   );
 };
 
-export default ProjectDetail;
+export default ProjectTimeEntries;

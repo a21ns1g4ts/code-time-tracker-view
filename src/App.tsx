@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
+import ProjectTimeEntries from "./pages/ProjectTimeEntries";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="/" element={<Navigate to="/projects" replace />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/project/:projectId" element={<ProjectDetail />} />
+              <Route path="/project/:projectId/time-entries" element={<ProjectTimeEntries />} />
               <Route path="/time-entries" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
