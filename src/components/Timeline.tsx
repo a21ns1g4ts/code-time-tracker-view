@@ -1,17 +1,20 @@
-
 import React from 'react';
 import { format, parseISO } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { ptBR, enUS } from 'date-fns/locale';
 import { DayData } from '@/types/api';
 import { formatDuration } from '@/utils/dataProcessor';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TimelineProps {
   dayData: DayData;
 }
 
 const Timeline: React.FC<TimelineProps> = ({ dayData }) => {
+  const { t, language } = useLanguage();
+  const locale = language === 'pt' ? ptBR : enUS;
+
   const getTimelinePosition = (timeString: string): number => {
     const date = parseISO(timeString);
     const hours = date.getHours();
@@ -34,10 +37,10 @@ const Timeline: React.FC<TimelineProps> = ({ dayData }) => {
         <CardTitle className="flex items-center space-x-2">
           <Clock className="w-5 h-5" />
           <span>
-            Timeline - {format(parseISO(dayData.date), 'dd/MM/yyyy', { locale: ptBR })}
+            {t('timeline.day')} - {format(parseISO(dayData.date), 'dd/MM/yyyy', { locale })}
           </span>
           <span className="text-sm font-normal text-gray-500">
-            ({formatDuration(dayData.totalDuration)} total)
+            ({formatDuration(dayData.totalDuration)} {t('total')})
           </span>
         </CardTitle>
       </CardHeader>
@@ -86,7 +89,7 @@ const Timeline: React.FC<TimelineProps> = ({ dayData }) => {
 
           {/* Entry details */}
           <div className="space-y-2">
-            <h4 className="font-medium text-gray-900">Períodos trabalhados:</h4>
+            <h4 className="font-medium text-gray-900">{t('worked.periods')}</h4>
             {dayData.entries.map((entry, index) => (
               <div key={entry.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
                 <div className="flex items-center space-x-3">

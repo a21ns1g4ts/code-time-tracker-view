@@ -6,6 +6,7 @@ import { Clock, Calendar, Lock, Unlock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatDuration } from '@/utils/dataProcessor';
 import { Project } from '@/types/api';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProjectsListProps {
   projects: Project[];
@@ -15,6 +16,7 @@ interface ProjectsListProps {
 
 const ProjectsList: React.FC<ProjectsListProps> = ({ projects, projectAccess, onRequestAccess }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -47,12 +49,12 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, projectAccess, on
               <div className="flex items-center">
                 <Calendar className="h-4 w-4 mr-2 text-gray-500" />
                 <span className="text-sm text-gray-700">
-                  {project.is_billable ? 'Faturável' : 'Não faturável'}
+                  {project.is_billable ? t('project.billable') : t('project.non_billable')}
                 </span>
               </div>
               {project.is_archived && (
                 <div className="inline-flex items-center px-2 py-1 bg-gray-100 rounded text-xs text-gray-700">
-                  Arquivado
+                  {t('project.archived')}
                 </div>
               )}
             </div>
@@ -64,14 +66,14 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects, projectAccess, on
                 className="w-full" 
                 onClick={() => navigate(`/project/${project.id}`)}
               >
-                Ver detalhes
+                {t('project.details')}
               </Button>
             ) : (
               <Button 
                 className="w-full"
                 onClick={() => onRequestAccess(project)}
               >
-                Acessar projeto
+                {t('project.access')}
               </Button>
             )}
           </CardFooter>

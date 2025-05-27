@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -11,10 +10,12 @@ import { groupEntriesByDay, formatDuration } from '@/utils/dataProcessor';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format, parseISO } from 'date-fns';
 import { getProjectAccess } from '@/services/projectAccess';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [hasAccess, setHasAccess] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
@@ -48,12 +49,17 @@ const ProjectDetail = () => {
     checkAccess();
   }, [projectId, navigate]);
 
+  const handleRowClick = (date: string) => {
+    const formattedDate = format(parseISO(date), 'yyyy-MM-dd');
+    navigate(`/project/${projectId}/time-entries#day-${formattedDate}`);
+  };
+
   if (isChecking) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Verificando acesso...</p>
+          <p className="mt-4 text-gray-600">{t('access.checking')}</p>
         </div>
       </div>
     );
@@ -69,14 +75,14 @@ const ProjectDetail = () => {
         <Card className="max-w-md mx-auto">
           <CardHeader className="text-center">
             <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
-            <CardTitle>Erro na API</CardTitle>
+            <CardTitle>{t('api.error')}</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-gray-600 mb-4">
-              Erro ao buscar dados do projeto.
+              {t('api.error.projects')}
             </p>
             <Button onClick={() => navigate('/projects')}>
-              Voltar para Projetos
+              {t('project.detail.back')}
             </Button>
           </CardContent>
         </Card>
@@ -104,11 +110,11 @@ const ProjectDetail = () => {
               className="mr-4"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar para Projetos
+              {t('project.detail.back')}
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Detalhes do Projeto</h1>
-              <p className="text-gray-600">Visualize todas as atividades deste projeto</p>
+              <h1 className="text-3xl font-bold text-gray-900">{t('project.detail.title')}</h1>
+              <p className="text-gray-600">{t('project.detail.subtitle')}</p>
             </div>
           </div>
           <Button 
@@ -116,30 +122,30 @@ const ProjectDetail = () => {
             className="flex items-center"
           >
             <Clock className="h-4 w-4 mr-2" />
-            Ver Time Entries Completo
+            {t('project.detail.view_entries')}
           </Button>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Carregando dados do projeto...</p>
+            <p className="mt-4 text-gray-600">{t('project.detail.loading')}</p>
           </div>
         ) : (
           <div className="space-y-8">
             {/* Summary Card */}
             <Card>
               <CardHeader>
-                <CardTitle>Resumo</CardTitle>
+                <CardTitle>{t('summary')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-500">Total de Horas</p>
+                    <p className="text-sm text-gray-500">{t('total.hours')}</p>
                     <p className="text-xl font-semibold">{formatDuration(totalHours)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">Dias com Registros</p>
+                    <p className="text-sm text-gray-500">{t('days.with.records')}</p>
                     <p className="text-xl font-semibold">{dayData.length}</p>
                   </div>
                 </div>
@@ -148,7 +154,7 @@ const ProjectDetail = () => {
 
             {/* Time Entries Table */}
             <div>
-              <h2 className="text-xl font-semibold mb-4">Registros de Tempo</h2>
+              <h2 className="text-xl font-semibold mb-4">{t('time.records')}</h2>
               
               {projectEntries.length > 0 ? (
                 <Card>
@@ -156,16 +162,20 @@ const ProjectDetail = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Data</TableHead>
-                          <TableHead>Início</TableHead>
-                          <TableHead>Fim</TableHead>
-                          <TableHead>Duração</TableHead>
-                          <TableHead>Descrição</TableHead>
+                          <TableHead>{t('date')}</TableHead>
+                          <TableHead>{t('start')}</TableHead>
+                          <TableHead>{t('end')}</TableHead>
+                          <TableHead>{t('duration')}</TableHead>
+                          <TableHead>{t('description')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {projectEntries.map((entry) => (
-                          <TableRow key={entry.id}>
+                          <TableRow 
+                            key={entry.id}
+                            className="cursor-pointer hover:bg-gray-50"
+                            onClick={() => handleRowClick(entry.start)}
+                          >
                             <TableCell>
                               {format(parseISO(entry.start), 'dd/MM/yyyy')}
                             </TableCell>
@@ -186,7 +196,7 @@ const ProjectDetail = () => {
               ) : (
                 <Card>
                   <CardContent className="py-8 text-center">
-                    <p className="text-gray-500">Nenhum registro de tempo encontrado para este projeto.</p>
+                    <p className="text-gray-500">{t('no.records')}</p>
                   </CardContent>
                 </Card>
               )}

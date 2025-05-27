@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { format, parseISO } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { ptBR, enUS } from 'date-fns/locale';
 import { WeekData, DayData } from '@/types/api';
 import { formatDuration } from '@/utils/dataProcessor';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ActivityGridProps {
   weeksData: WeekData[];
@@ -12,6 +12,9 @@ interface ActivityGridProps {
 }
 
 const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) => {
+  const { t, language } = useLanguage();
+  const locale = language === 'pt' ? ptBR : enUS;
+
   const getIntensityColor = (intensity: number): string => {
     const colors = [
       'bg-gray-100 border-gray-200', // 0
@@ -36,16 +39,16 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) =>
     const isFirstWeekOfMonth = weekIndex === 0 || 
       format(date, 'MM') !== format(parseISO(weeksData[weekIndex - 1]?.days?.find(d => d !== null)?.date || firstDay.date), 'MM');
     
-    return isFirstWeekOfMonth ? format(date, 'MMM', { locale: ptBR }) : null;
+    return isFirstWeekOfMonth ? format(date, 'MMM', { locale }) : null;
   });
 
   return (
     <TooltipProvider>
       <div className="bg-white p-6 rounded-lg border">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Atividade de Desenvolvimento</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('activity.development')}</h2>
           <div className="flex items-center space-x-2 text-xs text-gray-500">
-            <span>Menos</span>
+            <span>{t('activity.less')}</span>
             <div className="flex space-x-1">
               {[0, 1, 2, 3, 4].map(intensity => (
                 <div
@@ -54,7 +57,7 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) =>
                 />
               ))}
             </div>
-            <span>Mais</span>
+            <span>{t('activity.more')}</span>
           </div>
         </div>
         
@@ -95,17 +98,17 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick }) =>
                           {day ? (
                             <>
                               <div className="font-medium">
-                                {format(parseISO(day.date), 'dd/MM/yyyy', { locale: ptBR })}
+                                {format(parseISO(day.date), 'dd/MM/yyyy', { locale })}
                               </div>
                               <div>
                                 {day.totalDuration > 0 
-                                  ? `${formatDuration(day.totalDuration)} trabalhadas`
-                                  : 'Nenhuma atividade'
+                                  ? `${formatDuration(day.totalDuration)} ${t('hours.worked')}`
+                                  : t('no.activity.short')
                                 }
                               </div>
                             </>
                           ) : (
-                            'Data futura'
+                            t('future.date')
                           )}
                         </div>
                       </TooltipContent>
