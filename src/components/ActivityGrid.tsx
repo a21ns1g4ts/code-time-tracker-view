@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { format, parseISO } from 'date-fns';
-import { ptBR, enUS } from 'date-fns/locale';
+import { ptBR, enUS, es, fr, de } from 'date-fns/locale';
 import { WeekData, DayData } from '@/types/api';
 import { formatDuration } from '@/utils/dataProcessor';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -16,7 +16,8 @@ interface ActivityGridProps {
 
 const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick, projectId }) => {
   const { t, language } = useLanguage();
-  const locale = language === 'pt' ? ptBR : enUS;
+  const locales = { pt: ptBR, en: enUS, es: es, fr: fr, de: de };
+  const locale = locales[language as keyof typeof locales] || enUS;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -40,15 +41,9 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick, proj
     if (day && day.totalDuration > 0) {
       onDayClick(day);
       
-      // Navigate to time entries page with anchor
-      if (projectId && !location.pathname.includes('/entries')) {
-        navigate(`/project/${projectId}/entries#day-${day.date}`);
-      } else {
-        // If already on entries page, just scroll to anchor
-        const element = document.getElementById(`day-${day.date}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+      // Always navigate to time entries page with anchor
+      if (projectId) {
+        navigate(`/project/${projectId}/time-entries#day-${day.date}`);
       }
     }
   };

@@ -1,0 +1,79 @@
+
+/* Solarized Classic Theme */
+:root {
+  --background: #fdf6e3;
+  --foreground: #657b83;
+  --card: #fdf6e3;
+  --card-foreground: #657b83;
+  --popover: #fdf6e3;
+  --popover-foreground: #657b83;
+  --primary: #268bd2;
+  --primary-foreground: #fdf6e3;
+  --secondary: #eee8d5;
+  --secondary-foreground: #586e75;
+  --muted: #eee8d5;
+  --muted-foreground: #93a1a1;
+  --accent: #eee8d5;
+  --accent-foreground: #586e75;
+  --destructive: #dc322f;
+  --destructive-foreground: #fdf6e3;
+  --border: #eee8d5;
+  --input: #eee8d5;
+  --ring: #268bd2;
+  --radius: 0.5rem;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.bg-gray-50 {
+  background-color: #fdf6e3 !important;
+}
+
+.bg-white {
+  background-color: var(--background) !important;
+}
+
+.text-gray-900 {
+  color: #586e75 !important;
+}
+
+.text-gray-600 {
+  color: var(--muted-foreground) !important;
+}
+
+.text-gray-500 {
+  color: var(--muted-foreground) !important;
+}
+
+.border {
+  border-color: var(--border) !important;
+}
+
+.hover\:bg-gray-100:hover {
+  background-color: var(--muted) !important;
+}
+
+.bg-blue-500 {
+  background-color: var(--primary) !important;
+}
+
+.bg-green-100 {
+  background-color: #b58900 !important;
+  opacity: 0.3;
+}
+
+.bg-green-300 {
+  background-color: #b58900 !important;
+  opacity: 0.6;
+}
+
+.bg-green-500 {
+  background-color: #b58900 !important;
+}
+
+.bg-green-700 {
+  background-color: #859900 !important;
+}

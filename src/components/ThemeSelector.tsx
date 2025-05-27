@@ -19,25 +19,25 @@ const ThemeSelector: React.FC = () => {
       id: 'classic',
       name: 'Classic',
       icon: '🌞',
-      cssUrl: 'https://a21ns1g4ts.com/assets/classic.css'
+      cssUrl: '/themes/classic.css'
     },
     {
       id: 'solarized-classic',
       name: 'Solarized Classic',
       icon: '🌗',
-      cssUrl: 'https://a21ns1g4ts.com/assets/solarized-classic.css'
+      cssUrl: '/themes/solarized-classic.css'
     },
     {
       id: 'solarized-dark',
       name: 'Solarized Dark',
       icon: '🌘',
-      cssUrl: 'https://a21ns1g4ts.com/assets/solarized-dark.css'
+      cssUrl: '/themes/solarized-dark.css'
     },
     {
       id: 'dark',
       name: 'Dark',
       icon: '🌚',
-      cssUrl: 'https://a21ns1g4ts.com/assets/solarized-dark.css'
+      cssUrl: '/themes/dark.css'
     }
   ];
 
@@ -46,6 +46,8 @@ const ThemeSelector: React.FC = () => {
     if (savedTheme && themes.find(t => t.id === savedTheme)) {
       setCurrentTheme(savedTheme);
       applyTheme(savedTheme);
+    } else {
+      applyTheme('classic');
     }
   }, []);
 

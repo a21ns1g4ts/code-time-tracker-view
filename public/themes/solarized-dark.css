@@ -1,0 +1,79 @@
+
+/* Solarized Dark Theme */
+:root {
+  --background: #002b36;
+  --foreground: #839496;
+  --card: #073642;
+  --card-foreground: #839496;
+  --popover: #073642;
+  --popover-foreground: #839496;
+  --primary: #268bd2;
+  --primary-foreground: #002b36;
+  --secondary: #073642;
+  --secondary-foreground: #93a1a1;
+  --muted: #073642;
+  --muted-foreground: #586e75;
+  --accent: #073642;
+  --accent-foreground: #93a1a1;
+  --destructive: #dc322f;
+  --destructive-foreground: #fdf6e3;
+  --border: #073642;
+  --input: #073642;
+  --ring: #268bd2;
+  --radius: 0.5rem;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.bg-gray-50 {
+  background-color: #002b36 !important;
+}
+
+.bg-white {
+  background-color: #073642 !important;
+}
+
+.text-gray-900 {
+  color: #93a1a1 !important;
+}
+
+.text-gray-600 {
+  color: var(--muted-foreground) !important;
+}
+
+.text-gray-500 {
+  color: var(--muted-foreground) !important;
+}
+
+.border {
+  border-color: var(--border) !important;
+}
+
+.hover\:bg-gray-100:hover {
+  background-color: var(--muted) !important;
+}
+
+.bg-blue-500 {
+  background-color: var(--primary) !important;
+}
+
+.bg-green-100 {
+  background-color: #268bd2 !important;
+  opacity: 0.3;
+}
+
+.bg-green-300 {
+  background-color: #268bd2 !important;
+  opacity: 0.6;
+}
+
+.bg-green-500 {
+  background-color: #268bd2 !important;
+}
+
+.bg-green-700 {
+  background-color: #2aa198 !important;
+}
