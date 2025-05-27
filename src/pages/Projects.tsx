@@ -5,12 +5,12 @@ import { fetchProjects } from '@/services/api';
 import { isConfigured } from '@/services/config';
 import ProjectPasswordModal from '@/components/ProjectPasswordModal';
 import { Project } from '@/types/api';
-import PageHeader from '@/components/PageHeader';
 import LoadingProjects from '@/components/LoadingProjects';
 import ApiErrorDisplay from '@/components/ApiErrorDisplay';
 import ProjectsList from '@/components/ProjectsList';
 import useProjectAccess from '@/hooks/useProjectAccess';
 import { useLanguage } from '@/contexts/LanguageContext';
+import PageLayout from '@/components/PageLayout';
 
 const Projects = () => {
   const { t } = useLanguage();
@@ -60,36 +60,41 @@ const Projects = () => {
   };
 
   if (configLoading) {
-    return <LoadingProjects />;
+    return (
+      <PageLayout>
+        <LoadingProjects />
+      </PageLayout>
+    );
   }
 
   if (!configured) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md mx-auto text-center">
-          <h2 className="text-xl font-semibold mb-4">{t('config.required')}</h2>
-          <p className="text-gray-600">
-            {t('config.required.message')}
-          </p>
+      <PageLayout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="max-w-md mx-auto text-center">
+            <h2 className="text-xl font-semibold mb-4">{t('config.required')}</h2>
+            <p className="text-gray-600">
+              {t('config.required.message')}
+            </p>
+          </div>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   if (error) {
     return (
-      <ApiErrorDisplay 
-        onRetry={() => refetch()}
-      />
+      <PageLayout>
+        <ApiErrorDisplay 
+          onRetry={() => refetch()}
+        />
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <PageLayout>
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <PageHeader />
-
         {isLoading ? (
           <LoadingProjects />
         ) : (
@@ -114,7 +119,7 @@ const Projects = () => {
           </div>
         )}
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

@@ -1,212 +1,148 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { fetchProjectTimeEntries } from '@/services/api';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { ArrowLeft, Clock, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { fetchTimeEntries, fetchProjects } from '@/services/api';
-import { toast } from '@/hooks/use-toast';
-import { groupEntriesByDay, generateWeeksData, formatDuration } from '@/utils/dataProcessor';
-import { getProjectAccess } from '@/services/projectAccess';
-import { DayData } from '@/types/api';
+import LoadingProjects from '@/components/LoadingProjects';
+import ApiErrorDisplay from '@/components/ApiErrorDisplay';
 import ActivityGrid from '@/components/ActivityGrid';
 import Timeline from '@/components/Timeline';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { processTimeEntries } from '@/utils/dataProcessor';
+import PageLayout from '@/components/PageLayout';
 
 const ProjectTimeEntries = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useLanguage();
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
-  const [projectName, setProjectName] = useState<string>('');
 
-  // Fetch projects to get project name
-  const { data: projectsResponse } = useQuery({
-    queryKey: ['projects'],
-    queryFn: fetchProjects,
+  const [timelineData, setTimelineData] = useState<any[]>([]);
+
+  const { data: entriesResponse, isLoading, error, refetch } = useQuery({
+    queryKey: ['projectTimeEntries', projectId],
+    queryFn: () => fetchProjectTimeEntries(projectId!),
+    enabled: !!projectId,
   });
 
-  // Fetch time entries
-  const { data: timeEntriesResponse, isLoading, error } = useQuery({
-    queryKey: ['timeEntries', projectId],
-    queryFn: fetchTimeEntries,
-    enabled: hasAccess && !!projectId,
-  });
-
-  // Filter entries by project ID and process data
-  const projectEntries = timeEntriesResponse?.data.filter(
-    entry => entry.project_id === projectId
-  ) || [];
-
-  const dayData = groupEntriesByDay(projectEntries);
-  const weeksData = generateWeeksData(dayData);
-  const totalHours = dayData.reduce((sum, day) => sum + day.totalDuration, 0);
+  const processedData = entriesResponse ? processTimeEntries(entriesResponse.data) : null;
+  
+  const dayData = processedData?.dayData || {};
+  const summary = processedData?.summary || { totalHours: 0, daysWithRecords: 0, totalRecords: 0 };
 
   useEffect(() => {
-    const checkAccess = async () => {
-      if (!projectId) {
-        navigate('/projects');
-        return;
-      }
-
-      const access = await getProjectAccess(projectId);
-      setHasAccess(access);
-      setIsChecking(false);
-      
-      if (!access) {
-        toast({
-          title: "Acesso negado",
-          description: "Você não tem acesso a este projeto",
-          variant: "destructive"
-        });
-        navigate('/projects');
-      }
-    };
-
-    checkAccess();
-  }, [projectId, navigate]);
-
-  // Get project name from projects response
-  useEffect(() => {
-    if (projectsResponse?.data && projectId) {
-      const project = projectsResponse.data.find(p => p.id === projectId);
-      setProjectName(project?.name || t('project.unknown'));
+    if (processedData?.timelineData) {
+      setTimelineData(processedData.timelineData);
     }
-  }, [projectsResponse, projectId, t]);
+  }, [processedData]);
 
-  // Scroll to anchor if present in URL
   useEffect(() => {
-    if (location.hash) {
-      const element = document.getElementById(location.hash.substring(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
-  }, [location.hash, dayData]);
+  }, [timelineData]);
 
-  const handleDayClick = (day: DayData) => {
-    console.log('Day clicked:', day);
-  };
-
-  if (isChecking) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">{t('access.checking')}</p>
+      <PageLayout>
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <LoadingProjects />
         </div>
-      </div>
+      </PageLayout>
     );
-  }
-
-  if (!hasAccess) {
-    return null;
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md mx-auto">
-          <CardHeader className="text-center">
-            <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
-            <CardTitle>{t('api.error')}</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">
-              {t('api.error.entries')}
-            </p>
-            <Button onClick={() => navigate(`/project/${projectId}`)}>
-              {t('time.entries.back')}
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <PageLayout>
+        <ApiErrorDisplay onRetry={() => refetch()} />
+      </PageLayout>
+    );
+  }
+
+  if (!processedData) {
+    return (
+      <PageLayout>
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <p className="text-center text-gray-500">{t('no.activity')}</p>
+        </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <PageLayout>
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header with back button */}
-        <div className="flex items-center mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(`/project/${projectId}`)}
-            className="mr-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('time.entries.back')}
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{t('time.entries.title')} - {projectName}</h1>
-            <p className="text-gray-600">{t('time.entries.subtitle')}</p>
-          </div>
+        {/* Back button */}
+        <Button
+          variant="outline"
+          onClick={() => navigate(`/project/${projectId}`)}
+          className="mb-6 flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t('time.entries.back')}
+        </Button>
+
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">{t('time.entries.title')}</h1>
+          <p className="text-gray-600">{t('time.entries.subtitle')}</p>
         </div>
 
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">{t('loading')}</p>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {/* Summary Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('project.summary')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-500">{t('total.hours')}</p>
-                    <p className="text-xl font-semibold">{formatDuration(totalHours)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">{t('days.with.records')}</p>
-                    <p className="text-xl font-semibold">{dayData.length}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">{t('total.records')}</p>
-                    <p className="text-xl font-semibold">{projectEntries.length}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Activity Grid */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4">{t('activity.time')}</h2>
-              <Card>
-                <CardContent className="p-6">
-                  <ActivityGrid weeksData={weeksData} onDayClick={handleDayClick} projectId={projectId} />
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Timeline for days with activities */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4">{t('activity.timeline')}</h2>
-              <div className="space-y-4">
-                {dayData.filter(day => day.totalDuration > 0).map((day) => (
-                  <div key={day.date} id={`day-${day.date}`}>
-                    <Timeline dayData={day} />
-                  </div>
-                ))}
-                {dayData.filter(day => day.totalDuration > 0).length === 0 && (
-                  <Card>
-                    <CardContent className="py-8 text-center">
-                      <p className="text-gray-500">{t('no.activity')}</p>
-                    </CardContent>
-                  </Card>
-                )}
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <Clock className="h-8 w-8 text-blue-600 mr-3" />
+              <div>
+                <p className="text-sm font-medium text-gray-600">{t('total.hours')}</p>
+                <p className="text-2xl font-bold text-gray-900">{summary.totalHours.toFixed(1)}h</p>
               </div>
             </div>
           </div>
-        )}
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <Calendar className="h-8 w-8 text-green-600 mr-3" />
+              <div>
+                <p className="text-sm font-medium text-gray-600">{t('days.with.records')}</p>
+                <p className="text-2xl font-bold text-gray-900">{summary.daysWithRecords}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                <span className="text-white font-bold text-sm">#</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">{t('total.records')}</p>
+                <p className="text-2xl font-bold text-gray-900">{summary.totalRecords}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Activity Grid */}
+        <div className="mb-8">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{t('activity.development')}</h3>
+          <ActivityGrid data={dayData} projectId={projectId!} />
+        </div>
+
+        {/* Timeline */}
+        <div>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">{t('activity.timeline')}</h3>
+          <Timeline data={timelineData} />
+        </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

@@ -1,210 +1,181 @@
-import React, { useEffect, useState } from 'react';
+
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, ArrowLeft, Clock } from 'lucide-react';
-import { fetchTimeEntries } from '@/services/api';
-import { toast } from '@/hooks/use-toast';
-import { groupEntriesByDay, formatDuration } from '@/utils/dataProcessor';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { format, parseISO } from 'date-fns';
-import { getProjectAccess } from '@/services/projectAccess';
+import { fetchProjectTimeEntries } from '@/services/api';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { ArrowLeft, Clock, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import LoadingProjects from '@/components/LoadingProjects';
+import ApiErrorDisplay from '@/components/ApiErrorDisplay';
+import { processTimeEntries } from '@/utils/dataProcessor';
+import { format } from 'date-fns';
+import PageLayout from '@/components/PageLayout';
 
 const ProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
 
-  const { data: timeEntriesResponse, isLoading, error } = useQuery({
-    queryKey: ['timeEntries', projectId],
-    queryFn: fetchTimeEntries,
-    enabled: hasAccess && !!projectId,
+  const { data: entriesResponse, isLoading, error, refetch } = useQuery({
+    queryKey: ['projectTimeEntries', projectId],
+    queryFn: () => fetchProjectTimeEntries(projectId!),
+    enabled: !!projectId,
   });
 
-  useEffect(() => {
-    const checkAccess = async () => {
-      if (!projectId) {
-        navigate('/projects');
-        return;
-      }
+  const processedData = entriesResponse ? processTimeEntries(entriesResponse.data) : null;
 
-      const access = await getProjectAccess(projectId);
-      setHasAccess(access);
-      setIsChecking(false);
-      
-      if (!access) {
-        toast({
-          title: "Acesso negado",
-          description: "Você não tem acesso a este projeto",
-          variant: "destructive"
-        });
-        navigate('/projects');
-      }
-    };
-
-    checkAccess();
-  }, [projectId, navigate]);
-
-  const handleRowClick = (date: string) => {
-    const formattedDate = format(parseISO(date), 'yyyy-MM-dd');
-    navigate(`/project/${projectId}/time-entries#day-${formattedDate}`);
-  };
-
-  if (isChecking) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">{t('access.checking')}</p>
+      <PageLayout>
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <LoadingProjects />
         </div>
-      </div>
+      </PageLayout>
     );
-  }
-
-  if (!hasAccess) {
-    return null; // Will be redirected by the useEffect
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="max-w-md mx-auto">
-          <CardHeader className="text-center">
-            <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500" />
-            <CardTitle>{t('api.error')}</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            <p className="text-gray-600 mb-4">
-              {t('api.error.projects')}
-            </p>
-            <Button onClick={() => navigate('/projects')}>
-              {t('project.detail.back')}
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <PageLayout>
+        <ApiErrorDisplay onRetry={() => refetch()} />
+      </PageLayout>
     );
   }
 
-  // Filter entries by project ID
-  const projectEntries = timeEntriesResponse?.data.filter(
-    entry => entry.project_id === projectId
-  ) || [];
+  if (!processedData) {
+    return (
+      <PageLayout>
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <p className="text-center text-gray-500">{t('no.records')}</p>
+        </div>
+      </PageLayout>
+    );
+  }
 
-  const dayData = groupEntriesByDay(projectEntries);
-  const totalHours = dayData.reduce((sum, day) => sum + day.totalDuration, 0);
-  
+  const { summary, recentEntries } = processedData;
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <PageLayout>
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header with back button */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/projects')}
-              className="mr-4"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              {t('project.detail.back')}
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">{t('project.detail.title')}</h1>
-              <p className="text-gray-600">{t('project.detail.subtitle')}</p>
+        {/* Back button */}
+        <Button
+          variant="outline"
+          onClick={() => navigate('/projects')}
+          className="mb-6 flex items-center gap-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t('project.detail.back')}
+        </Button>
+
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">{t('project.detail.title')}</h1>
+          <p className="text-gray-600">{t('project.detail.subtitle')}</p>
+        </div>
+
+        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <Clock className="h-8 w-8 text-blue-600 mr-3" />
+              <div>
+                <p className="text-sm font-medium text-gray-600">{t('total.hours')}</p>
+                <p className="text-2xl font-bold text-gray-900">{summary.totalHours.toFixed(1)}h</p>
+              </div>
             </div>
           </div>
-          <Button 
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <Calendar className="h-8 w-8 text-green-600 mr-3" />
+              <div>
+                <p className="text-sm font-medium text-gray-600">{t('days.with.records')}</p>
+                <p className="text-2xl font-bold text-gray-900">{summary.daysWithRecords}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <div className="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center mr-3">
+                <span className="text-white font-bold text-sm">#</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">{t('total.records')}</p>
+                <p className="text-2xl font-bold text-gray-900">{summary.totalRecords}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* View Complete Time Entries Button */}
+        <div className="mb-8">
+          <Button
             onClick={() => navigate(`/project/${projectId}/time-entries`)}
-            className="flex items-center"
+            className="w-full md:w-auto"
           >
-            <Clock className="h-4 w-4 mr-2" />
             {t('project.detail.view_entries')}
           </Button>
         </div>
 
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">{t('project.detail.loading')}</p>
+        {/* Recent Time Records Table */}
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-medium text-gray-900">{t('time.records')}</h3>
           </div>
-        ) : (
-          <div className="space-y-8">
-            {/* Summary Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('summary')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-500">{t('total.hours')}</p>
-                    <p className="text-xl font-semibold">{formatDuration(totalHours)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">{t('days.with.records')}</p>
-                    <p className="text-xl font-semibold">{dayData.length}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Time Entries Table */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4">{t('time.records')}</h2>
-              
-              {projectEntries.length > 0 ? (
-                <Card>
-                  <CardContent className="p-0">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>{t('date')}</TableHead>
-                          <TableHead>{t('start')}</TableHead>
-                          <TableHead>{t('end')}</TableHead>
-                          <TableHead>{t('duration')}</TableHead>
-                          <TableHead>{t('description')}</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {projectEntries.map((entry) => (
-                          <TableRow 
-                            key={entry.id}
-                            className="cursor-pointer hover:bg-gray-50"
-                            onClick={() => handleRowClick(entry.start)}
-                          >
-                            <TableCell>
-                              {format(parseISO(entry.start), 'dd/MM/yyyy')}
-                            </TableCell>
-                            <TableCell>
-                              {format(parseISO(entry.start), 'HH:mm')}
-                            </TableCell>
-                            <TableCell>
-                              {format(parseISO(entry.end), 'HH:mm')}
-                            </TableCell>
-                            <TableCell>{formatDuration(entry.duration)}</TableCell>
-                            <TableCell>{entry.description}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              ) : (
-                <Card>
-                  <CardContent className="py-8 text-center">
-                    <p className="text-gray-500">{t('no.records')}</p>
-                  </CardContent>
-                </Card>
-              )}
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t('date')}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t('start')}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t('end')}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t('duration')}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {t('description')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {recentEntries.slice(0, 10).map((entry, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {format(new Date(entry.start), 'MMM dd, yyyy')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {format(new Date(entry.start), 'HH:mm')}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {entry.end ? format(new Date(entry.end), 'HH:mm') : '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {entry.hours.toFixed(1)}h
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
+                      {entry.description || '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {recentEntries.length === 0 && (
+            <div className="px-6 py-4 text-center text-gray-500">
+              {t('no.records')}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
