@@ -9,6 +9,7 @@ import { fetchTimeEntries, fetchProjects } from '@/services/api';
 import { toast } from '@/hooks/use-toast';
 import { groupEntriesByDay, generateWeeksData, formatDuration } from '@/utils/dataProcessor';
 import { getProjectAccess } from '@/services/projectAccess';
+import { DayData } from '@/types/api';
 import ActivityGrid from '@/components/ActivityGrid';
 import Timeline from '@/components/Timeline';
 
@@ -63,6 +64,12 @@ const ProjectTimeEntries = () => {
       setProjectName(project?.name || 'Projeto Desconhecido');
     }
   }, [projectsResponse, projectId]);
+
+  const handleDayClick = (day: DayData) => {
+    // Show detailed information for the selected day
+    console.log('Day clicked:', day);
+    // You can implement a modal or detailed view here
+  };
 
   if (isChecking) {
     return (
@@ -163,7 +170,7 @@ const ProjectTimeEntries = () => {
               <h2 className="text-xl font-semibold mb-4">Atividade de Tempo</h2>
               <Card>
                 <CardContent className="p-6">
-                  <ActivityGrid weeksData={weeksData} />
+                  <ActivityGrid weeksData={weeksData} onDayClick={handleDayClick} />
                 </CardContent>
               </Card>
             </div>
