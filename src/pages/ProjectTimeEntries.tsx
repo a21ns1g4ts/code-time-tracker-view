@@ -175,10 +175,21 @@ const ProjectTimeEntries = () => {
               </Card>
             </div>
 
-            {/* Timeline */}
+            {/* Timeline for days with activities */}
             <div>
               <h2 className="text-xl font-semibold mb-4">Timeline de Atividades</h2>
-              <Timeline dayData={dayData} />
+              <div className="space-y-4">
+                {dayData.filter(day => day.totalDuration > 0).map((day) => (
+                  <Timeline key={day.date} dayData={day} />
+                ))}
+                {dayData.filter(day => day.totalDuration > 0).length === 0 && (
+                  <Card>
+                    <CardContent className="py-8 text-center">
+                      <p className="text-gray-500">Nenhuma atividade encontrada para este projeto.</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
             </div>
           </div>
         )}
