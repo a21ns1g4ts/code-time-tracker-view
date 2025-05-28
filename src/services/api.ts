@@ -85,41 +85,13 @@ export const fetchTimeEntries = async (filters?: TimeEntriesFilters): Promise<Ap
 };
 
 export const fetchProjectTimeEntries = async (projectId: string, filters?: TimeEntriesFilters): Promise<ApiResponse> => {
-  const { bearerToken, organizationId } = await getConfig();
+  // Use the correct endpoint with project_ids filter instead of the non-existent project-specific endpoint
+  const projectFilters: TimeEntriesFilters = {
+    ...filters,
+    project_ids: [projectId]
+  };
   
-  if (!bearerToken || !organizationId) {
-    throw new Error('Bearer token and organization ID are required');
-  }
-
-  const params = new URLSearchParams();
-  
-  if (filters) {
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        if (Array.isArray(value)) {
-          value.forEach(item => params.append(`${key}[]`, item));
-        } else {
-          params.append(key, value.toString());
-        }
-      }
-    });
-  }
-
-  const queryString = params.toString();
-  const url = `${BASE_URL}/organizations/${organizationId}/projects/${projectId}/time-entries${queryString ? `?${queryString}` : ''}`;
-
-  const response = await fetch(url, {
-    headers: {
-      'Authorization': `Bearer ${bearerToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch project time entries: ${response.status}`);
-  }
-
-  return response.json();
+  return fetchTimeEntries(projectFilters);
 };
 
 export const fetchProjects = async (): Promise<ProjectsResponse> => {
