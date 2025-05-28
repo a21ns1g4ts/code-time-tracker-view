@@ -1,44 +1,35 @@
-
 import React from 'react';
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Projects from "./pages/Projects";
-import ProjectDetail from "./pages/ProjectDetail";
-import ProjectTimeEntries from "./pages/ProjectTimeEntries";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Index from '@/pages/Index';
+import Projects from '@/pages/Projects';
+import ProjectDetail from '@/pages/ProjectDetail';
+import ProjectTimeEntries from '@/pages/ProjectTimeEntries';
+import NotFound from '@/pages/NotFound';
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import { Toaster } from '@/components/ui/toaster';
+import { QueryClient } from '@tanstack/react-query';
+import Dashboard from '@/pages/Dashboard';
 
-// Create a client
-const queryClient = new QueryClient();
-
-const App = () => {
+function App() {
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
+    <QueryClient>
+      <Router>
         <LanguageProvider>
-          <TooltipProvider>
+          <div className="min-h-screen bg-gray-50">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/project/:projectId" element={<ProjectDetail />} />
+              <Route path="/project/:projectId/time-entries" element={<ProjectTimeEntries />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
             <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Navigate to="/projects" replace />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/project/:projectId" element={<ProjectDetail />} />
-                <Route path="/project/:projectId/time-entries" element={<ProjectTimeEntries />} />
-                <Route path="/time-entries" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          </div>
         </LanguageProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+      </Router>
+    </QueryClient>
   );
-};
+}
 
 export default App;

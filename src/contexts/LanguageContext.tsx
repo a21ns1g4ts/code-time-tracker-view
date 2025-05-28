@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'pt' | 'en' | 'es' | 'fr' | 'de';
@@ -112,6 +111,19 @@ const translations = {
     'api.error': 'Erro na API',
     'api.error.projects': 'Erro ao buscar dados do projeto.',
     'api.error.entries': 'Erro ao buscar dados de time entries.',
+    
+    // Dashboard
+    'dashboard': 'Dashboard',
+    'dashboard.subtitle': 'Visão geral das suas atividades e estatísticas',
+    'total.hours.week': 'Horas Totais (Semana)',
+    'billable.hours.week': 'Horas Faturáveis (Semana)',
+    'revenue.week': 'Receita (Semana)',
+    'active.tasks': 'Tarefas Ativas',
+    'daily.hours.trend': 'Tendência de Horas Diárias',
+    'weekly.time.overview': 'Visão Semanal de Tempo',
+    'latest.tasks': 'Tarefas Recentes',
+    'team.activity': 'Atividade da Equipe',
+    'last.activity': 'Última atividade',
   },
   en: {
     // General
@@ -175,6 +187,19 @@ const translations = {
     'api.error': 'API Error',
     'api.error.projects': 'Error fetching project data.',
     'api.error.entries': 'Error fetching time entries data.',
+    
+    // Dashboard
+    'dashboard': 'Dashboard',
+    'dashboard.subtitle': 'Overview of your activities and statistics',
+    'total.hours.week': 'Total Hours (Week)',
+    'billable.hours.week': 'Billable Hours (Week)',
+    'revenue.week': 'Revenue (Week)',
+    'active.tasks': 'Active Tasks',
+    'daily.hours.trend': 'Daily Hours Trend',
+    'weekly.time.overview': 'Weekly Time Overview',
+    'latest.tasks': 'Latest Tasks',
+    'team.activity': 'Team Activity',
+    'last.activity': 'Last activity',
   },
   es: {
     // General
@@ -238,6 +263,19 @@ const translations = {
     'api.error': 'Error de API',
     'api.error.projects': 'Error al obtener datos del proyecto.',
     'api.error.entries': 'Error al obtener datos de entradas de tiempo.',
+    
+    // Dashboard
+    'dashboard': 'Dashboard',
+    'dashboard.subtitle': 'Visión general de tus actividades y estadísticas',
+    'total.hours.week': 'Horas Totales (Semana)',
+    'billable.hours.week': 'Horas Faturables (Semana)',
+    'revenue.week': 'Receita (Semana)',
+    'active.tasks': 'Tareas Activas',
+    'daily.hours.trend': 'Tendencia de Horas Diarias',
+    'weekly.time.overview': 'Visión Semanal de Tiempo',
+    'latest.tasks': 'Tareas Recientes',
+    'team.activity': 'Actividad de la Equipo',
+    'last.activity': 'Última actividad',
   },
   fr: {
     // General
@@ -301,6 +339,19 @@ const translations = {
     'api.error': 'Erreur API',
     'api.error.projects': 'Erreur lors de la récupération des données du projet.',
     'api.error.entries': 'Erreur lors de la récupération des données d\'entrées de temps.',
+    
+    // Dashboard
+    'dashboard': 'Dashboard',
+    'dashboard.subtitle': 'Vue d\'ensemble de vos activités et de vos statistiques',
+    'total.hours.week': 'Heures Totales (Semaine)',
+    'billable.hours.week': 'Heures Faturables (Semaine)',
+    'revenue.week': 'Revenu (Semaine)',
+    'active.tasks': 'Tâches Actives',
+    'daily.hours.trend': 'Tendance des Heures Journalières',
+    'weekly.time.overview': 'Vue Semestrielle de Temps',
+    'latest.tasks': 'Tâches les Plus Recentes',
+    'team.activity': 'Activité de l\'Équipe',
+    'last.activity': 'Dernière activité',
   },
   de: {
     // General
@@ -364,5 +415,18 @@ const translations = {
     'api.error': 'API-Fehler',
     'api.error.projects': 'Fehler beim Abrufen der Projektdaten.',
     'api.error.entries': 'Fehler beim Abrufen der Zeiteintragsdaten.',
+    
+    // Dashboard
+    'dashboard': 'Dashboard',
+    'dashboard.subtitle': 'Übersicht Ihrer Aktivitäten und Statistiken',
+    'total.hours.week': 'Gesamtstunden (Woche)',
+    'billable.hours.week': 'Gesamt fahrbare Stunden (Woche)',
+    'revenue.week': 'Umsatz (Woche)',
+    'active.tasks': 'Aktive Aufgaben',
+    'daily.hours.trend': 'Trend der Tagesstunden',
+    'weekly.time.overview': 'Wochenübersicht des Zeitgebers',
+    'latest.tasks': 'Neueste Aufgaben',
+    'team.activity': 'Teamaktivität',
+    'last.activity': 'Letzte Aktivität',
   }
 };
