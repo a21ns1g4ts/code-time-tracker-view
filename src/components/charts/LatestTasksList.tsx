@@ -1,10 +1,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Calendar } from 'lucide-react';
+import { Clock, CheckCircle, XCircle } from 'lucide-react';
 import { LatestTask } from '@/services/chartApi';
-import { formatDuration } from '@/utils/dataProcessor';
-import { format, parseISO } from 'date-fns';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface LatestTasksListProps {
@@ -25,21 +23,22 @@ const LatestTasksList: React.FC<LatestTasksListProps> = ({ data }) => {
       <CardContent>
         <div className="space-y-3">
           {data.map((task) => (
-            <div key={task.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div key={task.task_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div className="flex-1">
                 <h4 className="font-medium text-gray-900">{task.name}</h4>
-                <p className="text-sm text-gray-600">{task.project_name}</p>
+                {task.description && (
+                  <p className="text-sm text-gray-600">{task.description}</p>
+                )}
                 <div className="flex items-center gap-2 mt-1">
-                  <Calendar className="h-3 w-3 text-gray-400" />
+                  {task.status ? (
+                    <CheckCircle className="h-3 w-3 text-green-500" />
+                  ) : (
+                    <XCircle className="h-3 w-3 text-red-500" />
+                  )}
                   <span className="text-xs text-gray-500">
-                    {format(parseISO(task.last_worked), 'dd/MM/yyyy HH:mm')}
+                    {task.status ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-              </div>
-              <div className="text-right">
-                <span className="text-sm font-medium text-gray-900">
-                  {formatDuration(task.time_spent)}
-                </span>
               </div>
             </div>
           ))}

@@ -1,18 +1,21 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Index from '@/pages/Index';
 import Projects from '@/pages/Projects';
 import ProjectDetail from '@/pages/ProjectDetail';
 import ProjectTimeEntries from '@/pages/ProjectTimeEntries';
 import NotFound from '@/pages/NotFound';
+import Dashboard from '@/pages/Dashboard';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { Toaster } from '@/components/ui/toaster';
-import { QueryClient } from '@tanstack/react-query';
-import Dashboard from '@/pages/Dashboard';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClient>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <LanguageProvider>
           <div className="min-h-screen bg-gray-50">
@@ -28,7 +31,7 @@ function App() {
           </div>
         </LanguageProvider>
       </Router>
-    </QueryClient>
+    </QueryClientProvider>
   );
 }
 

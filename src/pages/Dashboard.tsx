@@ -7,6 +7,7 @@ import LoadingProjects from '@/components/LoadingProjects';
 import ApiErrorDisplay from '@/components/ApiErrorDisplay';
 import DailyHoursChart from '@/components/charts/DailyHoursChart';
 import WeeklyTimeChart from '@/components/charts/WeeklyTimeChart';
+import WeeklyProjectOverviewChart from '@/components/charts/WeeklyProjectOverviewChart';
 import LatestTasksList from '@/components/charts/LatestTasksList';
 import TeamActivityCard from '@/components/charts/TeamActivityCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,8 +17,9 @@ import {
   fetchLastSevenDays,
   fetchLatestTasks,
   fetchLatestTeamActivity,
-  fetchTotalWeeklyTime,
-  fetchTotalWeeklyBillableAmount
+  fetchWeeklyHistory,
+  fetchTotalWeeklyBillableAmount,
+  fetchWeeklyProjectOverview
 } from '@/services/chartApi';
 
 const Dashboard = () => {
@@ -28,9 +30,9 @@ const Dashboard = () => {
     queryFn: fetchDailyTrackedHours,
   });
 
-  const { data: weeklyTime, isLoading: loadingWeekly, error: errorWeekly } = useQuery({
-    queryKey: ['totalWeeklyTime'],
-    queryFn: fetchTotalWeeklyTime,
+  const { data: weeklyHistory, isLoading: loadingWeekly, error: errorWeekly } = useQuery({
+    queryKey: ['weeklyHistory'],
+    queryFn: fetchWeeklyHistory,
   });
 
   const { data: latestTasks, isLoading: loadingTasks, error: errorTasks } = useQuery({
@@ -51,6 +53,11 @@ const Dashboard = () => {
   const { data: billableAmount, isLoading: loadingBillable } = useQuery({
     queryKey: ['totalWeeklyBillableAmount'],
     queryFn: fetchTotalWeeklyBillableAmount,
+  });
+
+  const { data: projectOverview, isLoading: loadingOverview } = useQuery({
+    queryKey: ['weeklyProjectOverview'],
+    queryFn: fetchWeeklyProjectOverview,
   });
 
   const isLoading = loadingDaily || loadingWeekly || loadingTasks || loadingTeam;
@@ -75,9 +82,8 @@ const Dashboard = () => {
   }
 
   // Calculate summary stats from last seven days
-  const totalHoursLastWeek = lastSevenDays?.data?.reduce((sum, day) => sum + day.total_time / 3600, 0) || 0;
-  const billableHoursLastWeek = lastSevenDays?.data?.reduce((sum, day) => sum + day.billable_time / 3600, 0) || 0;
-  const totalAmountThisWeek = billableAmount?.data?.[0]?.amount || 0;
+  const totalHoursLastWeek = lastSevenDays?.reduce((sum, day) => sum + day.duration / 3600, 0) || 0;
+  const totalAmountThisWeek = billableAmount?.value || 0;
 
   return (
     <PageLayout>
@@ -102,31 +108,33 @@ const Dashboard = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('billable.hours.week')}</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{billableHoursLastWeek.toFixed(1)}h</div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{t('revenue.week')}</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">R$ {totalAmountThisWeek.toFixed(2)}</div>
+              <div className="text-2xl font-bold">
+                {billableAmount?.currency} {(totalAmountThisWeek / 100).toFixed(2)}
+              </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{t('active.tasks')}</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{latestTasks?.length || 0}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t('team.members')}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{latestTasks?.data?.length || 0}</div>
+              <div className="text-2xl font-bold">{teamActivity?.length || 0}</div>
             </CardContent>
           </Card>
         </div>
@@ -138,7 +146,7 @@ const Dashboard = () => {
               <CardTitle>{t('daily.hours.trend')}</CardTitle>
             </CardHeader>
             <CardContent>
-              {dailyHours?.data && <DailyHoursChart data={dailyHours.data} />}
+              {dailyHours && <DailyHoursChart data={dailyHours} />}
             </CardContent>
           </Card>
 
@@ -147,15 +155,29 @@ const Dashboard = () => {
               <CardTitle>{t('weekly.time.overview')}</CardTitle>
             </CardHeader>
             <CardContent>
-              {weeklyTime?.data && <WeeklyTimeChart data={weeklyTime.data} />}
+              {weeklyHistory && <WeeklyTimeChart data={weeklyHistory} />}
             </CardContent>
           </Card>
         </div>
 
+        {/* Project Overview Chart */}
+        {projectOverview && (
+          <div className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('weekly.project.overview')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <WeeklyProjectOverviewChart data={projectOverview} />
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Tasks and Team Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {latestTasks?.data && <LatestTasksList data={latestTasks.data} />}
-          {teamActivity?.data && <TeamActivityCard data={teamActivity.data} />}
+          {latestTasks && <LatestTasksList data={latestTasks} />}
+          {teamActivity && <TeamActivityCard data={teamActivity} />}
         </div>
       </div>
     </PageLayout>

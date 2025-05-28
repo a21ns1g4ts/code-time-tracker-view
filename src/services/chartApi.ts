@@ -8,56 +8,52 @@ export interface ChartResponse<T = any> {
   meta?: any;
 }
 
+// Updated interfaces based on OpenAPI spec
 export interface DailyTrackedHours {
   date: string;
-  hours: number;
-  billable_hours: number;
+  duration: number;
 }
 
 export interface LastSevenDaysData {
   date: string;
-  total_time: number;
-  billable_time: number;
+  duration: number;
+  history: number[];
 }
 
 export interface LatestTask {
-  id: string;
+  task_id: string;
   name: string;
-  project_name: string;
-  time_spent: number;
-  last_worked: string;
+  description: string | null;
+  status: boolean;
+  time_entry_id: string | null;
 }
 
 export interface TeamActivity {
-  user_name: string;
-  total_time: number;
-  projects_count: number;
-  last_activity: string;
+  member_id: string;
+  name: string;
+  description: string | null;
+  time_entry_id: string;
+  task_id: string | null;
+  status: boolean;
 }
 
 export interface WeeklyBillableAmount {
-  week: string;
-  amount: number;
-  hours: number;
+  value: number;
+  currency: string;
 }
 
-export interface WeeklyTime {
-  week: string;
-  total_time: number;
-  billable_time: number;
+export interface WeeklyProjectOverview {
+  value: number;
+  name: string;
+  color: string;
 }
 
 export interface WeeklyHistory {
-  week: string;
-  total_hours: number;
-  projects: Array<{
-    name: string;
-    hours: number;
-    color: string;
-  }>;
+  date: string;
+  duration: number;
 }
 
-const makeRequest = async <T>(endpoint: string): Promise<ChartResponse<T>> => {
+const makeRequest = async <T>(endpoint: string): Promise<T> => {
   const { bearerToken, organizationId } = await getConfig();
   
   if (!bearerToken || !organizationId) {
@@ -78,34 +74,38 @@ const makeRequest = async <T>(endpoint: string): Promise<ChartResponse<T>> => {
   return response.json();
 };
 
-export const fetchDailyTrackedHours = async (): Promise<ChartResponse<DailyTrackedHours[]>> => {
+export const fetchDailyTrackedHours = async (): Promise<DailyTrackedHours[]> => {
   return makeRequest<DailyTrackedHours[]>('/charts/daily-tracked-hours');
 };
 
-export const fetchLastSevenDays = async (): Promise<ChartResponse<LastSevenDaysData[]>> => {
+export const fetchLastSevenDays = async (): Promise<LastSevenDaysData[]> => {
   return makeRequest<LastSevenDaysData[]>('/charts/last-seven-days');
 };
 
-export const fetchLatestTasks = async (): Promise<ChartResponse<LatestTask[]>> => {
+export const fetchLatestTasks = async (): Promise<LatestTask[]> => {
   return makeRequest<LatestTask[]>('/charts/latest-tasks');
 };
 
-export const fetchLatestTeamActivity = async (): Promise<ChartResponse<TeamActivity[]>> => {
+export const fetchLatestTeamActivity = async (): Promise<TeamActivity[]> => {
   return makeRequest<TeamActivity[]>('/charts/latest-team-activity');
 };
 
-export const fetchTotalWeeklyBillableAmount = async (): Promise<ChartResponse<WeeklyBillableAmount[]>> => {
-  return makeRequest<WeeklyBillableAmount[]>('/charts/total-weekly-billable-amount');
+export const fetchTotalWeeklyBillableAmount = async (): Promise<WeeklyBillableAmount> => {
+  return makeRequest<WeeklyBillableAmount>('/charts/total-weekly-billable-amount');
 };
 
-export const fetchTotalWeeklyBillableTime = async (): Promise<ChartResponse<WeeklyTime[]>> => {
-  return makeRequest<WeeklyTime[]>('/charts/total-weekly-billable-time');
+export const fetchTotalWeeklyBillableTime = async (): Promise<number> => {
+  return makeRequest<number>('/charts/total-weekly-billable-time');
 };
 
-export const fetchTotalWeeklyTime = async (): Promise<ChartResponse<WeeklyTime[]>> => {
-  return makeRequest<WeeklyTime[]>('/charts/total-weekly-time');
+export const fetchTotalWeeklyTime = async (): Promise<number> => {
+  return makeRequest<number>('/charts/total-weekly-time');
 };
 
-export const fetchWeeklyHistory = async (): Promise<ChartResponse<WeeklyHistory[]>> => {
+export const fetchWeeklyHistory = async (): Promise<WeeklyHistory[]> => {
   return makeRequest<WeeklyHistory[]>('/charts/weekly-history');
+};
+
+export const fetchWeeklyProjectOverview = async (): Promise<WeeklyProjectOverview[]> => {
+  return makeRequest<WeeklyProjectOverview[]>('/charts/weekly-project-overview');
 };

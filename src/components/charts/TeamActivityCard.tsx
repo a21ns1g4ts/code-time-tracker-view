@@ -1,10 +1,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Clock, FolderOpen } from 'lucide-react';
+import { Users, CheckCircle, XCircle } from 'lucide-react';
 import { TeamActivity } from '@/services/chartApi';
-import { formatDuration } from '@/utils/dataProcessor';
-import { format, parseISO } from 'date-fns';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TeamActivityCardProps {
@@ -24,23 +22,23 @@ const TeamActivityCard: React.FC<TeamActivityCardProps> = ({ data }) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {data.map((member, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          {data.map((member) => (
+            <div key={member.member_id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
               <div className="flex-1">
-                <h4 className="font-medium text-gray-900">{member.user_name}</h4>
-                <div className="flex items-center gap-4 mt-1">
-                  <div className="flex items-center gap-1 text-sm text-gray-600">
-                    <Clock className="h-3 w-3" />
-                    {formatDuration(member.total_time)}
-                  </div>
-                  <div className="flex items-center gap-1 text-sm text-gray-600">
-                    <FolderOpen className="h-3 w-3" />
-                    {member.projects_count} {t('projects')}
-                  </div>
+                <h4 className="font-medium text-gray-900">{member.name}</h4>
+                {member.description && (
+                  <p className="text-sm text-gray-600">{member.description}</p>
+                )}
+                <div className="flex items-center gap-2 mt-1">
+                  {member.status ? (
+                    <CheckCircle className="h-3 w-3 text-green-500" />
+                  ) : (
+                    <XCircle className="h-3 w-3 text-red-500" />
+                  )}
+                  <span className="text-xs text-gray-500">
+                    {member.status ? 'Active' : 'Inactive'}
+                  </span>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  {t('last.activity')}: {format(parseISO(member.last_activity), 'dd/MM/yyyy HH:mm')}
-                </p>
               </div>
             </div>
           ))}
