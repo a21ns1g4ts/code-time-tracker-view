@@ -28,6 +28,30 @@ export const fetchTimeEntries = async (): Promise<ApiResponse> => {
   return response.json();
 };
 
+export const fetchProjectTimeEntries = async (projectId: string): Promise<ApiResponse> => {
+  const { bearerToken, organizationId } = await getConfig();
+  
+  if (!bearerToken || !organizationId) {
+    throw new Error('Bearer token and organization ID are required');
+  }
+
+  const response = await fetch(
+    `${BASE_URL}/organizations/${organizationId}/projects/${projectId}/time-entries`,
+    {
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch project time entries: ${response.status}`);
+  }
+
+  return response.json();
+};
+
 export const fetchProjects = async (): Promise<ProjectsResponse> => {
   const { bearerToken, organizationId } = await getConfig();
   

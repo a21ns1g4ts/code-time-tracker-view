@@ -82,3 +82,67 @@ export const generateWeeksData = (dayData: DayData[], weeks: number = 26): WeekD
   
   return weeksData;
 };
+
+export const processTimeEntries = (entries: TimeEntry[]) => {
+  const dayData: { [key: string]: DayData } = {};
+  const timelineData: any[] = [];
+  
+  // Process entries into day data
+  entries.forEach(entry => {
+    const date = format(parseISO(entry.start), 'yyyy-MM-dd');
+    
+    if (!dayData[date]) {
+      dayData[date] = {
+        date,
+        totalDuration: 0,
+        entries: [],
+        intensity: 0
+      };
+    }
+    
+    dayData[date].entries.push(entry);
+    dayData[date].totalDuration += entry.duration;
+    
+    // Add to timeline data
+    timelineData.push({
+      ...entry,
+      hours: entry.duration / 3600,
+      date: date
+    });
+  });
+  
+  // Calculate intensity for each day
+  Object.values(dayData).forEach(day => {
+    const hours = day.totalDuration / 3600;
+    let intensity = 0;
+    if (hours > 0.5) intensity = 1;
+    if (hours > 2) intensity = 2;
+    if (hours > 4) intensity = 3;
+    if (hours > 6) intensity = 4;
+    day.intensity = intensity;
+  });
+  
+  // Calculate summary
+  const totalHours = entries.reduce((sum, entry) => sum + entry.duration, 0) / 3600;
+  const daysWithRecords = Object.keys(dayData).length;
+  const totalRecords = entries.length;
+  
+  // Sort recent entries by date
+  const recentEntries = entries
+    .map(entry => ({
+      ...entry,
+      hours: entry.duration / 3600
+    }))
+    .sort((a, b) => parseISO(b.start).getTime() - parseISO(a.start).getTime());
+  
+  return {
+    dayData,
+    timelineData,
+    summary: {
+      totalHours,
+      daysWithRecords,
+      totalRecords
+    },
+    recentEntries
+  };
+};
