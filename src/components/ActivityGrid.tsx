@@ -3,23 +3,27 @@ import React from 'react';
 import { format, parseISO } from 'date-fns';
 import { ptBR, enUS, es, fr, de } from 'date-fns/locale';
 import { WeekData, DayData } from '@/types/api';
-import { formatDuration } from '@/utils/dataProcessor';
+import { formatDuration, generateWeeksData, groupEntriesByDay } from '@/utils/dataProcessor';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface ActivityGridProps {
-  weeksData: WeekData[];
-  onDayClick: (day: DayData) => void;
-  projectId?: string;
+  data: { [key: string]: DayData };
+  projectId: string;
+  onDayClick?: (day: DayData) => void;
 }
 
-const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick, projectId }) => {
+const ActivityGrid: React.FC<ActivityGridProps> = ({ data, projectId, onDayClick }) => {
   const { t, language } = useLanguage();
   const locales = { pt: ptBR, en: enUS, es: es, fr: fr, de: de };
   const locale = locales[language as keyof typeof locales] || enUS;
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Convert data object to array and generate weeks data
+  const dayDataArray = Object.values(data);
+  const weeksData = generateWeeksData(dayDataArray);
 
   const getIntensityColor = (intensity: number): string => {
     const colors = [
@@ -39,7 +43,9 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ weeksData, onDayClick, proj
 
   const handleDayClick = (day: DayData) => {
     if (day && day.totalDuration > 0) {
-      onDayClick(day);
+      if (onDayClick) {
+        onDayClick(day);
+      }
       
       // Always navigate to time entries page with anchor
       if (projectId) {

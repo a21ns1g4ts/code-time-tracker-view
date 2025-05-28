@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import LoadingProjects from '@/components/LoadingProjects';
 import ApiErrorDisplay from '@/components/ApiErrorDisplay';
 import ActivityGrid from '@/components/ActivityGrid';
-import Timeline from '@/components/Timeline';
+import TimelineView from '@/components/TimelineView';
 import { processTimeEntries } from '@/utils/dataProcessor';
 import PageLayout from '@/components/PageLayout';
 
@@ -47,6 +48,11 @@ const ProjectTimeEntries = () => {
       }, 100);
     }
   }, [timelineData]);
+
+  const handleDayClick = (day: any) => {
+    // Handle day click if needed
+    console.log('Day clicked:', day);
+  };
 
   if (isLoading) {
     return (
@@ -133,13 +139,13 @@ const ProjectTimeEntries = () => {
         {/* Activity Grid */}
         <div className="mb-8">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{t('activity.development')}</h3>
-          <ActivityGrid data={dayData} projectId={projectId!} />
+          <ActivityGrid data={dayData} projectId={projectId!} onDayClick={handleDayClick} />
         </div>
 
         {/* Timeline */}
         <div>
           <h3 className="text-lg font-medium text-gray-900 mb-4">{t('activity.timeline')}</h3>
-          <Timeline data={timelineData} />
+          <TimelineView data={timelineData} />
         </div>
       </div>
     </PageLayout>
