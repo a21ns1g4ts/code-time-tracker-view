@@ -1,8 +1,9 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import LanguageSelector from './LanguageSelector';
+import LanguageDropdown from './LanguageDropdown';
 import ThemeSelector from './ThemeSelector';
+import { ModeToggle } from './ModeToggle';
 
 const PageHeader: React.FC = () => {
   const { t } = useLanguage();
@@ -14,8 +15,9 @@ const PageHeader: React.FC = () => {
         <p className="text-gray-600">{t('app.subtitle')}</p>
       </div>
       <div className="flex items-center gap-4">
+        <ModeToggle />
         <ThemeSelector />
-        <LanguageSelector />
+        <LanguageDropdown />
       </div>
     </div>
   );
