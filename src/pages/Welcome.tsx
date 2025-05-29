@@ -38,10 +38,10 @@ const Welcome = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-4 border-b bg-card/50 backdrop-blur-sm">
         <div className="flex items-center gap-2">
-          <Clock className="h-8 w-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">TimeTracker</h1>
+          <Clock className="h-8 w-8 text-primary" />
+          <h1 className="text-2xl font-bold text-foreground">TimeTracker</h1>
         </div>
         <div className="flex items-center gap-4">
           <ModeToggle />
@@ -52,10 +52,10 @@ const Welcome = () => {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-5xl font-bold text-foreground mb-6">
             Gerencie seu Tempo com Eficiência
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Uma solução completa para controle de horas, produtividade e gestão de projetos. 
             Transforme a maneira como você acompanha seu trabalho.
           </p>
@@ -71,13 +71,13 @@ const Welcome = () => {
         {/* Features Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {features.map((feature, index) => (
-            <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+            <Card key={index} className="text-center hover:shadow-lg transition-shadow bg-card/80 backdrop-blur-sm border-border">
               <CardHeader>
-                <feature.icon className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                <CardTitle className="text-lg">{feature.title}</CardTitle>
+                <feature.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+                <CardTitle className="text-lg text-card-foreground">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>{feature.description}</CardDescription>
+                <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
               </CardContent>
             </Card>
           ))}
@@ -85,10 +85,10 @@ const Welcome = () => {
 
         {/* CTA Section */}
         <div className="text-center">
-          <Card className="max-w-2xl mx-auto">
+          <Card className="max-w-2xl mx-auto bg-card/80 backdrop-blur-sm border-border">
             <CardHeader>
-              <CardTitle className="text-2xl">Pronto para começar?</CardTitle>
-              <CardDescription className="text-lg">
+              <CardTitle className="text-2xl text-card-foreground">Pronto para começar?</CardTitle>
+              <CardDescription className="text-lg text-muted-foreground">
                 Configure sua conta e comece a rastrear seu tempo em minutos
               </CardDescription>
             </CardHeader>
