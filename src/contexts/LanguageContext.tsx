@@ -3,9 +3,52 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 const translations = {
   pt: {
+    // App branding
+    'app.title': 'SolidTime Public Stats',
+    'app.subtitle': 'Visualização pública de estatísticas de projetos',
+    'app.addon.description': 'Addon open source para solidtime',
+    'app.github': 'Star us on Github!',
+    
+    // Welcome page
+    'welcome.title': 'Visualize Estatísticas Públicas do SolidTime',
+    'welcome.subtitle': 'Uma ferramenta open source para compartilhar estatísticas de projetos e time entries do solidtime de forma pública e transparente.',
+    'welcome.get.started': 'Começar Configuração',
+    'welcome.about.solidtime': 'Sobre o SolidTime',
+    'welcome.solidtime.description': 'O solidtime é um moderno rastreador de tempo open source para freelancers e equipes.',
+    
+    // Features
+    'feature.public.stats.title': 'Estatísticas Públicas',
+    'feature.public.stats.description': 'Compartilhe estatísticas de projetos de forma transparente',
+    'feature.realtime.title': 'Tempo Real',
+    'feature.realtime.description': 'Visualize dados atualizados em tempo real',
+    'feature.charts.title': 'Gráficos Interativos',
+    'feature.charts.description': 'Visualizações bonitas e informativas dos seus dados',
+    'feature.open.source.title': 'Open Source',
+    'feature.open.source.description': 'Código aberto e totalmente customizável',
+    
+    // Setup
+    'setup.title': 'Configuração do Addon',
+    'setup.subtitle': 'Configure a conexão com sua instância do solidtime',
+    'setup.token.label': 'Token de API do SolidTime',
+    'setup.token.placeholder': 'Insira seu token de API do solidtime',
+    'setup.organization.label': 'ID da Organização',
+    'setup.organization.placeholder': 'Insira o ID da sua organização',
+    'setup.save': 'Salvar Configurações',
+    'setup.saving': 'Configurando...',
+    'setup.error.fields': 'Por favor, preencha todos os campos',
+    'setup.error.save': 'Erro ao salvar configurações. Verifique os dados e tente novamente.',
+    
+    // Config from URL
+    'config.auto.title': 'Configuração Automática',
+    'config.auto.subtitle': 'Processando credenciais do solidtime...',
+    'config.auto.configuring': 'Configurando conexão...',
+    'config.auto.success': 'Conexão configurada com sucesso!',
+    'config.auto.error.params': 'Parâmetros de configuração ausentes na URL',
+    'config.auto.error.process': 'Erro ao processar configurações da URL',
+    
     // Dashboard
     'dashboard': 'Painel',
-    'dashboard.subtitle': 'Visão geral do seu tempo e projetos',
+    'dashboard.subtitle': 'Visão geral das estatísticas públicas',
     'projects': 'Projetos',
     'latest.tasks': 'Tarefas Recentes',
     'team.activity': 'Atividade da Equipe',
@@ -18,10 +61,6 @@ const translations = {
     'last.activity': 'Última atividade',
     'weekly.project.overview': 'Visão Geral Semanal dos Projetos',
     'team.members': 'Membros da Equipe',
-    
-    // App
-    'app.title': 'SolidTime',
-    'app.subtitle': 'Gerenciamento de tempo e projetos',
     
     // Projects
     'project.billable': 'Faturável',
@@ -70,12 +109,61 @@ const translations = {
     
     // Config
     'config.required': 'Configuração Necessária',
-    'config.required.message': 'Configure a aplicação para continuar',
+    'config.required.message': 'Configure a conexão com o solidtime para continuar',
+    
+    // Footer links
+    'footer.powered.by': 'Powered by',
+    'footer.open.source': 'Open Source',
+    'footer.github': 'GitHub',
+    'footer.docs': 'Documentação',
   },
   en: {
+    // App branding
+    'app.title': 'SolidTime Public Stats',
+    'app.subtitle': 'Public project statistics visualization',
+    'app.addon.description': 'Open source addon for solidtime',
+    'app.github': 'Star us on Github!',
+    
+    // Welcome page
+    'welcome.title': 'Visualize SolidTime Public Statistics',
+    'welcome.subtitle': 'An open source tool to share solidtime project statistics and time entries publicly and transparently.',
+    'welcome.get.started': 'Get Started',
+    'welcome.about.solidtime': 'About SolidTime',
+    'welcome.solidtime.description': 'solidtime is a modern open source time tracker for freelancers and teams.',
+    
+    // Features
+    'feature.public.stats.title': 'Public Statistics',
+    'feature.public.stats.description': 'Share project statistics transparently',
+    'feature.realtime.title': 'Real Time',
+    'feature.realtime.description': 'View real-time updated data',
+    'feature.charts.title': 'Interactive Charts',
+    'feature.charts.description': 'Beautiful and informative visualizations of your data',
+    'feature.open.source.title': 'Open Source',
+    'feature.open.source.description': 'Open source and fully customizable',
+    
+    // Setup
+    'setup.title': 'Addon Configuration',
+    'setup.subtitle': 'Configure connection to your solidtime instance',
+    'setup.token.label': 'SolidTime API Token',
+    'setup.token.placeholder': 'Enter your solidtime API token',
+    'setup.organization.label': 'Organization ID',
+    'setup.organization.placeholder': 'Enter your organization ID',
+    'setup.save': 'Save Configuration',
+    'setup.saving': 'Configuring...',
+    'setup.error.fields': 'Please fill in all fields',
+    'setup.error.save': 'Error saving configuration. Check your data and try again.',
+    
+    // Config from URL
+    'config.auto.title': 'Automatic Configuration',
+    'config.auto.subtitle': 'Processing solidtime credentials...',
+    'config.auto.configuring': 'Configuring connection...',
+    'config.auto.success': 'Connection configured successfully!',
+    'config.auto.error.params': 'Configuration parameters missing from URL',
+    'config.auto.error.process': 'Error processing configuration from URL',
+    
     // Dashboard
     'dashboard': 'Dashboard',
-    'dashboard.subtitle': 'Overview of your time and projects',
+    'dashboard.subtitle': 'Overview of public statistics',
     'projects': 'Projects',
     'latest.tasks': 'Latest Tasks',
     'team.activity': 'Team Activity',
@@ -88,10 +176,6 @@ const translations = {
     'last.activity': 'Last activity',
     'weekly.project.overview': 'Weekly Project Overview',
     'team.members': 'Team Members',
-    
-    // App
-    'app.title': 'SolidTime',
-    'app.subtitle': 'Time and project management',
     
     // Projects
     'project.billable': 'Billable',
@@ -140,7 +224,13 @@ const translations = {
     
     // Config
     'config.required': 'Configuration Required',
-    'config.required.message': 'Please configure the application to continue',
+    'config.required.message': 'Configure solidtime connection to continue',
+    
+    // Footer links
+    'footer.powered.by': 'Powered by',
+    'footer.open.source': 'Open Source',
+    'footer.github': 'GitHub',
+    'footer.docs': 'Documentation',
   }
 };
 

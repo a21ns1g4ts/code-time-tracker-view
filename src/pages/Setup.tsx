@@ -6,13 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Clock, AlertCircle } from 'lucide-react';
+import { Clock, AlertCircle, ExternalLink, Github } from 'lucide-react';
 import { setConfig } from '@/services/config';
 import { ModeToggle } from '@/components/ModeToggle';
 import LanguageDropdown from '@/components/LanguageDropdown';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Setup = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [bearerToken, setBearerToken] = useState('');
   const [organizationId, setOrganizationId] = useState('');
   const [error, setError] = useState('');
@@ -23,7 +25,7 @@ const Setup = () => {
     setError('');
     
     if (!bearerToken.trim() || !organizationId.trim()) {
-      setError('Por favor, preencha todos os campos');
+      setError(t('setup.error.fields'));
       return;
     }
 
@@ -33,21 +35,35 @@ const Setup = () => {
       setConfig(bearerToken.trim(), organizationId.trim());
       navigate('/projects');
     } catch (err) {
-      setError('Erro ao salvar configurações. Verifique os dados e tente novamente.');
+      setError(t('setup.error.save'));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border bg-card">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between p-4 border-b bg-background">
+        <div className="flex items-center gap-3">
           <Clock className="h-8 w-8 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">TimeTracker</h1>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">{t('app.title')}</h1>
+            <p className="text-xs text-muted-foreground">{t('app.addon.description')}</p>
+          </div>
         </div>
         <div className="flex items-center gap-4">
+          <Button variant="outline" size="sm" asChild>
+            <a 
+              href="https://github.com/solidtime-io/solidtime" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <Github className="h-4 w-4" />
+              {t('app.github')}
+            </a>
+          </Button>
           <ModeToggle />
           <LanguageDropdown />
         </div>
@@ -55,52 +71,81 @@ const Setup = () => {
 
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 py-16">
-        <Card className="bg-card border-border">
+        <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-card-foreground">Configuração Inicial</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Configure suas credenciais de acesso para começar a usar o TimeTracker
+            <CardTitle className="text-2xl">{t('setup.title')}</CardTitle>
+            <CardDescription>
+              {t('setup.subtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="bearerToken" className="text-foreground">Token de Acesso</Label>
+                <Label htmlFor="bearerToken">{t('setup.token.label')}</Label>
                 <Input
                   id="bearerToken"
                   type="password"
-                  placeholder="Insira seu bearer token"
+                  placeholder={t('setup.token.placeholder')}
                   value={bearerToken}
                   onChange={(e) => setBearerToken(e.target.value)}
                   required
-                  className="bg-background border-input text-foreground placeholder:text-muted-foreground"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="organizationId" className="text-foreground">ID da Organização</Label>
+                <Label htmlFor="organizationId">{t('setup.organization.label')}</Label>
                 <Input
                   id="organizationId"
                   type="text"
-                  placeholder="Insira o ID da sua organização"
+                  placeholder={t('setup.organization.placeholder')}
                   value={organizationId}
                   onChange={(e) => setOrganizationId(e.target.value)}
                   required
-                  className="bg-background border-input text-foreground placeholder:text-muted-foreground"
                 />
               </div>
 
               {error && (
-                <Alert variant="destructive" className="bg-destructive/10 border-destructive">
+                <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
-                  <AlertDescription className="text-destructive">{error}</AlertDescription>
+                  <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Configurando...' : 'Salvar Configurações'}
+                {isLoading ? t('setup.saving') : t('setup.save')}
               </Button>
             </form>
+
+            {/* Help Section */}
+            <div className="mt-6 pt-6 border-t">
+              <h3 className="text-sm font-medium text-foreground mb-3">
+                {t('welcome.about.solidtime')}
+              </h3>
+              <div className="flex flex-col gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a 
+                    href="https://docs.solidtime.io" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 justify-center"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    {t('footer.docs')}
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a 
+                    href="https://solidtime.io" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 justify-center"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    solidtime.io
+                  </a>
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

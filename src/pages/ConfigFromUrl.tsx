@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Clock, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Clock, CheckCircle, AlertCircle, Loader2, Github } from 'lucide-react';
 import { setConfig } from '@/services/config';
 import { ModeToggle } from '@/components/ModeToggle';
 import LanguageDropdown from '@/components/LanguageDropdown';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Button } from '@/components/ui/button';
 
 const ConfigFromUrl = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
@@ -22,13 +25,13 @@ const ConfigFromUrl = () => {
 
         if (!token || !organizationId) {
           setStatus('error');
-          setMessage('Parâmetros de configuração ausentes na URL');
+          setMessage(t('config.auto.error.params'));
           return;
         }
 
         setConfig(token, organizationId);
         setStatus('success');
-        setMessage('Configuração salva com sucesso!');
+        setMessage(t('config.auto.success'));
         
         // Redirect after 2 seconds
         setTimeout(() => {
@@ -37,22 +40,36 @@ const ConfigFromUrl = () => {
         
       } catch (error) {
         setStatus('error');
-        setMessage('Erro ao processar configurações da URL');
+        setMessage(t('config.auto.error.process'));
       }
     };
 
     configureFromUrl();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, t]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border bg-card">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between p-4 border-b bg-background">
+        <div className="flex items-center gap-3">
           <Clock className="h-8 w-8 text-primary" />
-          <h1 className="text-2xl font-bold text-foreground">TimeTracker</h1>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">{t('app.title')}</h1>
+            <p className="text-xs text-muted-foreground">{t('app.addon.description')}</p>
+          </div>
         </div>
         <div className="flex items-center gap-4">
+          <Button variant="outline" size="sm" asChild>
+            <a 
+              href="https://github.com/solidtime-io/solidtime" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <Github className="h-4 w-4" />
+              {t('app.github')}
+            </a>
+          </Button>
           <ModeToggle />
           <LanguageDropdown />
         </div>
@@ -60,18 +77,18 @@ const ConfigFromUrl = () => {
 
       {/* Main Content */}
       <div className="max-w-md mx-auto px-4 py-16">
-        <Card className="bg-card border-border">
+        <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-card-foreground">Configuração Automática</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Processando suas credenciais de acesso...
+            <CardTitle className="text-2xl">{t('config.auto.title')}</CardTitle>
+            <CardDescription>
+              {t('config.auto.subtitle')}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
             {status === 'loading' && (
               <div className="flex flex-col items-center gap-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground">Configurando...</p>
+                <p className="text-muted-foreground">{t('config.auto.configuring')}</p>
               </div>
             )}
             
