@@ -1,30 +1,30 @@
 
-import { supabase } from "@/integrations/supabase/client";
-
 const CONFIG_KEYS = {
   BEARER_TOKEN: 'bearer_token',
   ORGANIZATION_ID: 'solidtime_organization_id'
 } as const;
 
 export const getConfig = async () => {
-  // Get bearer token from Supabase
-  const { data: bearerTokenRow } = await supabase
-    .from('app_config')
-    .select('value')
-    .eq('key', CONFIG_KEYS.BEARER_TOKEN)
-    .single();
+  // Get bearer token from localStorage
+  const bearerToken = localStorage.getItem(CONFIG_KEYS.BEARER_TOKEN) || '';
   
-  // Get organization ID from Supabase
-  const { data: organizationIdRow } = await supabase
-    .from('app_config')
-    .select('value')
-    .eq('key', CONFIG_KEYS.ORGANIZATION_ID)
-    .single();
+  // Get organization ID from localStorage
+  const organizationId = localStorage.getItem(CONFIG_KEYS.ORGANIZATION_ID) || '';
   
   return {
-    bearerToken: bearerTokenRow?.value || '',
-    organizationId: organizationIdRow?.value || ''
+    bearerToken,
+    organizationId
   };
+};
+
+export const setConfig = (bearerToken: string, organizationId: string) => {
+  localStorage.setItem(CONFIG_KEYS.BEARER_TOKEN, bearerToken);
+  localStorage.setItem(CONFIG_KEYS.ORGANIZATION_ID, organizationId);
+};
+
+export const clearConfig = () => {
+  localStorage.removeItem(CONFIG_KEYS.BEARER_TOKEN);
+  localStorage.removeItem(CONFIG_KEYS.ORGANIZATION_ID);
 };
 
 export const isConfigured = async (): Promise<boolean> => {

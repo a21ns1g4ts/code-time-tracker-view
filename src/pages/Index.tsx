@@ -1,25 +1,32 @@
 
-import React from 'react';
-import PageLayout from '@/components/PageLayout';
-import { useLanguage } from '@/contexts/LanguageContext';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { isConfigured } from '@/services/config';
+import { Loader2 } from 'lucide-react';
 
 const Index = () => {
-  const { t } = useLanguage();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkConfigAndRedirect = async () => {
+      const configured = await isConfigured();
+      if (configured) {
+        navigate('/projects');
+      } else {
+        navigate('/');
+      }
+    };
+    
+    checkConfigAndRedirect();
+  }, [navigate]);
 
   return (
-    <PageLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('time.entries.title')}</h1>
-          <p className="text-gray-600 mb-8">{t('time.entries.subtitle')}</p>
-          <div className="bg-white rounded-lg shadow p-8">
-            <p className="text-gray-500">
-              {t('no.activity')}
-            </p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="flex items-center gap-2">
+        <Loader2 className="h-6 w-6 animate-spin" />
+        <span>Carregando...</span>
       </div>
-    </PageLayout>
+    </div>
   );
 };
 
