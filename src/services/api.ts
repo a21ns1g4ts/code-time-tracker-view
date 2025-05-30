@@ -93,14 +93,14 @@ export const fetchProjectTimeEntries = async (projectId: string, filters?: TimeE
 };
 
 export const fetchProjects = async (): Promise<ProjectsResponse> => {
-  const { apiBaseUrl, bearerToken } = await getConfig();
+  const { apiBaseUrl, bearerToken, organizationId } = await getConfig();
   
-  if (!apiBaseUrl || !bearerToken) {
-    throw new Error('API base URL and bearer token are required');
+  if (!apiBaseUrl || !bearerToken || !organizationId) {
+    throw new Error('API base URL, bearer token and organization ID are required');
   }
 
   const response = await fetch(
-    `${apiBaseUrl}/organizations/projects`,
+    `${apiBaseUrl}/organizations/${organizationId}/projects`,
     {
       headers: {
         'Authorization': `Bearer ${bearerToken}`,

@@ -1,49 +1,32 @@
 
-import { supabase } from "@/integrations/supabase/client";
-
+// Simplified project access using only organization configuration
 export const saveProjectPassword = async (projectId: string, password: string) => {
-  console.log('Saving password for project:', { projectId, password });
+  console.log('Saving password for project locally:', { projectId });
   
-  const { data, error } = await supabase
-    .from('project_access')
-    .upsert({ 
-      project_id: projectId, 
-      password: password 
-    }, { 
-      onConflict: 'project_id' 
-    })
-    .select();
-  
-  if (error) {
+  try {
+    const savedPasswords = JSON.parse(localStorage.getItem('project_passwords') || '{}');
+    savedPasswords[projectId] = password;
+    localStorage.setItem('project_passwords', JSON.stringify(savedPasswords));
+    console.log('Project password saved successfully to localStorage');
+  } catch (error) {
     console.error('Error saving project password:', error);
-    throw new Error(`Failed to save project password: ${error.message}`);
+    throw new Error('Failed to save project password');
   }
-  
-  console.log('Project password saved successfully:', data);
-  return data;
 };
 
 export const verifyProjectPassword = async (projectId: string, password: string): Promise<boolean> => {
   try {
-    console.log('Verifying password for project:', { projectId, password });
+    console.log('Verifying password for project:', { projectId });
     
-    const { data, error } = await supabase
-      .from('project_access')
-      .select('password')
-      .eq('project_id', projectId)
-      .maybeSingle();
+    const savedPasswords = JSON.parse(localStorage.getItem('project_passwords') || '{}');
+    const savedPassword = savedPasswords[projectId];
     
-    if (error) {
-      console.error('Error verifying project password:', error);
-      return false;
-    }
-    
-    if (!data) {
+    if (!savedPassword) {
       console.log('No password found for project:', projectId);
       return false;
     }
     
-    const isValid = data.password === password;
+    const isValid = savedPassword === password;
     console.log('Password verification result:', { projectId, isValid });
     return isValid;
   } catch (error) {
@@ -54,22 +37,6 @@ export const verifyProjectPassword = async (projectId: string, password: string)
 
 export const getProjectAccess = async (projectId: string): Promise<boolean> => {
   try {
-    // Check if the project has any saved access data
-    const { data, error } = await supabase
-      .from('project_access')
-      .select('*')
-      .eq('project_id', projectId);
-    
-    if (error) {
-      console.error('Error checking project access:', error);
-      return false;
-    }
-    
-    if (!data || data.length === 0) {
-      console.log('No access data found for project:', projectId);
-      return false;
-    }
-    
     // Check if the project has been accessed before (stored in local storage)
     const accessedProjects = JSON.parse(localStorage.getItem('accessed_projects') || '{}');
     const hasAccess = !!accessedProjects[projectId];

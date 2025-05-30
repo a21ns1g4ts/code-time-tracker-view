@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'pt';
@@ -10,62 +9,6 @@ interface LanguageContextType {
 }
 
 const translations = {
-  en: {
-    // App
-    'app.title': 'solidtime Stats',
-    'app.addon.description': 'Open-source addon for public project statistics',
-    'app.github': 'GitHub',
-
-    // Welcome
-    'welcome.title': 'Public Statistics for solidtime',
-    'welcome.subtitle': 'Display your team\'s productivity and project statistics publicly with this open-source addon for solidtime.',
-    'welcome.get.started': 'Get Started',
-    'welcome.about.solidtime': 'About solidtime',
-    'welcome.solidtime.description': 'solidtime is a modern, open-source time tracking application built for freelancers and teams. Track time, manage projects, generate reports and invoices.',
-
-    // Features
-    'feature.public.stats.title': 'Public Statistics',
-    'feature.public.stats.description': 'Share your project statistics and team productivity publicly',
-    'feature.realtime.title': 'Real-time Data',
-    'feature.realtime.description': 'Live updates from your solidtime instance',
-    'feature.charts.title': 'Beautiful Charts',
-    'feature.charts.description': 'Visualize your data with interactive charts and graphs',
-    'feature.open.source.title': 'Open Source',
-    'feature.open.source.description': 'Completely open source and customizable',
-
-    // Setup
-    'setup.title': 'Setup Configuration',
-    'setup.subtitle': 'Connect your solidtime instance to display public statistics',
-    'setup.api.url.label': 'API Base URL',
-    'setup.api.url.placeholder': 'https://your-solidtime-instance.com/api/v1',
-    'setup.token.label': 'Bearer Token',
-    'setup.token.placeholder': 'Enter your API token',
-    'setup.organization.label': 'Organization ID',
-    'setup.organization.placeholder': 'Enter your organization ID',
-    'setup.save': 'Save Configuration',
-    'setup.saving': 'Saving...',
-    'setup.error.fields': 'Please fill in all fields',
-    'setup.error.save': 'Error saving configuration',
-
-    // Config
-    'config.auto.title': 'Automatic Configuration',
-    'config.auto.subtitle': 'Setting up your solidtime connection',
-    'config.auto.configuring': 'Configuring your connection...',
-    'config.auto.success': 'Configuration successful! Redirecting...',
-    'config.auto.error.params': 'Missing required parameters in URL',
-    'config.auto.error.process': 'Error processing configuration',
-    'config.required': 'Configuration Required',
-    'config.required.message': 'Please configure your solidtime connection to view statistics',
-
-    // Projects
-    'projects': 'Projects',
-
-    // Footer
-    'footer.powered.by': 'Powered by',
-    'footer.open.source': 'Open Source',
-    'footer.github': 'GitHub',
-    'footer.docs': 'Documentation'
-  },
   pt: {
     // App
     'app.title': 'solidtime Stats',
@@ -113,6 +56,21 @@ const translations = {
     'config.required': 'Configuração Necessária',
     'config.required.message': 'Por favor, configure sua conexão solidtime para visualizar estatísticas',
 
+    // Password Modal
+    'password.modal.title': 'Acesso ao Projeto',
+    'password.modal.description': 'Este projeto requer uma senha para acesso. Por favor, digite a senha para o projeto {{projectName}}.',
+    'password.modal.password.label': 'Senha',
+    'password.modal.password.placeholder': 'Digite a senha do projeto',
+    'password.modal.cancel': 'Cancelar',
+    'password.modal.access': 'Acessar',
+    'password.modal.verifying': 'Verificando...',
+    'password.modal.error': 'Erro',
+    'password.modal.enter.password': 'Por favor, digite a senha',
+    'password.modal.access.granted': 'Acesso concedido',
+    'password.modal.access.granted.message': 'Você agora tem acesso ao projeto {{projectName}}',
+    'password.modal.incorrect.password': 'Senha incorreta',
+    'password.modal.verification.error': 'Ocorreu um erro ao verificar a senha. Tente novamente.',
+
     // Projects
     'projects': 'Projetos',
 
@@ -121,6 +79,77 @@ const translations = {
     'footer.open.source': 'Open Source',
     'footer.github': 'GitHub',
     'footer.docs': 'Documentação'
+  },
+  en: {
+    // App
+    'app.title': 'solidtime Stats',
+    'app.addon.description': 'Open-source addon for public project statistics',
+    'app.github': 'GitHub',
+
+    // Welcome
+    'welcome.title': 'Public Statistics for solidtime',
+    'welcome.subtitle': 'Display your team\'s productivity and project statistics publicly with this open-source addon for solidtime.',
+    'welcome.get.started': 'Get Started',
+    'welcome.about.solidtime': 'About solidtime',
+    'welcome.solidtime.description': 'solidtime is a modern, open-source time tracking application built for freelancers and teams. Track time, manage projects, generate reports and invoices.',
+
+    // Features
+    'feature.public.stats.title': 'Public Statistics',
+    'feature.public.stats.description': 'Share your project statistics and team productivity publicly',
+    'feature.realtime.title': 'Real-time Data',
+    'feature.realtime.description': 'Live updates from your solidtime instance',
+    'feature.charts.title': 'Beautiful Charts',
+    'feature.charts.description': 'Visualize your data with interactive charts and graphs',
+    'feature.open.source.title': 'Open Source',
+    'feature.open.source.description': 'Completely open source and customizable',
+
+    // Setup
+    'setup.title': 'Setup Configuration',
+    'setup.subtitle': 'Connect your solidtime instance to display public statistics',
+    'setup.api.url.label': 'API Base URL',
+    'setup.api.url.placeholder': 'https://your-solidtime-instance.com/api/v1',
+    'setup.token.label': 'Bearer Token',
+    'setup.token.placeholder': 'Enter your API token',
+    'setup.organization.label': 'Organization ID',
+    'setup.organization.placeholder': 'Enter your organization ID',
+    'setup.save': 'Save Configuration',
+    'setup.saving': 'Saving...',
+    'setup.error.fields': 'Please fill in all fields',
+    'setup.error.save': 'Error saving configuration',
+
+    // Config
+    'config.auto.title': 'Automatic Configuration',
+    'config.auto.subtitle': 'Setting up your solidtime connection',
+    'config.auto.configuring': 'Configuring your connection...',
+    'config.auto.success': 'Configuration successful! Redirecting...',
+    'config.auto.error.params': 'Missing required parameters in URL',
+    'config.auto.error.process': 'Error processing configuration',
+    'config.required': 'Configuration Required',
+    'config.required.message': 'Please configure your solidtime connection to view statistics',
+
+    // Password Modal
+    'password.modal.title': 'Project Access',
+    'password.modal.description': 'This project requires a password for access. Please enter the password for project {{projectName}}.',
+    'password.modal.password.label': 'Password',
+    'password.modal.password.placeholder': 'Enter project password',
+    'password.modal.cancel': 'Cancel',
+    'password.modal.access': 'Access',
+    'password.modal.verifying': 'Verifying...',
+    'password.modal.error': 'Error',
+    'password.modal.enter.password': 'Please enter the password',
+    'password.modal.access.granted': 'Access granted',
+    'password.modal.access.granted.message': 'You now have access to project {{projectName}}',
+    'password.modal.incorrect.password': 'Incorrect password',
+    'password.modal.verification.error': 'An error occurred while verifying the password. Please try again.',
+
+    // Projects
+    'projects': 'Projects',
+
+    // Footer
+    'footer.powered.by': 'Powered by',
+    'footer.open.source': 'Open Source',
+    'footer.github': 'GitHub',
+    'footer.docs': 'Documentation'
   }
 };
 
