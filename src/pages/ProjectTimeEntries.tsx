@@ -37,18 +37,6 @@ const ProjectTimeEntries = () => {
     }
   }, [processedData]);
 
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  }, [timelineData]);
-
   const handleDayClick = (day: any) => {
     // Handle day click if needed
     console.log('Day clicked:', day);

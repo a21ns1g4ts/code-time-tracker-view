@@ -49,7 +49,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data }) => {
   return (
     <div className="space-y-4">
       {sortedDays.map(dayData => (
-        <div key={dayData.date} id={`day-${dayData.date}`}>
+        <div key={dayData.date}>
           <Timeline dayData={dayData} />
         </div>
       ))}
