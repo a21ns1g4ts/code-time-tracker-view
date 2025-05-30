@@ -20,17 +20,16 @@ const ConfigFromUrl = () => {
   useEffect(() => {
     const configureFromUrl = async () => {
       try {
-        const apiBaseUrl = searchParams.get('api_base_url') || searchParams.get('api_url');
         const token = searchParams.get('token');
         const organizationId = searchParams.get('organization_id');
 
-        if (!apiBaseUrl || !token || !organizationId) {
+        if (!token || !organizationId) {
           setStatus('error');
           setMessage(t('config.auto.error.params'));
           return;
         }
 
-        setConfig(apiBaseUrl, token, organizationId);
+        setConfig(token, organizationId);
         setStatus('success');
         setMessage(t('config.auto.success'));
         
