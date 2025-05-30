@@ -14,7 +14,7 @@ const NotFound = () => {
           <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
           <h2 className="text-xl font-semibold mb-4">{t('error')}</h2>
           <p className="text-gray-600 mb-8">
-            Página não encontrada
+            {t('page.not.found')}
           </p>
           <Link
             to="/projects"

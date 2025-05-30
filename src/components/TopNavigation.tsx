@@ -46,7 +46,7 @@ const TopNavigation: React.FC = () => {
             className="text-sm"
           >
             <LogOut className="h-4 w-4 mr-1" />
-            Sair
+            {t('logout')}
           </Button>
         </div>
       </div>
