@@ -49,7 +49,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
         setProjectAccess(projectId);
         toast({
           title: t('password.modal.access.granted'),
-          description: t('password.modal.access.granted.message', { projectName })
+          description: `${t('password.modal.access.granted.message')} ${projectName}`
         });
         setPassword('');
         onSuccess();
@@ -85,7 +85,7 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <p className="text-sm text-gray-600">
-            {t('password.modal.description', { projectName })}
+            {t('password.modal.description')} {projectName}
           </p>
           <div className="space-y-2">
             <Label htmlFor="projectPassword">{t('password.modal.password.label')}</Label>
