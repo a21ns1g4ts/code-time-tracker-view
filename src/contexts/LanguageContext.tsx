@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'en' | 'pt' | 'es' | 'fr' | 'de' | 'ru' | 'zh';
@@ -74,37 +75,58 @@ const translations = {
 
     // Projects
     'projects': 'Projetos',
+    'projects.title': 'Projetos',
+    'projects.subtitle': 'Visualize todos os projetos disponíveis',
     'project.billable': 'Faturável',
     'project.non_billable': 'Não faturável',
     'project.archived': 'Arquivado',
     'project.details': 'Ver Detalhes',
     'project.access': 'Solicitar Acesso',
+    'project.statistics': 'Estatísticas do Projeto',
+    'project.overview': 'Visão Geral',
+    'project.activity': 'Atividade',
+    'project.time.entries': 'Registros de Tempo',
 
     // Activity
     'activity.development': 'Atividade de Desenvolvimento',
     'activity.timeline': 'Cronograma de Atividades',
+    'activity.grid': 'Grade de Atividades',
     'activity.less': 'Menos',
     'activity.more': 'Mais',
+    'activity.view.details': 'Ver Detalhes',
     'no.activity': 'Nenhuma atividade registrada',
     'no.activity.short': 'Sem atividade',
     'future.date': 'Data futura',
-    'hours.worked': 'trabalhadas',
+    'hours.worked': 'horas trabalhadas',
+    'hour.worked': 'hora trabalhada',
 
     // Time entries
     'time.entries.title': 'Registros de Tempo',
     'time.entries.subtitle': 'Visualize todos os registros de tempo para este projeto',
     'time.entries.back': 'Voltar ao Projeto',
+    'time.entry': 'Registro de Tempo',
+    'time.entry.description': 'Descrição',
+    'time.entry.task': 'Tarefa',
+    'time.entry.start': 'Início',
+    'time.entry.end': 'Fim',
+    'time.entry.duration': 'Duração',
+    'time.entry.user': 'Usuário',
+    'time.entry.billable': 'Faturável',
     'total.hours': 'Total de Horas',
     'days.with.records': 'Dias com Registros',
     'total.records': 'Total de Registros',
 
     // Timeline
     'timeline.day': 'Dia',
+    'timeline.week': 'Semana',
+    'timeline.month': 'Mês',
+    'timeline.year': 'Ano',
     'total': 'total',
     'worked.periods': 'Períodos Trabalhados',
 
     // Dashboard
     'dashboard': 'Painel',
+    'dashboard.title': 'Painel de Controle',
     'dashboard.subtitle': 'Visão geral das suas atividades e estatísticas',
     'total.hours.week': 'Horas Totais (Semana)',
     'revenue.week': 'Receita (Semana)',
@@ -114,23 +136,83 @@ const translations = {
     'weekly.time.overview': 'Visão Geral Semanal',
     'weekly.project.overview': 'Visão Geral de Projetos Semanais',
 
+    // Statistics
+    'statistics': 'Estatísticas',
+    'statistics.overview': 'Visão Geral das Estatísticas',
+    'statistics.this.week': 'Esta Semana',
+    'statistics.this.month': 'Este Mês',
+    'statistics.this.year': 'Este Ano',
+    'statistics.all.time': 'Todo o Período',
+
+    // Charts
+    'chart.hours.per.day': 'Horas por Dia',
+    'chart.hours.per.week': 'Horas por Semana',
+    'chart.hours.per.month': 'Horas por Mês',
+    'chart.projects.comparison': 'Comparação de Projetos',
+    'chart.team.activity': 'Atividade da Equipe',
+    'chart.productivity': 'Produtividade',
+
+    // Navigation
+    'nav.home': 'Início',
+    'nav.projects': 'Projetos',
+    'nav.dashboard': 'Painel',
+    'nav.settings': 'Configurações',
+    'nav.help': 'Ajuda',
+
     // Footer
     'footer.powered.by': 'Desenvolvido por',
     'footer.open.source': 'Open Source',
     'footer.github': 'GitHub',
     'footer.docs': 'Documentação',
+    'footer.support': 'Suporte',
+    'footer.privacy': 'Privacidade',
+    'footer.terms': 'Termos',
 
     // Common
     'loading': 'Carregando...',
     'error': 'Erro',
+    'success': 'Sucesso',
+    'warning': 'Aviso',
+    'info': 'Informação',
     'back': 'Voltar',
+    'next': 'Próximo',
+    'previous': 'Anterior',
+    'save': 'Salvar',
+    'cancel': 'Cancelar',
+    'confirm': 'Confirmar',
+    'delete': 'Excluir',
+    'edit': 'Editar',
+    'view': 'Visualizar',
+    'search': 'Pesquisar',
+    'filter': 'Filtrar',
+    'sort': 'Classificar',
+    'refresh': 'Atualizar',
     'logout': 'Sair',
     'close': 'Fechar',
+    'open': 'Abrir',
+    'yes': 'Sim',
+    'no': 'Não',
+    'ok': 'OK',
 
-    // Additional translations
+    // Date/Time
+    'today': 'Hoje',
+    'yesterday': 'Ontem',
+    'tomorrow': 'Amanhã',
+    'this.week': 'Esta Semana',
+    'last.week': 'Semana Passada',
+    'next.week': 'Próxima Semana',
+    'this.month': 'Este Mês',
+    'last.month': 'Mês Passado',
+    'next.month': 'Próximo Mês',
+
+    // Error Messages
     'api.error.message': 'Erro ao buscar dados da API. Verifique as configurações.',
     'retry': 'Tentar Novamente',
-    'page.not.found': 'Página não encontrada'
+    'page.not.found': 'Página não encontrada',
+    'permission.denied': 'Permissão negada',
+    'connection.error': 'Erro de conexão',
+    'timeout.error': 'Tempo limite excedido',
+    'unknown.error': 'Erro desconhecido'
   },
   en: {
     // App
@@ -197,37 +279,58 @@ const translations = {
 
     // Projects
     'projects': 'Projects',
+    'projects.title': 'Projects',
+    'projects.subtitle': 'View all available projects',
     'project.billable': 'Billable',
     'project.non_billable': 'Non-billable',
     'project.archived': 'Archived',
     'project.details': 'View Details',
     'project.access': 'Request Access',
+    'project.statistics': 'Project Statistics',
+    'project.overview': 'Overview',
+    'project.activity': 'Activity',
+    'project.time.entries': 'Time Entries',
 
     // Activity
     'activity.development': 'Development Activity',
     'activity.timeline': 'Activity Timeline',
+    'activity.grid': 'Activity Grid',
     'activity.less': 'Less',
     'activity.more': 'More',
+    'activity.view.details': 'View Details',
     'no.activity': 'No activity recorded',
     'no.activity.short': 'No activity',
     'future.date': 'Future date',
-    'hours.worked': 'worked',
+    'hours.worked': 'hours worked',
+    'hour.worked': 'hour worked',
 
     // Time entries
     'time.entries.title': 'Time Entries',
     'time.entries.subtitle': 'View all time entries for this project',
     'time.entries.back': 'Back to Project',
+    'time.entry': 'Time Entry',
+    'time.entry.description': 'Description',
+    'time.entry.task': 'Task',
+    'time.entry.start': 'Start',
+    'time.entry.end': 'End',
+    'time.entry.duration': 'Duration',
+    'time.entry.user': 'User',
+    'time.entry.billable': 'Billable',
     'total.hours': 'Total Hours',
     'days.with.records': 'Days with Records',
     'total.records': 'Total Records',
 
     // Timeline
     'timeline.day': 'Day',
+    'timeline.week': 'Week',
+    'timeline.month': 'Month',
+    'timeline.year': 'Year',
     'total': 'total',
     'worked.periods': 'Worked Periods',
 
     // Dashboard
     'dashboard': 'Dashboard',
+    'dashboard.title': 'Dashboard',
     'dashboard.subtitle': 'Overview of your activities and statistics',
     'total.hours.week': 'Total Hours (Week)',
     'revenue.week': 'Revenue (Week)',
@@ -237,23 +340,83 @@ const translations = {
     'weekly.time.overview': 'Weekly Time Overview',
     'weekly.project.overview': 'Weekly Project Overview',
 
+    // Statistics
+    'statistics': 'Statistics',
+    'statistics.overview': 'Statistics Overview',
+    'statistics.this.week': 'This Week',
+    'statistics.this.month': 'This Month',
+    'statistics.this.year': 'This Year',
+    'statistics.all.time': 'All Time',
+
+    // Charts
+    'chart.hours.per.day': 'Hours per Day',
+    'chart.hours.per.week': 'Hours per Week',
+    'chart.hours.per.month': 'Hours per Month',
+    'chart.projects.comparison': 'Projects Comparison',
+    'chart.team.activity': 'Team Activity',
+    'chart.productivity': 'Productivity',
+
+    // Navigation
+    'nav.home': 'Home',
+    'nav.projects': 'Projects',
+    'nav.dashboard': 'Dashboard',
+    'nav.settings': 'Settings',
+    'nav.help': 'Help',
+
     // Footer
     'footer.powered.by': 'Powered by',
     'footer.open.source': 'Open Source',
     'footer.github': 'GitHub',
     'footer.docs': 'Documentation',
+    'footer.support': 'Support',
+    'footer.privacy': 'Privacy',
+    'footer.terms': 'Terms',
 
     // Common
     'loading': 'Loading...',
     'error': 'Error',
+    'success': 'Success',
+    'warning': 'Warning',
+    'info': 'Information',
     'back': 'Back',
+    'next': 'Next',
+    'previous': 'Previous',
+    'save': 'Save',
+    'cancel': 'Cancel',
+    'confirm': 'Confirm',
+    'delete': 'Delete',
+    'edit': 'Edit',
+    'view': 'View',
+    'search': 'Search',
+    'filter': 'Filter',
+    'sort': 'Sort',
+    'refresh': 'Refresh',
     'logout': 'Logout',
     'close': 'Close',
+    'open': 'Open',
+    'yes': 'Yes',
+    'no': 'No',
+    'ok': 'OK',
 
-    // Additional translations
+    // Date/Time
+    'today': 'Today',
+    'yesterday': 'Yesterday',
+    'tomorrow': 'Tomorrow',
+    'this.week': 'This Week',
+    'last.week': 'Last Week',
+    'next.week': 'Next Week',
+    'this.month': 'This Month',
+    'last.month': 'Last Month',
+    'next.month': 'Next Month',
+
+    // Error Messages
     'api.error.message': 'Error fetching data from API. Check your configuration.',
     'retry': 'Try Again',
-    'page.not.found': 'Page not found'
+    'page.not.found': 'Page not found',
+    'permission.denied': 'Permission denied',
+    'connection.error': 'Connection error',
+    'timeout.error': 'Timeout error',
+    'unknown.error': 'Unknown error'
   },
   es: {
     // App
@@ -320,37 +483,58 @@ const translations = {
 
     // Projects
     'projects': 'Proyectos',
+    'projects.title': 'Proyectos',
+    'projects.subtitle': 'Ver todos los proyectos disponibles',
     'project.billable': 'Facturable',
     'project.non_billable': 'No facturable',
     'project.archived': 'Archivado',
     'project.details': 'Ver Detalles',
     'project.access': 'Solicitar Acceso',
+    'project.statistics': 'Estadísticas del Proyecto',
+    'project.overview': 'Resumen',
+    'project.activity': 'Actividad',
+    'project.time.entries': 'Registros de Tiempo',
 
     // Activity
     'activity.development': 'Actividad de Desarrollo',
     'activity.timeline': 'Cronología de Actividades',
+    'activity.grid': 'Cuadrícula de Actividades',
     'activity.less': 'Menos',
     'activity.more': 'Más',
+    'activity.view.details': 'Ver Detalles',
     'no.activity': 'No hay actividad registrada',
     'no.activity.short': 'Sin actividad',
     'future.date': 'Fecha futura',
-    'hours.worked': 'trabajadas',
+    'hours.worked': 'horas trabajadas',
+    'hour.worked': 'hora trabajada',
 
     // Time entries
     'time.entries.title': 'Registros de Tiempo',
     'time.entries.subtitle': 'Ver todos los registros de tiempo para este proyecto',
     'time.entries.back': 'Volver al Proyecto',
+    'time.entry': 'Registro de Tiempo',
+    'time.entry.description': 'Descripción',
+    'time.entry.task': 'Tarea',
+    'time.entry.start': 'Inicio',
+    'time.entry.end': 'Fin',
+    'time.entry.duration': 'Duración',
+    'time.entry.user': 'Usuario',
+    'time.entry.billable': 'Facturable',
     'total.hours': 'Horas Totales',
     'days.with.records': 'Días con Registros',
     'total.records': 'Registros Totales',
 
     // Timeline
     'timeline.day': 'Día',
+    'timeline.week': 'Semana',
+    'timeline.month': 'Mes',
+    'timeline.year': 'Año',
     'total': 'total',
     'worked.periods': 'Períodos Trabajados',
 
     // Dashboard
     'dashboard': 'Panel',
+    'dashboard.title': 'Panel de Control',
     'dashboard.subtitle': 'Resumen de tus actividades y estadísticas',
     'total.hours.week': 'Horas Totales (Semana)',
     'revenue.week': 'Ingresos (Semana)',
@@ -360,23 +544,83 @@ const translations = {
     'weekly.time.overview': 'Resumen Semanal',
     'weekly.project.overview': 'Resumen de Proyectos Semanales',
 
+    // Statistics
+    'statistics': 'Estadísticas',
+    'statistics.overview': 'Resumen de Estadísticas',
+    'statistics.this.week': 'Esta Semana',
+    'statistics.this.month': 'Este Mes',
+    'statistics.this.year': 'Este Año',
+    'statistics.all.time': 'Todo el Tiempo',
+
+    // Charts
+    'chart.hours.per.day': 'Horas por Día',
+    'chart.hours.per.week': 'Horas por Semana',
+    'chart.hours.per.month': 'Horas por Mes',
+    'chart.projects.comparison': 'Comparación de Proyectos',
+    'chart.team.activity': 'Actividad del Equipo',
+    'chart.productivity': 'Productividad',
+
+    // Navigation
+    'nav.home': 'Inicio',
+    'nav.projects': 'Proyectos',
+    'nav.dashboard': 'Panel',
+    'nav.settings': 'Configuración',
+    'nav.help': 'Ayuda',
+
     // Footer
     'footer.powered.by': 'Desarrollado por',
     'footer.open.source': 'Código Abierto',
     'footer.github': 'GitHub',
     'footer.docs': 'Documentación',
+    'footer.support': 'Soporte',
+    'footer.privacy': 'Privacidad',
+    'footer.terms': 'Términos',
 
     // Common
     'loading': 'Cargando...',
     'error': 'Error',
+    'success': 'Éxito',
+    'warning': 'Advertencia',
+    'info': 'Información',
     'back': 'Volver',
+    'next': 'Siguiente',
+    'previous': 'Anterior',
+    'save': 'Guardar',
+    'cancel': 'Cancelar',
+    'confirm': 'Confirmar',
+    'delete': 'Eliminar',
+    'edit': 'Editar',
+    'view': 'Ver',
+    'search': 'Buscar',
+    'filter': 'Filtrar',
+    'sort': 'Ordenar',
+    'refresh': 'Actualizar',
     'logout': 'Cerrar Sesión',
     'close': 'Cerrar',
+    'open': 'Abrir',
+    'yes': 'Sí',
+    'no': 'No',
+    'ok': 'OK',
 
-    // Additional translations
+    // Date/Time
+    'today': 'Hoy',
+    'yesterday': 'Ayer',
+    'tomorrow': 'Mañana',
+    'this.week': 'Esta Semana',
+    'last.week': 'Semana Pasada',
+    'next.week': 'Próxima Semana',
+    'this.month': 'Este Mes',
+    'last.month': 'Mes Pasado',
+    'next.month': 'Próximo Mes',
+
+    // Error Messages
     'api.error.message': 'Error al obtener datos de la API. Revisa tu configuración.',
     'retry': 'Intentar de Nuevo',
-    'page.not.found': 'Página no encontrada'
+    'page.not.found': 'Página no encontrada',
+    'permission.denied': 'Permiso denegado',
+    'connection.error': 'Error de conexión',
+    'timeout.error': 'Error de tiempo de espera',
+    'unknown.error': 'Error desconocido'
   },
   fr: {
     // App
@@ -443,37 +687,58 @@ const translations = {
 
     // Projects
     'projects': 'Projets',
+    'projects.title': 'Projets',
+    'projects.subtitle': 'Voir tous les projets disponibles',
     'project.billable': 'Facturable',
     'project.non_billable': 'Non facturable',
     'project.archived': 'Archivé',
     'project.details': 'Voir Détails',
     'project.access': 'Demander l\'Accès',
+    'project.statistics': 'Statistiques du Projet',
+    'project.overview': 'Aperçu',
+    'project.activity': 'Activité',
+    'project.time.entries': 'Entrées de Temps',
 
     // Activity
     'activity.development': 'Activité de Développement',
     'activity.timeline': 'Chronologie des Activités',
+    'activity.grid': 'Grille d\'Activités',
     'activity.less': 'Moins',
     'activity.more': 'Plus',
+    'activity.view.details': 'Voir les Détails',
     'no.activity': 'Aucune activité enregistrée',
     'no.activity.short': 'Aucune activité',
     'future.date': 'Date future',
-    'hours.worked': 'travaillées',
+    'hours.worked': 'heures travaillées',
+    'hour.worked': 'heure travaillée',
 
     // Time entries
     'time.entries.title': 'Entrées de Temps',
     'time.entries.subtitle': 'Voir toutes les entrées de temps pour ce projet',
     'time.entries.back': 'Retour au Projet',
+    'time.entry': 'Entrée de Temps',
+    'time.entry.description': 'Description',
+    'time.entry.task': 'Tâche',
+    'time.entry.start': 'Début',
+    'time.entry.end': 'Fin',
+    'time.entry.duration': 'Durée',
+    'time.entry.user': 'Utilisateur',
+    'time.entry.billable': 'Facturable',
     'total.hours': 'Heures Totales',
     'days.with.records': 'Jours avec Enregistrements',
     'total.records': 'Enregistrements Totaux',
 
     // Timeline
     'timeline.day': 'Jour',
+    'timeline.week': 'Semaine',
+    'timeline.month': 'Mois',
+    'timeline.year': 'Année',
     'total': 'total',
     'worked.periods': 'Périodes Travaillées',
 
     // Dashboard
     'dashboard': 'Tableau de Bord',
+    'dashboard.title': 'Tableau de Bord',
     'dashboard.subtitle': 'Aperçu de vos activités et statistiques',
     'total.hours.week': 'Heures Totales (Semaine)',
     'revenue.week': 'Revenus (Semaine)',
@@ -483,23 +748,83 @@ const translations = {
     'weekly.time.overview': 'Aperçu Hebdomadaire',
     'weekly.project.overview': 'Aperçu des Projets Hebdomadaires',
 
+    // Statistics
+    'statistics': 'Statistiques',
+    'statistics.overview': 'Aperçu des Statistiques',
+    'statistics.this.week': 'Cette Semaine',
+    'statistics.this.month': 'Ce Mois',
+    'statistics.this.year': 'Cette Année',
+    'statistics.all.time': 'Tout le Temps',
+
+    // Charts
+    'chart.hours.per.day': 'Heures par Jour',
+    'chart.hours.per.week': 'Heures par Semaine',
+    'chart.hours.per.month': 'Heures par Mois',
+    'chart.projects.comparison': 'Comparaison des Projets',
+    'chart.team.activity': 'Activité de l\'Équipe',
+    'chart.productivity': 'Productivité',
+
+    // Navigation
+    'nav.home': 'Accueil',
+    'nav.projects': 'Projets',
+    'nav.dashboard': 'Tableau de Bord',
+    'nav.settings': 'Paramètres',
+    'nav.help': 'Aide',
+
     // Footer
     'footer.powered.by': 'Propulsé par',
     'footer.open.source': 'Open Source',
     'footer.github': 'GitHub',
     'footer.docs': 'Documentation',
+    'footer.support': 'Support',
+    'footer.privacy': 'Confidentialité',
+    'footer.terms': 'Conditions',
 
     // Common
     'loading': 'Chargement...',
     'error': 'Erreur',
+    'success': 'Succès',
+    'warning': 'Avertissement',
+    'info': 'Information',
     'back': 'Retour',
+    'next': 'Suivant',
+    'previous': 'Précédent',
+    'save': 'Sauvegarder',
+    'cancel': 'Annuler',
+    'confirm': 'Confirmer',
+    'delete': 'Supprimer',
+    'edit': 'Modifier',
+    'view': 'Voir',
+    'search': 'Rechercher',
+    'filter': 'Filtrer',
+    'sort': 'Trier',
+    'refresh': 'Actualiser',
     'logout': 'Déconnexion',
     'close': 'Fermer',
+    'open': 'Ouvrir',
+    'yes': 'Oui',
+    'no': 'Non',
+    'ok': 'OK',
 
-    // Additional translations
+    // Date/Time
+    'today': 'Aujourd\'hui',
+    'yesterday': 'Hier',
+    'tomorrow': 'Demain',
+    'this.week': 'Cette Semaine',
+    'last.week': 'Semaine Dernière',
+    'next.week': 'Semaine Prochaine',
+    'this.month': 'Ce Mois',
+    'last.month': 'Mois Dernier',
+    'next.month': 'Mois Prochain',
+
+    // Error Messages
     'api.error.message': 'Erreur lors de la récupération des données de l\'API. Vérifiez votre configuration.',
     'retry': 'Réessayer',
-    'page.not.found': 'Page non trouvée'
+    'page.not.found': 'Page non trouvée',
+    'permission.denied': 'Permission refusée',
+    'connection.error': 'Erreur de connexion',
+    'timeout.error': 'Erreur de délai d\'attente',
+    'unknown.error': 'Erreur inconnue'
   },
   de: {
     // App
@@ -566,37 +891,58 @@ const translations = {
 
     // Projects
     'projects': 'Projekte',
+    'projects.title': 'Projekte',
+    'projects.subtitle': 'Alle verfügbaren Projekte anzeigen',
     'project.billable': 'Abrechenbar',
     'project.non_billable': 'Nicht abrechenbar',
     'project.archived': 'Archiviert',
     'project.details': 'Details Anzeigen',
     'project.access': 'Zugang Anfordern',
+    'project.statistics': 'Projektstatistiken',
+    'project.overview': 'Überblick',
+    'project.activity': 'Aktivität',
+    'project.time.entries': 'Zeiteinträge',
 
     // Activity
     'activity.development': 'Entwicklungsaktivität',
     'activity.timeline': 'Aktivitäts-Zeitlinie',
+    'activity.grid': 'Aktivitätsraster',
     'activity.less': 'Weniger',
     'activity.more': 'Mehr',
+    'activity.view.details': 'Details Anzeigen',
     'no.activity': 'Keine Aktivität aufgezeichnet',
     'no.activity.short': 'Keine Aktivität',
     'future.date': 'Zukünftiges Datum',
-    'hours.worked': 'gearbeitet',
+    'hours.worked': 'Stunden gearbeitet',
+    'hour.worked': 'Stunde gearbeitet',
 
     // Time entries
     'time.entries.title': 'Zeiteinträge',
     'time.entries.subtitle': 'Alle Zeiteinträge für dieses Projekt anzeigen',
     'time.entries.back': 'Zurück zum Projekt',
+    'time.entry': 'Zeiteintrag',
+    'time.entry.description': 'Beschreibung',
+    'time.entry.task': 'Aufgabe',
+    'time.entry.start': 'Start',
+    'time.entry.end': 'Ende',
+    'time.entry.duration': 'Dauer',
+    'time.entry.user': 'Benutzer',
+    'time.entry.billable': 'Abrechenbar',
     'total.hours': 'Gesamtstunden',
     'days.with.records': 'Tage mit Aufzeichnungen',
     'total.records': 'Gesamtaufzeichnungen',
 
     // Timeline
     'timeline.day': 'Tag',
+    'timeline.week': 'Woche',
+    'timeline.month': 'Monat',
+    'timeline.year': 'Jahr',
     'total': 'gesamt',
     'worked.periods': 'Arbeitsperioden',
 
     // Dashboard
     'dashboard': 'Dashboard',
+    'dashboard.title': 'Dashboard',
     'dashboard.subtitle': 'Überblick über Ihre Aktivitäten und Statistiken',
     'total.hours.week': 'Gesamtstunden (Woche)',
     'revenue.week': 'Einnahmen (Woche)',
@@ -606,23 +952,83 @@ const translations = {
     'weekly.time.overview': 'Wöchentliche Zeitübersicht',
     'weekly.project.overview': 'Wöchentliche Projektübersicht',
 
+    // Statistics
+    'statistics': 'Statistiken',
+    'statistics.overview': 'Statistik-Überblick',
+    'statistics.this.week': 'Diese Woche',
+    'statistics.this.month': 'Dieser Monat',
+    'statistics.this.year': 'Dieses Jahr',
+    'statistics.all.time': 'Gesamte Zeit',
+
+    // Charts
+    'chart.hours.per.day': 'Stunden pro Tag',
+    'chart.hours.per.week': 'Stunden pro Woche',
+    'chart.hours.per.month': 'Stunden pro Monat',
+    'chart.projects.comparison': 'Projektvergleich',
+    'chart.team.activity': 'Teamaktivität',
+    'chart.productivity': 'Produktivität',
+
+    // Navigation
+    'nav.home': 'Startseite',
+    'nav.projects': 'Projekte',
+    'nav.dashboard': 'Dashboard',
+    'nav.settings': 'Einstellungen',
+    'nav.help': 'Hilfe',
+
     // Footer
     'footer.powered.by': 'Betrieben von',
     'footer.open.source': 'Open Source',
     'footer.github': 'GitHub',
     'footer.docs': 'Dokumentation',
+    'footer.support': 'Support',
+    'footer.privacy': 'Datenschutz',
+    'footer.terms': 'Bedingungen',
 
     // Common
     'loading': 'Laden...',
     'error': 'Fehler',
+    'success': 'Erfolg',
+    'warning': 'Warnung',
+    'info': 'Information',
     'back': 'Zurück',
+    'next': 'Weiter',
+    'previous': 'Vorherig',
+    'save': 'Speichern',
+    'cancel': 'Abbrechen',
+    'confirm': 'Bestätigen',
+    'delete': 'Löschen',
+    'edit': 'Bearbeiten',
+    'view': 'Anzeigen',
+    'search': 'Suchen',
+    'filter': 'Filtern',
+    'sort': 'Sortieren',
+    'refresh': 'Aktualisieren',
     'logout': 'Abmelden',
     'close': 'Schließen',
+    'open': 'Öffnen',
+    'yes': 'Ja',
+    'no': 'Nein',
+    'ok': 'OK',
 
-    // Additional translations
+    // Date/Time
+    'today': 'Heute',
+    'yesterday': 'Gestern',
+    'tomorrow': 'Morgen',
+    'this.week': 'Diese Woche',
+    'last.week': 'Letzte Woche',
+    'next.week': 'Nächste Woche',
+    'this.month': 'Dieser Monat',
+    'last.month': 'Letzter Monat',
+    'next.month': 'Nächster Monat',
+
+    // Error Messages
     'api.error.message': 'Fehler beim Abrufen von Daten aus der API. Überprüfen Sie Ihre Konfiguration.',
     'retry': 'Erneut Versuchen',
-    'page.not.found': 'Seite nicht gefunden'
+    'page.not.found': 'Seite nicht gefunden',
+    'permission.denied': 'Berechtigung verweigert',
+    'connection.error': 'Verbindungsfehler',
+    'timeout.error': 'Zeitüberschreitungsfehler',
+    'unknown.error': 'Unbekannter Fehler'
   },
   ru: {
     // App
@@ -689,37 +1095,58 @@ const translations = {
 
     // Projects
     'projects': 'Проекты',
+    'projects.title': 'Проекты',
+    'projects.subtitle': 'Просмотреть все доступные проекты',
     'project.billable': 'Оплачиваемый',
     'project.non_billable': 'Неоплачиваемый',
     'project.archived': 'Архивный',
     'project.details': 'Посмотреть Детали',
     'project.access': 'Запросить Доступ',
+    'project.statistics': 'Статистика Проекта',
+    'project.overview': 'Обзор',
+    'project.activity': 'Активность',
+    'project.time.entries': 'Записи Времени',
 
     // Activity
     'activity.development': 'Активность Разработки',
     'activity.timeline': 'Временная Шкала Активности',
+    'activity.grid': 'Сетка Активности',
     'activity.less': 'Меньше',
     'activity.more': 'Больше',
+    'activity.view.details': 'Просмотреть Детали',
     'no.activity': 'Активность не записана',
     'no.activity.short': 'Нет активности',
     'future.date': 'Будущая дата',
-    'hours.worked': 'отработано',
+    'hours.worked': 'часов отработано',
+    'hour.worked': 'час отработан',
 
     // Time entries
     'time.entries.title': 'Записи Времени',
     'time.entries.subtitle': 'Просмотреть все записи времени для этого проекта',
     'time.entries.back': 'Вернуться к Проекту',
+    'time.entry': 'Запись Времени',
+    'time.entry.description': 'Описание',
+    'time.entry.task': 'Задача',
+    'time.entry.start': 'Начало',
+    'time.entry.end': 'Конец',
+    'time.entry.duration': 'Продолжительность',
+    'time.entry.user': 'Пользователь',
+    'time.entry.billable': 'Оплачиваемый',
     'total.hours': 'Общее Время',
     'days.with.records': 'Дни с Записями',
     'total.records': 'Всего Записей',
 
     // Timeline
     'timeline.day': 'День',
+    'timeline.week': 'Неделя',
+    'timeline.month': 'Месяц',
+    'timeline.year': 'Год',
     'total': 'всего',
     'worked.periods': 'Рабочие Периоды',
 
     // Dashboard
     'dashboard': 'Панель',
+    'dashboard.title': 'Панель Управления',
     'dashboard.subtitle': 'Обзор ваших активностей и статистики',
     'total.hours.week': 'Общее Время (Неделя)',
     'revenue.week': 'Доход (Неделя)',
@@ -729,23 +1156,83 @@ const translations = {
     'weekly.time.overview': 'Недельный Обзор Времени',
     'weekly.project.overview': 'Недельный Обзор Проектов',
 
+    // Statistics
+    'statistics': 'Статистика',
+    'statistics.overview': 'Обзор Статистики',
+    'statistics.this.week': 'Эта Неделя',
+    'statistics.this.month': 'Этот Месяц',
+    'statistics.this.year': 'Этот Год',
+    'statistics.all.time': 'Все Время',
+
+    // Charts
+    'chart.hours.per.day': 'Часов в День',
+    'chart.hours.per.week': 'Часов в Неделю',
+    'chart.hours.per.month': 'Часов в Месяц',
+    'chart.projects.comparison': 'Сравнение Проектов',
+    'chart.team.activity': 'Активность Команды',
+    'chart.productivity': 'Продуктивность',
+
+    // Navigation
+    'nav.home': 'Главная',
+    'nav.projects': 'Проекты',
+    'nav.dashboard': 'Панель',
+    'nav.settings': 'Настройки',
+    'nav.help': 'Помощь',
+
     // Footer
     'footer.powered.by': 'Работает на',
     'footer.open.source': 'Открытый Код',
     'footer.github': 'GitHub',
     'footer.docs': 'Документация',
+    'footer.support': 'Поддержка',
+    'footer.privacy': 'Конфиденциальность',
+    'footer.terms': 'Условия',
 
     // Common
     'loading': 'Загрузка...',
     'error': 'Ошибка',
+    'success': 'Успех',
+    'warning': 'Предупреждение',
+    'info': 'Информация',
     'back': 'Назад',
+    'next': 'Далее',
+    'previous': 'Предыдущий',
+    'save': 'Сохранить',
+    'cancel': 'Отмена',
+    'confirm': 'Подтвердить',
+    'delete': 'Удалить',
+    'edit': 'Редактировать',
+    'view': 'Просмотр',
+    'search': 'Поиск',
+    'filter': 'Фильтр',
+    'sort': 'Сортировка',
+    'refresh': 'Обновить',
     'logout': 'Выйти',
     'close': 'Закрыть',
+    'open': 'Открыть',
+    'yes': 'Да',
+    'no': 'Нет',
+    'ok': 'OK',
 
-    // Additional translations
+    // Date/Time
+    'today': 'Сегодня',
+    'yesterday': 'Вчера',
+    'tomorrow': 'Завтра',
+    'this.week': 'Эта Неделя',
+    'last.week': 'Прошлая Неделя',
+    'next.week': 'Следующая Неделя',
+    'this.month': 'Этот Месяц',
+    'last.month': 'Прошлый Месяц',
+    'next.month': 'Следующий Месяц',
+
+    // Error Messages
     'api.error.message': 'Ошибка получения данных из API. Проверьте вашу конфигурацию.',
     'retry': 'Попробовать Снова',
-    'page.not.found': 'Страница не найдена'
+    'page.not.found': 'Страница не найдена',
+    'permission.denied': 'Доступ запрещен',
+    'connection.error': 'Ошибка соединения',
+    'timeout.error': 'Ошибка тайм-аута',
+    'unknown.error': 'Неизвестная ошибка'
   },
   zh: {
     // App
@@ -812,37 +1299,58 @@ const translations = {
 
     // Projects
     'projects': '项目',
+    'projects.title': '项目',
+    'projects.subtitle': '查看所有可用项目',
     'project.billable': '可计费',
     'project.non_billable': '不可计费',
     'project.archived': '已归档',
     'project.details': '查看详情',
     'project.access': '请求访问',
+    'project.statistics': '项目统计',
+    'project.overview': '概览',
+    'project.activity': '活动',
+    'project.time.entries': '时间记录',
 
     // Activity
     'activity.development': '开发活动',
     'activity.timeline': '活动时间线',
+    'activity.grid': '活动网格',
     'activity.less': '较少',
     'activity.more': '更多',
+    'activity.view.details': '查看详情',
     'no.activity': '没有记录活动',
     'no.activity.short': '无活动',
     'future.date': '未来日期',
-    'hours.worked': '已工作',
+    'hours.worked': '小时已工作',
+    'hour.worked': '小时已工作',
 
     // Time entries
     'time.entries.title': '时间记录',
     'time.entries.subtitle': '查看此项目的所有时间记录',
     'time.entries.back': '返回项目',
+    'time.entry': '时间记录',
+    'time.entry.description': '描述',
+    'time.entry.task': '任务',
+    'time.entry.start': '开始',
+    'time.entry.end': '结束',
+    'time.entry.duration': '持续时间',
+    'time.entry.user': '用户',
+    'time.entry.billable': '可计费',
     'total.hours': '总小时数',
     'days.with.records': '有记录的天数',
     'total.records': '总记录数',
 
     // Timeline
     'timeline.day': '天',
+    'timeline.week': '周',
+    'timeline.month': '月',
+    'timeline.year': '年',
     'total': '总计',
     'worked.periods': '工作时段',
 
     // Dashboard
     'dashboard': '仪表板',
+    'dashboard.title': '仪表板',
     'dashboard.subtitle': '您的活动和统计概览',
     'total.hours.week': '总小时数（周）',
     'revenue.week': '收入（周）',
@@ -852,23 +1360,83 @@ const translations = {
     'weekly.time.overview': '每周时间概览',
     'weekly.project.overview': '每周项目概览',
 
+    // Statistics
+    'statistics': '统计',
+    'statistics.overview': '统计概览',
+    'statistics.this.week': '本周',
+    'statistics.this.month': '本月',
+    'statistics.this.year': '今年',
+    'statistics.all.time': '所有时间',
+
+    // Charts
+    'chart.hours.per.day': '每日小时数',
+    'chart.hours.per.week': '每周小时数',
+    'chart.hours.per.month': '每月小时数',
+    'chart.projects.comparison': '项目比较',
+    'chart.team.activity': '团队活动',
+    'chart.productivity': '生产力',
+
+    // Navigation
+    'nav.home': '首页',
+    'nav.projects': '项目',
+    'nav.dashboard': '仪表板',
+    'nav.settings': '设置',
+    'nav.help': '帮助',
+
     // Footer
     'footer.powered.by': '技术支持',
     'footer.open.source': '开源',
     'footer.github': 'GitHub',
     'footer.docs': '文档',
+    'footer.support': '支持',
+    'footer.privacy': '隐私',
+    'footer.terms': '条款',
 
     // Common
     'loading': '加载中...',
     'error': '错误',
+    'success': '成功',
+    'warning': '警告',
+    'info': '信息',
     'back': '返回',
+    'next': '下一个',
+    'previous': '上一个',
+    'save': '保存',
+    'cancel': '取消',
+    'confirm': '确认',
+    'delete': '删除',
+    'edit': '编辑',
+    'view': '查看',
+    'search': '搜索',
+    'filter': '筛选',
+    'sort': '排序',
+    'refresh': '刷新',
     'logout': '登出',
     'close': '关闭',
+    'open': '打开',
+    'yes': '是',
+    'no': '否',
+    'ok': '确定',
 
-    // Additional translations
+    // Date/Time
+    'today': '今天',
+    'yesterday': '昨天',
+    'tomorrow': '明天',
+    'this.week': '本周',
+    'last.week': '上周',
+    'next.week': '下周',
+    'this.month': '本月',
+    'last.month': '上月',
+    'next.month': '下月',
+
+    // Error Messages
     'api.error.message': '从 API 获取数据时出错。请检查您的配置。',
     'retry': '重试',
-    'page.not.found': '页面未找到'
+    'page.not.found': '页面未找到',
+    'permission.denied': '权限被拒绝',
+    'connection.error': '连接错误',
+    'timeout.error': '超时错误',
+    'unknown.error': '未知错误'
   }
 };
 
