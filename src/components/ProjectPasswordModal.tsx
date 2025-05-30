@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { verifyProjectPassword, setProjectAccess } from '@/services/projectAccess';
 import { toast } from '@/hooks/use-toast';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProjectPasswordModalProps {
   open: boolean;
@@ -23,7 +22,6 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
   projectId, 
   projectName 
 }) => {
-  const { t } = useLanguage();
   const [password, setPassword] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
 
@@ -32,8 +30,8 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
     
     if (!password.trim()) {
       toast({
-        title: t('password.modal.error'),
-        description: t('password.modal.enter.password'),
+        title: "Erro",
+        description: "Por favor, digite a senha",
         variant: "destructive"
       });
       return;
@@ -48,23 +46,23 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
       if (isValid) {
         setProjectAccess(projectId);
         toast({
-          title: t('password.modal.access.granted'),
-          description: t('password.modal.access.granted.message', { projectName })
+          title: "Acesso concedido",
+          description: `Você agora tem acesso ao projeto ${projectName}`
         });
         setPassword('');
         onSuccess();
       } else {
         toast({
-          title: t('password.modal.error'),
-          description: t('password.modal.incorrect.password'),
+          title: "Erro",
+          description: "Senha incorreta",
           variant: "destructive"
         });
       }
     } catch (error) {
       console.error('Error verifying password:', error);
       toast({
-        title: t('password.modal.error'),
-        description: t('password.modal.verification.error'),
+        title: "Erro",
+        description: "Ocorreu um erro ao verificar a senha. Tente novamente.",
         variant: "destructive"
       });
     } finally {
@@ -81,30 +79,30 @@ const ProjectPasswordModal: React.FC<ProjectPasswordModalProps> = ({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('password.modal.title')}</DialogTitle>
+          <DialogTitle>Acesso ao Projeto</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <p className="text-sm text-gray-600">
-            {t('password.modal.description', { projectName })}
+            Este projeto requer uma senha para acesso. Por favor, digite a senha para o projeto <strong>{projectName}</strong>.
           </p>
           <div className="space-y-2">
-            <Label htmlFor="projectPassword">{t('password.modal.password.label')}</Label>
+            <Label htmlFor="projectPassword">Senha</Label>
             <Input
               id="projectPassword"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder={t('password.modal.password.placeholder')}
+              placeholder="Digite a senha do projeto"
               disabled={isVerifying}
               autoFocus
             />
           </div>
           <div className="flex justify-end space-x-2">
             <Button variant="outline" onClick={handleClose} type="button" disabled={isVerifying}>
-              {t('password.modal.cancel')}
+              Cancelar
             </Button>
             <Button type="submit" disabled={isVerifying || !password.trim()}>
-              {isVerifying ? t('password.modal.verifying') : t('password.modal.access')}
+              {isVerifying ? "Verificando..." : "Acessar"}
             </Button>
           </div>
         </form>
