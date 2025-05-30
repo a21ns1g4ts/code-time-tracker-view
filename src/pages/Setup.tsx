@@ -15,6 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Setup = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [apiBaseUrl, setApiBaseUrl] = useState('');
   const [bearerToken, setBearerToken] = useState('');
   const [organizationId, setOrganizationId] = useState('');
   const [error, setError] = useState('');
@@ -24,7 +25,7 @@ const Setup = () => {
     e.preventDefault();
     setError('');
     
-    if (!bearerToken.trim() || !organizationId.trim()) {
+    if (!apiBaseUrl.trim() || !bearerToken.trim() || !organizationId.trim()) {
       setError(t('setup.error.fields'));
       return;
     }
@@ -32,7 +33,7 @@ const Setup = () => {
     setIsLoading(true);
     
     try {
-      setConfig(bearerToken.trim(), organizationId.trim());
+      setConfig(apiBaseUrl.trim(), bearerToken.trim(), organizationId.trim());
       navigate('/projects');
     } catch (err) {
       setError(t('setup.error.save'));
@@ -80,6 +81,18 @@ const Setup = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="apiBaseUrl">{t('setup.api.url.label')}</Label>
+                <Input
+                  id="apiBaseUrl"
+                  type="url"
+                  placeholder={t('setup.api.url.placeholder')}
+                  value={apiBaseUrl}
+                  onChange={(e) => setApiBaseUrl(e.target.value)}
+                  required
+                />
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="bearerToken">{t('setup.token.label')}</Label>
                 <Input
