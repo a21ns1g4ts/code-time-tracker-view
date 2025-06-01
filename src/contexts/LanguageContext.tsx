@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type Language = 'pt' | 'en' | 'es' | 'fr' | 'de' | 'ru' | 'zh';
@@ -75,7 +74,40 @@ const translations = {
     'description': 'Descrição',
     'client': 'Cliente',
     'start.time': 'Hora de Início',
-    'end.time': 'Hora de Fim'
+    'end.time': 'Hora de Fim',
+    config: {
+      auto: {
+        title: 'Configuração Automática',
+        subtitle: 'Configurando sua conexão com o Solidtime...',
+        configuring: 'Configurando...',
+        success: 'Configuração salva com sucesso! Redirecionando...',
+        error: {
+          params: 'Parâmetros de configuração inválidos na URL.',
+          process: 'Erro ao processar a configuração.',
+        }
+      },
+      link: {
+        generator: {
+          title: 'Gerador de Links',
+          subtitle: 'Crie links de configuração automática para facilitar o acesso de clientes.'
+        },
+        generate: 'Gerar Link',
+        clear: 'Limpar',
+        generated: 'Link de configuração gerado com sucesso!',
+        result: 'Link de Configuração',
+        copied: 'Link copiado!',
+        'copied.description': 'O link foi copiado para a área de transferência.',
+        error: {
+          copy: 'Erro ao copiar o link.'
+        },
+        instructions: {
+          title: 'Como usar:',
+          step1: 'Preencha os campos com as informações de acesso do Solidtime',
+          step2: 'Clique em "Gerar Link" para criar o link de configuração',
+          step3: 'Compartilhe o link gerado com o cliente para configuração automática'
+        }
+      }
+    }
   },
   en: {
     'welcome.title': 'Welcome to TimeTracker',
@@ -142,7 +174,40 @@ const translations = {
     'description': 'Description',
     'client': 'Client',
     'start.time': 'Start Time',
-    'end.time': 'End Time'
+    'end.time': 'End Time',
+    config: {
+      auto: {
+        title: 'Auto Configuration',
+        subtitle: 'Setting up your Solidtime connection...',
+        configuring: 'Configuring...',
+        success: 'Configuration saved successfully! Redirecting...',
+        error: {
+          params: 'Invalid configuration parameters in URL.',
+          process: 'Error processing configuration.',
+        }
+      },
+      link: {
+        generator: {
+          title: 'Link Generator',
+          subtitle: 'Create automatic configuration links to facilitate client access.'
+        },
+        generate: 'Generate Link',
+        clear: 'Clear',
+        generated: 'Configuration link generated successfully!',
+        result: 'Configuration Link',
+        copied: 'Link copied!',
+        'copied.description': 'The link has been copied to clipboard.',
+        error: {
+          copy: 'Error copying link.'
+        },
+        instructions: {
+          title: 'How to use:',
+          step1: 'Fill in the fields with Solidtime access information',
+          step2: 'Click "Generate Link" to create the configuration link',
+          step3: 'Share the generated link with the client for automatic setup'
+        }
+      }
+    }
   },
   es: {
     'welcome.title': 'Bienvenido a TimeTracker',
@@ -161,12 +226,12 @@ const translations = {
     'feature.timetracking.description': 'Seguimiento preciso del tiempo invertido',
     'feature.analytics.title': 'Análisis Detallados',
     'feature.analytics.description': 'Informes y métricas de rendimiento',
-    'feature.clients.title': 'Portal del Cliente',
-    'feature.clients.description': 'Interfaz dedicada para clientes',
+    'feature.clients.title': 'Portail Client',
+    'feature.clients.description': 'Interfaz dedicada aux clientes',
     'feature.security.title': 'Seguridad',
     'feature.security.description': 'Protección de datos garantizada',
     'feature.realtime.title': 'Tiempo Real',
-    'feature.realtime.description': 'Actualizaciones instantáneas',
+    'feature.realtime.description': 'Mises a jour instantanées',
     'projects': 'Proyectos',
     'logout': 'Cerrar Sesión',
     'setup.title': 'Configuración',
@@ -209,7 +274,40 @@ const translations = {
     'description': 'Descripción',
     'client': 'Cliente',
     'start.time': 'Hora de Inicio',
-    'end.time': 'Hora de Fin'
+    'end.time': 'Hora de Fin',
+    config: {
+      auto: {
+        title: 'Configuración Automática',
+        subtitle: 'Configurando tu conexión con Solidtime...',
+        configuring: 'Configurando...',
+        success: 'Configuración guardada con éxito! Redirigiendo...',
+        error: {
+          params: 'Parámetros de configuración inválidos en la URL.',
+          process: 'Error al procesar la configuración.',
+        }
+      },
+      link: {
+        generator: {
+          title: 'Generador de Enlaces',
+          subtitle: 'Crea enlaces de configuración automática para facilitar el acceso del cliente.'
+        },
+        generate: 'Generar Enlace',
+        clear: 'Limpiar',
+        generated: '¡Enlace de configuración generado con éxito!',
+        result: 'Enlace de Configuración',
+        copied: '¡Enlace copiado!',
+        'copied.description': 'El enlace ha sido copiado al portapapeles.',
+        error: {
+          copy: 'Error al copiar el enlace.'
+        },
+        instructions: {
+          title: 'Cómo usar:',
+          step1: 'Completa los campos con la información de acceso de Solidtime',
+          step2: 'Haz clic en "Generar Enlace" para crear el enlace de configuración',
+          step3: 'Comparte el enlace generado con el cliente para la configuración automática'
+        }
+      }
+    }
   },
   fr: {
     'welcome.title': 'Bienvenue dans TimeTracker',
@@ -276,7 +374,40 @@ const translations = {
     'description': 'Description',
     'client': 'Client',
     'start.time': 'Heure de Début',
-    'end.time': 'Heure de Fin'
+    'end.time': 'Heure de Fin',
+    config: {
+      auto: {
+        title: 'Configuration Automatique',
+        subtitle: 'Configuration de votre connexion Solidtime...',
+        configuring: 'Configuration...',
+        success: 'Configuration sauvegardée avec succès! Redirection...',
+        error: {
+          params: 'Paramètres de configuration invalides dans l\'URL.',
+          process: 'Erreur lors du traitement de la configuration.',
+        }
+      },
+      link: {
+        generator: {
+          title: 'Générateur de Liens',
+          subtitle: 'Créez des liens de configuration automatique pour faciliter l\'accès client.'
+        },
+        generate: 'Générer le Lien',
+        clear: 'Effacer',
+        generated: 'Lien de configuration généré avec succès!',
+        result: 'Lien de Configuration',
+        copied: 'Lien copié!',
+        'copied.description': 'Le lien a été copié dans le presse-papiers.',
+        error: {
+          copy: 'Erreur lors de la copie du lien.'
+        },
+        instructions: {
+          title: 'Comment utiliser:',
+          step1: 'Remplissez les champs avec les informations d\'accès Solidtime',
+          step2: 'Cliquez sur "Générer le Lien" pour créer le lien de configuration',
+          step3: 'Partagez le lien généré avec le client pour la configuration automatique'
+        }
+      }
+    }
   },
   de: {
     'welcome.title': 'Willkommen bei TimeTracker',
@@ -343,7 +474,40 @@ const translations = {
     'description': 'Beschreibung',
     'client': 'Kunde',
     'start.time': 'Startzeit',
-    'end.time': 'Endzeit'
+    'end.time': 'Endzeit',
+    config: {
+      auto: {
+        title: 'Automatische Konfiguration',
+        subtitle: 'Einrichtung Ihrer Solidtime-Verbindung...',
+        configuring: 'Konfiguriere...',
+        success: 'Konfiguration erfolgreich gespeichert! Weiterleitung...',
+        error: {
+          params: 'Ungültige Konfigurationsparameter in der URL.',
+          process: 'Fehler beim Verarbeiten der Konfiguration.',
+        }
+      },
+      link: {
+        generator: {
+          title: 'Link-Generator',
+          subtitle: 'Erstellen Sie automatische Konfigurationslinks für einfachen Kundenzugang.'
+        },
+        generate: 'Link Generieren',
+        clear: 'Löschen',
+        generated: 'Konfigurationslink erfolgreich generiert!',
+        result: 'Konfigurationslink',
+        copied: 'Link kopiert!',
+        'copied.description': 'Der Link wurde in die Zwischenablage kopiert.',
+        error: {
+          copy: 'Fehler beim Kopieren des Links.'
+        },
+        instructions: {
+          title: 'Verwendung:',
+          step1: 'Füllen Sie die Felder mit Solidtime-Zugriffsinformationen aus',
+          step2: 'Klicken Sie auf "Link Generieren", um den Konfigurationslink zu erstellen',
+          step3: 'Teilen Sie den generierten Link mit dem Kunden für die automatische Einrichtung'
+        }
+      }
+    }
   },
   ru: {
     'welcome.title': 'Добро пожаловать в TimeTracker',
@@ -410,7 +574,40 @@ const translations = {
     'description': 'Описание',
     'client': 'Клиент',
     'start.time': 'Время Начала',
-    'end.time': 'Время Окончания'
+    'end.time': 'Время Окончания',
+    config: {
+      auto: {
+        title: 'Автоматическая Настройка',
+        subtitle: 'Настройка вашего подключения к Solidtime...',
+        configuring: 'Настройка...',
+        success: 'Конфигурация успешно сохранена! Перенаправление...',
+        error: {
+          params: 'Недопустимые параметры конфигурации в URL.',
+          process: 'Ошибка при обработке конфигурации.',
+        }
+      },
+      link: {
+        generator: {
+          title: 'Генератор Ссылок',
+          subtitle: 'Создавайте автоматические ссылки конфигурации для облегчения доступа клиентов.'
+        },
+        generate: 'Создать Ссылку',
+        clear: 'Очистить',
+        generated: 'Ссылка конфигурации успешно создана!',
+        result: 'Ссылка Конфигурации',
+        copied: 'Ссылка скопирована!',
+        'copied.description': 'Ссылка была скопирована в буфер обмена.',
+        error: {
+          copy: 'Ошибка при копировании ссылки.'
+        },
+        instructions: {
+          title: 'Как использовать:',
+          step1: 'Заполните поля информацией для доступа к Solidtime',
+          step2: 'Нажмите "Создать Ссылку" для создания ссылки конфигурации',
+          step3: 'Поделитесь созданной ссылкой с клиентом для автоматической настройки'
+        }
+      }
+    }
   },
   zh: {
     'welcome.title': '欢迎使用 TimeTracker',
@@ -477,7 +674,40 @@ const translations = {
     'description': '描述',
     'client': '客户',
     'start.time': '开始时间',
-    'end.time': '结束时间'
+    'end.time': '结束时间',
+    config: {
+      auto: {
+        title: '自动配置',
+        subtitle: '正在设置您的 Solidtime 连接...',
+        configuring: '配置中...',
+        success: '配置保存成功！正在重定向...',
+        error: {
+          params: 'URL中的配置参数无效。',
+          process: '处理配置时出错。',
+        }
+      },
+      link: {
+        generator: {
+          title: '链接生成器',
+          subtitle: '创建自动配置链接，方便客户访问。'
+        },
+        generate: '生成链接',
+        clear: '清除',
+        generated: '配置链接生成成功！',
+        result: '配置链接',
+        copied: '链接已复制！',
+        'copied.description': '链接已复制到剪贴板。',
+        error: {
+          copy: '复制链接时出错。'
+        },
+        instructions: {
+          title: '使用方法：',
+          step1: '填写 Solidtime 访问信息字段',
+          step2: '点击"生成链接"创建配置链接',
+          step3: '与客户分享生成的链接进行自动设置'
+        }
+      }
+    }
   }
 };
 

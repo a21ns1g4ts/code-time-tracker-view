@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import Welcome from '@/pages/Welcome';
 import Setup from '@/pages/Setup';
 import ConfigFromUrl from '@/pages/ConfigFromUrl';
+import ConfigLinkGenerator from '@/pages/ConfigLinkGenerator';
 import Projects from '@/pages/Projects';
 import ProjectDetail from '@/pages/ProjectDetail';
 import ProjectTimeEntries from '@/pages/ProjectTimeEntries';
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/" element={<Welcome />} />
                 <Route path="/setup" element={<Setup />} />
                 <Route path="/config" element={<ConfigFromUrl />} />
+                <Route path="/config-generator" element={<ConfigLinkGenerator />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/project/:projectId" element={<ProjectDetail />} />
                 <Route path="/project/:projectId/time-entries" element={<ProjectTimeEntries />} />
