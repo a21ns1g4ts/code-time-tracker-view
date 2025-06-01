@@ -1,201 +1,146 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isConfigured } from '@/services/config';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, BarChart3, Users, Settings, Github, ExternalLink } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Clock, Users, BarChart3, Shield, Zap, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ModeToggle } from '@/components/ModeToggle';
 import LanguageDropdown from '@/components/LanguageDropdown';
+import { ModeToggle } from '@/components/ModeToggle';
 
 const Welcome = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
 
+  useEffect(() => {
+    const checkConfig = async () => {
+      const configured = await isConfigured();
+      if (configured) {
+        navigate('/projects');
+      }
+    };
+    checkConfig();
+  }, [navigate]);
+
   const features = [
     {
-      icon: BarChart3,
-      title: t('feature.public.stats.title'),
-      description: t('feature.public.stats.description')
+      icon: Eye,
+      title: t('feature.transparency.title'),
+      description: t('feature.transparency.description')
     },
     {
       icon: Clock,
-      title: t('feature.realtime.title'),
-      description: t('feature.realtime.description')
+      title: t('feature.timetracking.title'),
+      description: t('feature.timetracking.description')
+    },
+    {
+      icon: BarChart3,
+      title: t('feature.analytics.title'),
+      description: t('feature.analytics.description')
     },
     {
       icon: Users,
-      title: t('feature.charts.title'),
-      description: t('feature.charts.description')
+      title: t('feature.clients.title'),
+      description: t('feature.clients.description')
     },
     {
-      icon: Settings,
-      title: t('feature.open.source.title'),
-      description: t('feature.open.source.description')
+      icon: Shield,
+      title: t('feature.security.title'),
+      description: t('feature.security.description')
+    },
+    {
+      icon: Zap,
+      title: t('feature.realtime.title'),
+      description: t('feature.realtime.description')
     }
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b bg-background/80 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
-          <Clock className="h-8 w-8 text-primary" />
-          <div>
-            <h1 className="text-xl font-bold text-foreground">{t('app.title')}</h1>
-            <p className="text-xs text-muted-foreground">{t('app.addon.description')}</p>
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Clock className="h-8 w-8 text-blue-600" />
+            <span className="text-2xl font-bold text-gray-900 dark:text-white">TimeTracker</span>
           </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" asChild>
-            <a 
-              href="https://github.com/solidtime-io/solidtime" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <Github className="h-4 w-4" />
-              {t('app.github')}
-            </a>
-          </Button>
-          <ModeToggle />
-          <LanguageDropdown />
+          <div className="flex items-center gap-2">
+            <ModeToggle />
+            <LanguageDropdown />
+          </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-foreground mb-6">
-            {t('welcome.title')}
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            {t('welcome.subtitle')}
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="text-center max-w-4xl mx-auto">
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            {t('welcome.hero.title')}
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+            {t('welcome.hero.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              onClick={() => navigate('/setup')} 
-              size="lg" 
-              className="text-lg px-8 py-3"
-            >
-              {t('welcome.get.started')}
-            </Button>
-            <Button 
-              variant="outline"
-              size="lg" 
-              asChild
-              className="text-lg px-8 py-3"
-            >
-              <a 
-                href="https://solidtime.io" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2"
-              >
-                {t('welcome.about.solidtime')}
-                <ExternalLink className="h-4 w-4" />
-              </a>
-            </Button>
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 mb-8">
+            <p className="text-blue-800 dark:text-blue-200 text-lg">
+              {t('welcome.hero.description')}
+            </p>
           </div>
+          <Button
+            onClick={() => navigate('/setup')}
+            size="lg"
+            className="text-lg px-8 py-4"
+          >
+            {t('get.started')}
+          </Button>
         </div>
+      </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      {/* Features Grid */}
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
+          {t('welcome.features.title')}
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 bg-background/80 backdrop-blur-sm border-border hover:scale-105">
+            <Card key={index} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <feature.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle className="text-lg text-card-foreground">{feature.title}</CardTitle>
+                <div className="flex items-center gap-3">
+                  <feature.icon className="h-8 w-8 text-blue-600" />
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
+                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
+      </div>
 
-        {/* About SolidTime Section */}
-        <div className="text-center mb-16">
-          <Card className="max-w-4xl mx-auto bg-background/80 backdrop-blur-sm border-border">
-            <CardHeader>
-              <CardTitle className="text-2xl text-card-foreground flex items-center justify-center gap-2">
-                <Clock className="h-6 w-6 text-primary" />
-                {t('welcome.about.solidtime')}
-              </CardTitle>
-              <CardDescription className="text-lg text-muted-foreground">
-                {t('welcome.solidtime.description')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button variant="outline" asChild>
-                  <a 
-                    href="https://solidtime.io" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    solidtime.io
-                  </a>
-                </Button>
-                <Button variant="outline" asChild>
-                  <a 
-                    href="https://github.com/solidtime-io/solidtime" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <Github className="h-4 w-4" />
-                    {t('footer.github')}
-                  </a>
-                </Button>
-                <Button variant="outline" asChild>
-                  <a 
-                    href="https://docs.solidtime.io" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    {t('footer.docs')}
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center">
-          <Card className="max-w-2xl mx-auto bg-background/80 backdrop-blur-sm border-border">
-            <CardHeader>
-              <CardTitle className="text-2xl text-card-foreground">{t('config.required')}</CardTitle>
-              <CardDescription className="text-lg text-muted-foreground">
-                {t('config.required.message')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                onClick={() => navigate('/setup')} 
-                size="lg" 
-                className="w-full sm:w-auto"
-              >
-                {t('setup.title')}
-              </Button>
-            </CardContent>
-          </Card>
+      {/* About Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+            {t('welcome.about.title')}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
+            {t('welcome.about.description')}
+          </p>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <p className="text-gray-700 dark:text-gray-300">
+              {t('welcome.about.solidtime')}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-background/80 backdrop-blur-sm py-8 mt-16">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-muted-foreground text-sm">
-            {t('footer.powered.by')} <a href="https://solidtime.io" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">solidtime</a> • {t('footer.open.source')}
-          </p>
-        </div>
-      </footer>
+      <div className="container mx-auto px-4 py-8 text-center">
+        <p className="text-gray-500 dark:text-gray-400">
+          {t('welcome.footer')}
+        </p>
+      </div>
     </div>
   );
 };

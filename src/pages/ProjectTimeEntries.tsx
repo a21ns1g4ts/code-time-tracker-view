@@ -127,7 +127,7 @@ const ProjectTimeEntries = () => {
         {/* Activity Grid */}
         <div className="mb-8">
           <h3 className="text-lg font-medium text-gray-900 mb-4">{t('activity.development')}</h3>
-          <ActivityGrid data={dayData} projectId={projectId!} onDayClick={handleDayClick} />
+          <ActivityGrid data={dayData} projectId={projectId!} onDayClick={handleDayClick} showModal={true} />
         </div>
 
         {/* Timeline */}

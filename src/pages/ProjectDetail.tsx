@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProjectTimeEntries } from '@/services/api';
@@ -10,12 +10,17 @@ import LoadingProjects from '@/components/LoadingProjects';
 import ApiErrorDisplay from '@/components/ApiErrorDisplay';
 import { processTimeEntries } from '@/utils/dataProcessor';
 import { format } from 'date-fns';
+import { useSelectedDay } from '@/hooks/useSelectedDay';
+import DayDetailsModal from '@/components/DayDetailsModal';
 import PageLayout from '@/components/PageLayout';
 
 const ProjectDetail = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { selectedDay, clearSelectedDay } = useSelectedDay();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedDayData, setSelectedDayData] = useState(null);
 
   const { data: entriesResponse, isLoading, error, refetch } = useQuery({
     queryKey: ['projectTimeEntries', projectId],
@@ -24,6 +29,20 @@ const ProjectDetail = () => {
   });
 
   const processedData = entriesResponse ? processTimeEntries(entriesResponse.data) : null;
+
+  // Check if there's a selected day to open modal
+  useEffect(() => {
+    if (selectedDay && processedData?.dayData[selectedDay]) {
+      setSelectedDayData(processedData.dayData[selectedDay]);
+      setModalOpen(true);
+      clearSelectedDay(); // Clear after using
+    }
+  }, [selectedDay, processedData, clearSelectedDay]);
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedDayData(null);
+  };
 
   if (isLoading) {
     return (
@@ -174,6 +193,13 @@ const ProjectDetail = () => {
             </div>
           )}
         </div>
+
+        {/* Day Details Modal */}
+        <DayDetailsModal 
+          open={modalOpen}
+          onClose={handleCloseModal}
+          dayData={selectedDayData}
+        />
       </div>
     </PageLayout>
   );

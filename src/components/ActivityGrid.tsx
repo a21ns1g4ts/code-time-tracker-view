@@ -2,20 +2,25 @@
 import React, { useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import { ptBR, enUS, es, fr, de } from 'date-fns/locale';
+import { useNavigate } from 'react-router-dom';
 import { WeekData, DayData } from '@/types/api';
 import { formatDuration, generateWeeksData, groupEntriesByDay } from '@/utils/dataProcessor';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSelectedDay } from '@/hooks/useSelectedDay';
 import DayDetailsModal from './DayDetailsModal';
 
 interface ActivityGridProps {
   data: { [key: string]: DayData };
   projectId: string;
   onDayClick?: (day: DayData) => void;
+  showModal?: boolean;
 }
 
-const ActivityGrid: React.FC<ActivityGridProps> = ({ data, projectId, onDayClick }) => {
+const ActivityGrid: React.FC<ActivityGridProps> = ({ data, projectId, onDayClick, showModal = true }) => {
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
+  const { updateSelectedDay } = useSelectedDay();
   const locales = { pt: ptBR, en: enUS, es: es, fr: fr, de: de };
   const locale = locales[language as keyof typeof locales] || enUS;
   const [selectedDay, setSelectedDay] = useState<DayData | null>(null);
@@ -47,9 +52,15 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ data, projectId, onDayClick
         onDayClick(day);
       }
       
-      // Open modal with day details
-      setSelectedDay(day);
-      setIsModalOpen(true);
+      if (showModal) {
+        // Open modal with day details
+        setSelectedDay(day);
+        setIsModalOpen(true);
+      } else {
+        // Navigate to project page and store selected day
+        updateSelectedDay(day.date);
+        navigate(`/project/${projectId}`);
+      }
     }
   };
 
@@ -150,11 +161,13 @@ const ActivityGrid: React.FC<ActivityGridProps> = ({ data, projectId, onDayClick
         </div>
       </TooltipProvider>
 
-      <DayDetailsModal 
-        open={isModalOpen}
-        onClose={handleCloseModal}
-        dayData={selectedDay}
-      />
+      {showModal && (
+        <DayDetailsModal 
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          dayData={selectedDay}
+        />
+      )}
     </>
   );
 };
