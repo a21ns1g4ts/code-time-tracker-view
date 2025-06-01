@@ -16,18 +16,11 @@ export const saveProjectPassword = async (projectId: string, password: string) =
 
 export const verifyProjectPassword = async (projectId: string, password: string): Promise<boolean> => {
   try {
-    console.log('Verifying password for project:', { projectId });
+    console.log('Verifying password for project:', { projectId, enteredPassword: password });
     
-    const savedPasswords = JSON.parse(localStorage.getItem('project_passwords') || '{}');
-    const savedPassword = savedPasswords[projectId];
-    
-    if (!savedPassword) {
-      console.log('No password found for project:', projectId);
-      return false;
-    }
-    
-    const isValid = savedPassword === password;
-    console.log('Password verification result:', { projectId, isValid });
+    // A senha correta é o próprio ID do projeto
+    const isValid = password.trim() === projectId.trim();
+    console.log('Password verification result:', { projectId, isValid, expectedPassword: projectId });
     return isValid;
   } catch (error) {
     console.error('Exception in verifyProjectPassword:', error);
