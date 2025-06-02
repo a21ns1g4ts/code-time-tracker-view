@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { isConfigured } from '@/services/config';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Users, BarChart3, Shield, Zap, Eye } from 'lucide-react';
+import { Clock, Users, BarChart3, Shield, Zap, Eye, Link, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageDropdown from '@/components/LanguageDropdown';
 import { ModeToggle } from '@/components/ModeToggle';
+import Footer from '@/components/Footer';
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const Welcome = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex flex-col">
       {/* Header */}
       <div className="container mx-auto px-4 py-6">
         <div className="flex justify-between items-center">
@@ -86,13 +87,50 @@ const Welcome = () => {
               {t('welcome.hero.description')}
             </p>
           </div>
-          <Button
-            onClick={() => navigate('/setup')}
-            size="lg"
-            className="text-lg px-8 py-4"
-          >
-            {t('get.started')}
-          </Button>
+          
+          {/* Quick Access Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/setup')}>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Settings className="h-8 w-8 text-blue-600" />
+                  <CardTitle className="text-lg">{t('setup.title')}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('setup.subtitle')}</p>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/config-generator')}>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Link className="h-8 w-8 text-blue-600" />
+                  <CardTitle className="text-lg">{t('config.link.generator.title')}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">{t('config.link.generator.subtitle')}</p>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow col-span-1 md:col-span-2 lg:col-span-1">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Clock className="h-8 w-8 text-blue-600" />
+                  <CardTitle className="text-lg">{t('get.started')}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Button
+                  onClick={() => navigate('/setup')}
+                  className="w-full"
+                >
+                  {t('get.started')}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
 
@@ -136,11 +174,7 @@ const Welcome = () => {
       </div>
 
       {/* Footer */}
-      <div className="container mx-auto px-4 py-8 text-center">
-        <p className="text-gray-500 dark:text-gray-400">
-          {t('welcome.footer')}
-        </p>
-      </div>
+      <Footer />
     </div>
   );
 };
