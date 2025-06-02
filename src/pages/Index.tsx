@@ -11,11 +11,16 @@ const Index = () => {
 
   useEffect(() => {
     const checkConfigAndRedirect = async () => {
-      const configured = await isConfigured();
-      if (configured) {
-        navigate('/projects');
-      } else {
-        navigate('/');
+      try {
+        const configured = await isConfigured();
+        if (configured) {
+          navigate('/projects', { replace: true });
+        } else {
+          navigate('/', { replace: true });
+        }
+      } catch (error) {
+        console.error('Error checking configuration:', error);
+        navigate('/', { replace: true });
       }
     };
     

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 import Welcome from '@/pages/Welcome';
-import Setup from '@/pages/Setup';
+import ProtectedSetup from '@/components/ProtectedSetup';
 import ConfigFromUrl from '@/pages/ConfigFromUrl';
 import ConfigLinkGenerator from '@/pages/ConfigLinkGenerator';
 import Projects from '@/pages/Projects';
@@ -30,7 +30,7 @@ function App() {
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
               <Routes>
                 <Route path="/" element={<Welcome />} />
-                <Route path="/setup" element={<Setup />} />
+                <Route path="/setup" element={<ProtectedSetup />} />
                 <Route path="/config" element={<ConfigFromUrl />} />
                 <Route path="/config-generator" element={<ConfigLinkGenerator />} />
                 <Route path="/projects" element={<Projects />} />
