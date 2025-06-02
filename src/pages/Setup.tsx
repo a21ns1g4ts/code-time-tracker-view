@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Clock, AlertCircle, ExternalLink, Github } from 'lucide-react';
+import { Clock, AlertCircle, ExternalLink, Github, CheckCircle } from 'lucide-react';
 import { setConfig } from '@/services/config';
 import { ModeToggle } from '@/components/ModeToggle';
 import LanguageDropdown from '@/components/LanguageDropdown';
@@ -21,6 +21,27 @@ const Setup = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const validateCredentials = async (url: string, token: string, orgId: string) => {
+    const response = await fetch(`${url}/organizations/${orgId}/projects`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error(t('setup.error.invalid.token'));
+      } else if (response.status === 404) {
+        throw new Error(t('setup.error.invalid.organization'));
+      } else {
+        throw new Error(t('setup.error.invalid.credentials'));
+      }
+    }
+
+    return response.json();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -33,10 +54,18 @@ const Setup = () => {
     setIsLoading(true);
     
     try {
+      // Validate credentials first
+      await validateCredentials(apiBaseUrl.trim(), bearerToken.trim(), organizationId.trim());
+      
+      // If validation passes, save config and navigate
       setConfig(apiBaseUrl.trim(), bearerToken.trim(), organizationId.trim());
       navigate('/projects');
     } catch (err) {
-      setError(t('setup.error.save'));
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError(t('setup.error.save'));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +154,17 @@ const Setup = () => {
               )}
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? t('setup.saving') : t('setup.save')}
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    {t('setup.validating')}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    {t('setup.save')}
+                  </div>
+                )}
               </Button>
             </form>
 
