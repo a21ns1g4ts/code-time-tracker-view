@@ -1,5 +1,7 @@
-
 export const frTranslations = {
+  'config.required': 'Configuration Requise',
+  'config.required.message': 'Vous devez configurer vos identifiants API avant d\'accéder aux projets.',
+  'setup.save': 'Sauvegarder la Configuration',
   'app.title': 'TimeTracker',
   'app.subtitle': 'Votre compagnon de suivi du temps',
   'app.addon.description': 'Votre compagnon de suivi du temps',

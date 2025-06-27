@@ -1,5 +1,7 @@
-
 export const deTranslations = {
+  'config.required': 'Konfiguration Erforderlich',
+  'config.required.message': 'Sie müssen Ihre API-Zugangsdaten konfigurieren, bevor Sie auf Projekte zugreifen können.',
+  'setup.save': 'Konfiguration Speichern',
   'app.title': 'TimeTracker',
   'app.subtitle': 'Ihr Begleiter für die Zeiterfassung',
   'app.addon.description': 'Ihr Begleiter für die Zeiterfassung',

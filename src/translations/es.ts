@@ -1,5 +1,7 @@
-
 export const esTranslations = {
+  'config.required': 'Configuración Requerida',
+  'config.required.message': 'Necesitas configurar tus credenciales de API antes de acceder a los proyectos.',
+  'setup.save': 'Guardar Configuración',
   'app.title': 'TimeTracker',
   'app.subtitle': 'Tu compañero para el seguimiento del tiempo',
   'app.addon.description': 'Tu compañero para el seguimiento del tiempo',

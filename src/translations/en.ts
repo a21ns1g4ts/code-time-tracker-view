@@ -1,5 +1,7 @@
-
 export const enTranslations = {
+  'config.required': 'Configuration Required',
+  'config.required.message': 'You need to configure your API credentials before accessing projects.',
+  'setup.save': 'Save Configuration',
   'app.title': 'TimeTracker',
   'app.subtitle': 'Your time tracking companion',
   'app.addon.description': 'Your time tracking companion',
