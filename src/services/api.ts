@@ -1,4 +1,5 @@
-import { ApiResponse, ProjectsResponse } from '@/types/api';
+
+import { ApiResponse, ProjectsResponse, ReportsResponse } from '@/types/api';
 import { getConfig } from './config';
 
 // Organization API
