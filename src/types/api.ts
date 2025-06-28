@@ -1,4 +1,3 @@
-
 export interface TimeEntry {
   id: string;
   start: string;
@@ -82,4 +81,39 @@ export interface ProjectAccess {
   password: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface Report {
+  id: string;
+  name: string;
+  description: string | null;
+  is_public: boolean;
+  public_until: string | null;
+  shareable_link: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReportsResponse {
+  data: Report[];
+  links: {
+    first: string | null;
+    last: string | null;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number | null;
+    last_page: number;
+    links: Array<{
+      url: string | null;
+      label: string;
+      active: boolean;
+    }>;
+    path: string | null;
+    per_page: number;
+    to: number | null;
+    total: number;
+  };
 }

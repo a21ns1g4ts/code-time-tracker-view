@@ -139,5 +139,14 @@ export const esTranslations = {
   'password.modal.verification.error': 'Hubo un error al verificar la contraseña. Inténtalo de nuevo.',
   'navigation.home': 'Inicio',
   'navigation.setup': 'Configuración',
-  'navigation.back.home': 'Volver al Inicio'
+  'navigation.back.home': 'Volver al Inicio',
+  'reports.title': 'Informes',
+  'reports.subtitle': 'Ver y gestionar informes del proyecto',
+  'no.reports': 'No se encontraron informes',
+  'no.reports.description': 'Aún no se han creado informes para esta organización.',
+  'public': 'Público',
+  'created': 'Creado',
+  'public.until': 'Público hasta',
+  'view.report': 'Ver Informe',
+  'project.reports': 'Informes'
 };

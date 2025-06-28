@@ -129,12 +129,20 @@ const ProjectDetail = () => {
         </div>
 
         {/* View Complete Time Entries Button */}
-        <div className="mb-8">
+        <div className="mb-8 flex gap-4">
           <Button
             onClick={() => navigate(`/project/${projectId}/time-entries`)}
-            className="w-full md:w-auto"
+            className="flex-1 md:flex-none"
           >
             {t('project.detail.view_entries')}
+          </Button>
+          
+          <Button
+            onClick={() => navigate(`/project/${projectId}/reports`)}
+            variant="outline"
+            className="flex-1 md:flex-none"
+          >
+            {t('project.reports')}
           </Button>
         </div>
 

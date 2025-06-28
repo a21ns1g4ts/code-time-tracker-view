@@ -139,5 +139,14 @@ export const itTranslations = {
   'password.modal.verification.error': 'Errore nella verifica della password. Riprova.',
   'navigation.home': 'Home',
   'navigation.setup': 'Configurazione',
-  'navigation.back.home': 'Ritorna alla Home'
+  'navigation.back.home': 'Ritorna alla Home',
+  'reports.title': 'Report',
+  'reports.subtitle': 'Visualizza e gestisci i report del progetto',
+  'no.reports': 'Nessun report trovato',
+  'no.reports.description': 'Nessun report è stato ancora creato per questa organizzazione.',
+  'public': 'Pubblico',
+  'created': 'Creato',
+  'public.until': 'Pubblico fino',
+  'view.report': 'Visualizza Report',
+  'project.reports': 'Report'
 };

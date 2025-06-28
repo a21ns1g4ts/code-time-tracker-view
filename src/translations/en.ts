@@ -139,5 +139,14 @@ export const enTranslations = {
   'password.modal.verification.error': 'There was an error verifying the password. Please try again.',
   'navigation.home': 'Home',
   'navigation.setup': 'Setup',
-  'navigation.back.home': 'Back to Home'
+  'navigation.back.home': 'Back to Home',
+  'reports.title': 'Reports',
+  'reports.subtitle': 'View and manage project reports',
+  'no.reports': 'No reports found',
+  'no.reports.description': 'No reports have been created for this organization yet.',
+  'public': 'Public',
+  'created': 'Created',
+  'public.until': 'Public until',
+  'view.report': 'View Report',
+  'project.reports': 'Reports'
 };

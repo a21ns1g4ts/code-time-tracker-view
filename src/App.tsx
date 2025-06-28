@@ -10,6 +10,7 @@ import ConfigLinkGenerator from '@/pages/ConfigLinkGenerator';
 import Projects from '@/pages/Projects';
 import ProjectDetail from '@/pages/ProjectDetail';
 import ProjectTimeEntries from '@/pages/ProjectTimeEntries';
+import ProjectReports from '@/pages/ProjectReports';
 import NotFound from '@/pages/NotFound';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { Toaster } from '@/components/ui/toaster';
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/project/:projectId" element={<ProjectDetail />} />
                 <Route path="/project/:projectId/time-entries" element={<ProjectTimeEntries />} />
+                <Route path="/project/:projectId/reports" element={<ProjectReports />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Toaster />

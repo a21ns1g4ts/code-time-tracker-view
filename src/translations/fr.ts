@@ -139,5 +139,14 @@ export const frTranslations = {
   'password.modal.verification.error': 'Il y a eu une erreur lors de la vérification du mot de passe. Veuillez réessayer.',
   'navigation.home': 'Accueil',
   'navigation.setup': 'Configuration',
-  'navigation.back.home': 'Retour à l\'Accueil'
+  'navigation.back.home': 'Retour à l\'Accueil',
+  'reports.title': 'Rapports',
+  'reports.subtitle': 'Voir et gérer les rapports du projet',
+  'no.reports': 'Aucun rapport trouvé',
+  'no.reports.description': 'Aucun rapport n\'a encore été créé pour cette organisation.',
+  'public': 'Public',
+  'created': 'Créé',
+  'public.until': 'Public jusqu\'à',
+  'view.report': 'Voir le Rapport',
+  'project.reports': 'Rapports'
 };

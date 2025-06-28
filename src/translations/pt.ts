@@ -139,5 +139,14 @@ export const ptTranslations = {
   'password.modal.verification.error': 'Houve um erro ao verificar a senha. Tente novamente.',
   'navigation.home': 'Início',
   'navigation.setup': 'Configuração',
-  'navigation.back.home': 'Voltar ao Início'
+  'navigation.back.home': 'Voltar ao Início',
+  'reports.title': 'Relatórios',
+  'reports.subtitle': 'Visualizar e gerenciar relatórios do projeto',
+  'no.reports': 'Nenhum relatório encontrado',
+  'no.reports.description': 'Nenhum relatório foi criado para esta organização ainda.',
+  'public': 'Público',
+  'created': 'Criado',
+  'public.until': 'Público até',
+  'view.report': 'Ver Relatório',
+  'project.reports': 'Relatórios'
 };

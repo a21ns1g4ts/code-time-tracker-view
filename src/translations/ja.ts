@@ -138,6 +138,15 @@ export const jaTranslations = {
   'password.modal.incorrect.password': 'パスワードが正しくありません。再試行してください。',
   'password.modal.verification.error': 'パスワードの検証でエラーが発生しました。再試行してください。',
   'navigation.home': 'ホーム',
-  'navigation.setup': 'セットアップ',
-  'navigation.back.home': 'ホームに戻る'
+  'navigation.setup': '設定',
+  'navigation.back.home': 'ホームに戻る',
+  'reports.title': 'レポート',
+  'reports.subtitle': 'プロジェクトレポートの表示と管理',
+  'no.reports': 'レポートが見つかりません',
+  'no.reports.description': 'この組織のレポートはまだ作成されていません。',
+  'public': 'パブリック',
+  'created': '作成日',
+  'public.until': '公開期限',
+  'view.report': 'レポートを表示',
+  'project.reports': 'レポート'
 };

@@ -1,4 +1,3 @@
-
 import { ApiResponse, ProjectsResponse } from '@/types/api';
 import { getConfig } from './config';
 
@@ -111,6 +110,30 @@ export const fetchProjects = async (): Promise<ProjectsResponse> => {
 
   if (!response.ok) {
     throw new Error(`Failed to fetch projects: ${response.status}`);
+  }
+
+  return response.json();
+};
+
+export const fetchReports = async (): Promise<ReportsResponse> => {
+  const { apiBaseUrl, bearerToken, organizationId } = await getConfig();
+  
+  if (!apiBaseUrl || !bearerToken || !organizationId) {
+    throw new Error('API base URL, bearer token and organization ID are required');
+  }
+
+  const response = await fetch(
+    `${apiBaseUrl}/organizations/${organizationId}/reports`,
+    {
+      headers: {
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch reports: ${response.status}`);
   }
 
   return response.json();

@@ -138,6 +138,15 @@ export const deTranslations = {
   'password.modal.incorrect.password': 'Falsches Passwort. Bitte versuchen Sie es erneut.',
   'password.modal.verification.error': 'Fehler beim Überprüfen des Passworts. Bitte versuchen Sie es erneut.',
   'navigation.home': 'Startseite',
-  'navigation.setup': 'Einrichtung',
-  'navigation.back.home': 'Zurück zur Startseite'
+  'navigation.setup': 'Einstellungen',
+  'navigation.back.home': 'Zurück zur Startseite',
+  'reports.title': 'Berichte',
+  'reports.subtitle': 'Projektberichte anzeigen und verwalten',
+  'no.reports': 'Keine Berichte gefunden',
+  'no.reports.description': 'Für diese Organisation wurden noch keine Berichte erstellt.',
+  'public': 'Öffentlich',
+  'created': 'Erstellt',
+  'public.until': 'Öffentlich bis',
+  'view.report': 'Bericht anzeigen',
+  'project.reports': 'Berichte'
 };
