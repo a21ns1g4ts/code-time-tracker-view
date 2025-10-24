@@ -20,14 +20,14 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <Router>
-          <LanguageProvider>
+      <LanguageProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Router>
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
               <Routes>
                 <Route path="/" element={<Welcome />} />
@@ -42,9 +42,9 @@ function App() {
               </Routes>
               <Toaster />
             </div>
-          </LanguageProvider>
-        </Router>
-      </ThemeProvider>
+          </Router>
+        </ThemeProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
